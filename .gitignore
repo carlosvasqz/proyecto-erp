@@ -1,1 +1,3 @@
-settings.json, package-lock.json
+# Archivos sin seguimiento:
+.vscode/, 
+package-lock.json
