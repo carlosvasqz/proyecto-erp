@@ -33,7 +33,7 @@
 <!-- Automatic element centering -->
 <div class="lockscreen-wrapper">
   <div class="lockscreen-logo">
-    <a href="../../index2.html">Material<b>Admin</b>LTE</a>
+    <a href="../../index2.php">Material<b>Admin</b>LTE</a>
   </div>
   <!-- User name -->
   <div class="lockscreen-name">John Doe</div>
@@ -64,7 +64,7 @@
     Enter your password to retrieve your session
   </div>
   <div class="text-center">
-    <a href="login.html">Or sign in as a different user</a>
+    <a href="login.php">Or sign in as a different user</a>
   </div>
   <div class="lockscreen-footer text-center">
     Copyright &copy; 2014-2018 <a href="http://almsaeedstudio.com"><b>Almsaeed Studio</b></a>, <br> 
