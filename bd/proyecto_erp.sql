@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 13-06-2018 a las 16:30:58
+-- Tiempo de generación: 17-06-2018 a las 19:33:23
 -- Versión del servidor: 10.1.33-MariaDB
 -- Versión de PHP: 7.2.5
 
@@ -11,12 +11,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `proyecto_erp`
@@ -300,7 +294,10 @@ CREATE TABLE `ordenes_compra` (
 CREATE TABLE `proveedores` (
   `Id_Proveedor` varchar(10) NOT NULL,
   `Nombre_Proveedor` varchar(100) NOT NULL,
-  `RTN_Proveedor` int(11) NOT NULL
+  `RTN_Proveedor` int(11) NOT NULL,
+  `Direccion` varchar(255) NOT NULL,
+  `Telefono` int(11) NOT NULL,
+  `Correo_Electronico` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -694,7 +691,3 @@ ALTER TABLE `ventas_tmp`
   ADD CONSTRAINT `ventas_tmp_ibfk_1` FOREIGN KEY (`Id_Cliente`) REFERENCES `clientes` (`Id_Cliente`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `ventas_tmp_ibfk_2` FOREIGN KEY (`Id_Usuario`) REFERENCES `usuarios` (`Id_Usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
