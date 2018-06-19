@@ -419,7 +419,7 @@
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Title</h3>
+          <h3 class="box-title">Tipo  de Usuario</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
@@ -430,15 +430,45 @@
           </div>
         </div>
         <div class="box-body">
-          Start creating your amazing application!
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-          Footer
-        </div>
-        <!-- /.box-footer-->
-      </div>
-      <!-- /.box -->
+<form class="form-horizontal">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Identidad del Tipo de Usuario</label>
+
+                  <div class="col-sm-10">
+                    <input type="id" class="form-control" id="id" placeholder="Identidad del Tipo de Usuario">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">Nombre</label>
+
+                  <div class="col-sm-10">
+                    <input type="nombre" class="form-control" id="nombre" placeholder="Nombre">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">Descripción</label>
+
+                  <div class="col-sm-10">
+                    <input type="des" class="form-control" id="des" placeholder="Descripción">
+                  </div>
+                </div>
+                
+               </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="submit" class="btn btn-default">Guardar</button>
+                <button type="submit" class="btn btn-default">Mostrar</button>
+                <button type="submit" class="btn btn-default">Modificar</button>
+                <button type="submit" class="btn btn-default">Eliminar</button>
+
+              </div>
+              <!-- /.box-footer -->
+            </form>
+          </div>
+          <!-- /.box -->
+          <!-- general form elements disabled -->
+          
 
     </section>
     <!-- /.content -->
