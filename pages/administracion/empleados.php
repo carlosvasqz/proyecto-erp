@@ -264,7 +264,7 @@
                   $queryEmpleadosNuevos=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Nuevos FROM empleados WHERE Fecha_Ingreso >= $fechaInicioAnioDB;") or die(mysqli_error());
                   $rowEmpleadosNuevos=mysqli_fetch_array($queryEmpleadosNuevos);
                   echo $rowEmpleadosNuevos['Empleados_Nuevos'];
-                  mysqli_close($queryEmpleadosNuevos);
+                  // mysqli_close($queryEmpleadosNuevos);
                 ?>
               </span>
             </div>
@@ -284,7 +284,7 @@
                   $queryTotalEmpleados=mysqli_query($db, "SELECT COUNT(*) AS Total_Empleados FROM empleados") or die(mysqli_error());
                   $rowEmpleados=mysqli_fetch_array($queryTotalEmpleados);
                   echo $rowEmpleados['Total_Empleados'];
-                  mysqli_close($queryTotalEmpleados);
+                  // mysqli_close($queryTotalEmpleados);
                 ?>
               </span>
             </div>
@@ -304,7 +304,7 @@
                   $queryEmpleadosDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Desabilitados FROM empleados WHERE Estado = 2") or die(mysqli_error());
                   $rowEmpleadosDesabilitados=mysqli_fetch_array($queryEmpleadosDesabilitados);
                   echo $rowEmpleadosDesabilitados['Empleados_Desabilitados'];
-                  mysqli_close($queryEmpleadosDesabilitados);
+                  // mysqli_close($queryEmpleadosDesabilitados);
                 ?>
               </span>
             </div>
