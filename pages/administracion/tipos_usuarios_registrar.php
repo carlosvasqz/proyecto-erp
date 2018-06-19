@@ -1,12 +1,14 @@
 <?php
   include ('../../inc/constructor.php');
+  include ('../../inc/conexion.php');
+  include ('../../inc/util.php');
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Blank Page</title>
+  <title>MaterialAdminLTE 2 | Registrar Empleado</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -35,13 +37,13 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="skin-blue sidebar-mini fixed">
 <!-- Site wrapper -->
 <div class="wrapper">
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index2.php" class="logo">
+    <a href="../../index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">M<b>A</b>L</span>
       <!-- logo for regular state and mobile devices -->
@@ -210,7 +212,7 @@
         </div>
       </div>
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <!-- <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
@@ -218,180 +220,12 @@
                 </button>
               </span>
         </div>
-      </form>
+      </form> -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../../index.php"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="../../index2.php"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-files-o"></i>
-            <span>Layout Options</span>
-            <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../layout/top-nav.php"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-            <li><a href="../layout/boxed.php"><i class="fa fa-circle-o"></i> Boxed</a></li>
-            <li><a href="../layout/fixed.php"><i class="fa fa-circle-o"></i> Fixed</a></li>
-            <li><a href="../layout/collapsed-sidebar.php"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="../widgets.php">
-            <i class="fa fa-th"></i> <span>Widgets</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">Hot</small>
-            </span>
-          </a>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>Charts</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../charts/chartjs.php"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-            <li><a href="../charts/morris.php"><i class="fa fa-circle-o"></i> Morris</a></li>
-            <li><a href="../charts/flot.php"><i class="fa fa-circle-o"></i> Flot</a></li>
-            <li><a href="../charts/inline.php"><i class="fa fa-circle-o"></i> Inline charts</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-laptop"></i>
-            <span>UI Elements</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../UI/general.php"><i class="fa fa-circle-o"></i> General</a></li>
-            <li><a href="../UI/icons.php"><i class="fa fa-circle-o"></i> Icons</a></li>
-            <li><a href="../UI/buttons.php"><i class="fa fa-circle-o"></i> Buttons</a></li>
-            <li><a href="../UI/sliders.php"><i class="fa fa-circle-o"></i> Sliders</a></li>
-            <li><a href="../UI/timeline.php"><i class="fa fa-circle-o"></i> Timeline</a></li>
-            <li><a href="../UI/modals.php"><i class="fa fa-circle-o"></i> Modals</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-edit"></i> <span>Forms</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../forms/general.php"><i class="fa fa-circle-o"></i> General Elements</a></li>
-            <li><a href="../forms/advanced.php"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
-            <li><a href="../forms/editors.php"><i class="fa fa-circle-o"></i> Editors</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-table"></i> <span>Tables</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../tables/simple.php"><i class="fa fa-circle-o"></i> Simple tables</a></li>
-            <li><a href="../tables/data.php"><i class="fa fa-circle-o"></i> Data tables</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="../calendar.php">
-            <i class="fa fa-calendar"></i> <span>Calendar</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-red">3</small>
-              <small class="label pull-right bg-blue">17</small>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="../mailbox/mailbox.php">
-            <i class="fa fa-envelope"></i> <span>Mailbox</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-yellow">12</small>
-              <small class="label pull-right bg-green">16</small>
-              <small class="label pull-right bg-red">5</small>
-            </span>
-          </a>
-        </li>
-        <li class="treeview active">
-          <a href="#">
-            <i class="fa fa-folder"></i> <span>Examples</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="invoice.php"><i class="fa fa-circle-o"></i> Invoice</a></li>
-            <li><a href="profile.php"><i class="fa fa-circle-o"></i> Profile</a></li>
-            <li><a href="login.php"><i class="fa fa-circle-o"></i> Login</a></li>
-            <li><a href="register.php"><i class="fa fa-circle-o"></i> Register</a></li>
-            <li><a href="lockscreen.php"><i class="fa fa-circle-o"></i> Lockscreen</a></li>
-            <li><a href="404.php"><i class="fa fa-circle-o"></i> 404 Error</a></li>
-            <li><a href="500.php"><i class="fa fa-circle-o"></i> 500 Error</a></li>
-            <li class="active"><a href="blank.php"><i class="fa fa-circle-o"></i> Blank Page</a></li>
-            <li><a href="pace.php"><i class="fa fa-circle-o"></i> Pace Page</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-share"></i> <span>Multilevel</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Level One
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                <li class="treeview">
-                  <a href="#"><i class="fa fa-circle-o"></i> Level Two
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                  </a>
-                  <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-          </ul>
-        </li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
-        <li class="header">LABELS</li>
-        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
-      </ul>
+      <?php
+        menu();
+      ?>
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -403,41 +237,33 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Tipo de Usuario
-        <small>Administración</small>
+        Registrar Tipo de Usuario
+        <small>Administracion</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Administración</a></li>
-        <li class="active">Tipo de Usuario</li>
+        <li><a href="#">Administracion</a></li>
+        <li class="active">Registrar Tipo de Usuario</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
-          <!-- /.box -->
-          <!-- general form elements disabled -->
-     <div class="row">
+      <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Listar</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info"><a href="tipos_usuarios_registrar.php">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
-              </div>
-              <!-- /. tools -->
+              <h3 class="box-title">Registro de tipo de usuario</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="lista-tipos" class="table table-bordered table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>Id Tipo de Usuario</th>
+                    <th>Id</th>
                     <th>Nombre</th>
-                    <th>Descripción</th>
+                    <th>Descripcion</th>
+                    
                     <th>Acciones</th>
                   </tr>
                 </thead>
@@ -452,7 +278,7 @@
       <td id="fil" >'.$row['Nombre'].'</td>
       <td id="fil" >'.$row['Descripcion'].'</td>
       <td>
-                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Guardar"><i class="fa fa-pencil"></i></button>
                               
                             </td>
       </tr>
@@ -460,6 +286,9 @@
       ';
       }
       ?>
+
+
+
 
                 </tbody>
                 <!-- <tfoot>
@@ -479,12 +308,12 @@
         </div>
         <!-- /.col -->
       </div>
-            
+      <!-- /.row -->
 
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
+  <!-- /.content-wrapper -->  
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -701,17 +530,18 @@
 <script>
     $.material.init();
 </script>
-<!-- SlimScroll -->
-<script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- DataTables -->
 <script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
+<!-- page script -->
 <script>
   $(function () {
     $('#lista-tipos').DataTable({
@@ -724,7 +554,8 @@
     });
   })
   $(document).ready(function () {
-    $('.sidebar-menu').tree()
+    $('.sidebar-menu').tree();
+    // $('#lista-empleados').DataTable();
   })
 </script>
 </body>
