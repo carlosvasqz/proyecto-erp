@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Empleados</title>
+  <title>MaterialAdminLTE 2 | Blank Page</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -322,8 +322,8 @@
               <h3 class="box-title">Lista de Empleados</h3>
               <!-- tools box -->
               <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info"><a href="empleados_registrar.php">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
+                <button type="button" class="btn btn-success">
+                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
               </div>
               <!-- /. tools -->
             </div>

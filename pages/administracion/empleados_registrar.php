@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Empleados</title>
+  <title>MaterialAdminLTE 2 | Registrar Empleado</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -237,95 +237,23 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Empleados
+        Registrar Empleado
         <small>Administracion</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Administracion</a></li>
-        <li class="active">Empleados</li>
+        <li class="active">Registrar Empleado</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
-      <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-user-plus"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Nuevos</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $hoy = getdate();
-                  $fechaInicioAnioDB = $hoy["year"]."-01-01";
-                  $queryEmpleadosNuevos=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Nuevos FROM empleados WHERE Fecha_Ingreso >= $fechaInicioAnioDB;") or die(mysqli_error());
-                  $rowEmpleadosNuevos=mysqli_fetch_array($queryEmpleadosNuevos);
-                  echo $rowEmpleadosNuevos['Empleados_Nuevos'];
-                  mysqli_close($queryEmpleadosNuevos);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Totales</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryTotalEmpleados=mysqli_query($db, "SELECT COUNT(*) AS Total_Empleados FROM empleados") or die(mysqli_error());
-                  $rowEmpleados=mysqli_fetch_array($queryTotalEmpleados);
-                  echo $rowEmpleados['Total_Empleados'];
-                  mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Desabilitados</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryEmpleadosDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Desabilitados FROM empleados WHERE Estado = 2") or die(mysqli_error());
-                  $rowEmpleadosDesabilitados=mysqli_fetch_array($queryEmpleadosDesabilitados);
-                  echo $rowEmpleadosDesabilitados['Empleados_Desabilitados'];
-                  mysqli_close($queryEmpleadosDesabilitados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Lista de Empleados</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info"><a href="empleados_registrar.php">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
-              </div>
-              <!-- /. tools -->
             </div>
             <!-- /.box-header -->
             <div class="box-body">
