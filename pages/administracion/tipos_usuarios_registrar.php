@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="../../dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="../../dist/css/ripples.min.css">
@@ -237,7 +239,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Registrar Tipo de Usuario
+        Ingresar Datos del Tipo de Usuario
         <small>Administracion</small>
       </h1>
       <ol class="breadcrumb">
@@ -249,67 +251,77 @@
 
     <!-- Main content -->
     <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Registro de tipo de usuario</h3>
-            </div>
-            <!-- /.box-header -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos de Tipo de Usuario</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
             <div class="box-body">
-              <table id="lista-tipos" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Descripcion</th>
-                    
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    include("../../inc/conexion.php");
-                      $sql=mysqli_query($db,"SELECT * FROM tipos_usuarios") or die(mysqli_error());
-                      while($row=mysqli_fetch_array($sql)) {
-      echo '
-      <tr>
-      <td id="fil" >'.$row['Id_Tipo_Usuario'].'</td>
-      <td id="fil" >'.$row['Nombre'].'</td>
-      <td id="fil" >'.$row['Descripcion'].'</td>
-      <td>
-                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Guardar"><i class="fa fa-pencil"></i></button>
-                              
-                            </td>
-      </tr>
+              <div class="form-group">
+                <label for="id_tipos" class="col-sm-2 control-label">Id del Tipo de Usuario</label>
 
-      ';
-      }
-      ?>
+                <div class="col-sm-9">
+                  <textarea class="form-control" rows="3" placeholder="Ingrese el Tipo de Usuario ..."></textarea>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="nombre" class="col-sm-2 control-label">Nombre</label>
 
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre..">
+                </div>
+              </div>
 
+              <div class="form-group">
+                <label for="des" class="col-sm-2 control-label">Descripción</label>
 
-
-                </tbody>
-                <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                </tfoot> -->
-              </table>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="des" placeholder="Ingrese la descripción..">
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
             </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
         </div>
-        <!-- /.col -->
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <!-- <div class="box-header with-border"> -->
+            <!-- <h3 class="box-title">Acciones</h3> -->
+          <!-- </div> -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-default">Cancelar</button>
+                <button type="submit" class="btn btn-success pull-right">Registrar</button>
+              </div>
+              <div class="col-sm-4"></div>
+            </div>
+            <!-- /.box-body -->
+          </form>
+        </div>
       </div>
-      <!-- /.row -->
-
+      <!--/.col (izq) -->
+    </div>
     </section>
     <!-- /.content -->
   </div>
@@ -533,6 +545,8 @@
 <!-- DataTables -->
 <script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- SlimScroll -->
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -544,13 +558,20 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-tipos').DataTable({
+    $('#lista-empleados').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : false
+    });
+    //Date picker
+    $('#fecha_nacimiento').datepicker({
+      autoclose: true
+    });
+    $('#fecha_ingreso').datepicker({
+      autoclose: true
     });
   })
   $(document).ready(function () {
