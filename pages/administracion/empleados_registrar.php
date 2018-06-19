@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="../../dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="../../dist/css/ripples.min.css">
@@ -249,74 +251,222 @@
 
     <!-- Main content -->
     <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Lista de Empleados</h3>
-            </div>
-            <!-- /.box-header -->
+    <div class="row">
+      <!-- columna izq -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Administrativos</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
             <div class="box-body">
-              <table id="lista-empleados" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>Codigo</th>
-                    <th>Nombres</th>
-                    <th>Apellido</th>
-                    <th>Estado</th>
-                    <th>Fecha de Ingreso</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $queryEmpleados=mysqli_query($db, "SELECT * FROM empleados") or die(mysqli_error());
-                    while ($rowEmpleado=mysqli_fetch_array($queryEmpleados)) {
-                      $estado = null;
-                      switch ($rowEmpleado["Estado"]) {
-                        case 1:
-                          $estado = "<small class='label bg-blue'>Habilitado</small>";
-                          break;
-                        case 0:
-                          $estado = "<small class='label bg-red'>Desabilitado</small>";
-                          break;
-                      }
-                      echo '
-                        <tr>
-                            <td>'.$rowEmpleado['Codigo_Empleado'].'</td>
-                            <td>'.$rowEmpleado['Nombres'].'</td>
-                            <td>'.$rowEmpleado['Apellido_1'].'</td>
-                            <td>'.$estado.'</td>
-                            <td>'.fechaFormato(fechaIngAEsp($rowEmpleado['Fecha_Ingreso'])).'</td>
-                            <td>
-                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
-                              <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash"></i></button>
-                            </td>
-                          </form>
-                        </tr>
-                      ';
-                    }
-                  ?>
-                </tbody>
-                <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                </tfoot> -->
-              </table>
+              <div class="form-group">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Codigo</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo_empleado" placeholder="Codigo">
+                </div>
+              </div>
+              <!-- Date -->
+              <div class="form-group">
+                <label for="fecha_ingreso" class="col-sm-2 control-label">Fecha de Ingreso</label>
+
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" class="form-control pull-right" id="fecha_ingreso">
+                  </div>
+                </div>
+                <!-- /.input group -->
+              </div>
+              <div class="form-group">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Estado</label>
+
+                <div class="col-sm-9">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="habilitado" value="1" checked>
+                      Habilitado
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="desabilitado" value="2">
+                      Desabilitado
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
             </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Personales</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="id_empleado" class="col-sm-2 control-label">Identidad</label>
 
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="id_empleado" placeholder="Ingrese el numero...">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nombres_empleado" class="col-sm-2 control-label">Nombres</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="nombres_empleado" placeholder="Ingrese los nombres..">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="apellido_1" class="col-sm-2 control-label">Apellido Paterno</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="apellido_1" placeholder="Ingrese el apellido..">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="apellido_2" class="col-sm-2 control-label">Apellido Materno</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="apellido_2" placeholder="Ingrese el apellido..">
+                </div>
+              </div>
+              <!-- Date -->
+              <div class="form-group">
+                <label for="fecha_nacimiento" class="col-sm-2 control-label">Nacimiento</label>
+
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" class="form-control pull-right" id="fecha_nacimiento">
+                  </div>
+                </div>
+                <!-- /.input group -->
+              </div>
+              <div class="form-group">
+                  <label class="col-sm-2 control-label">Genero</label>
+                  <div class="col-sm-9">
+                    <select class="form-control">
+                      <option id="0" value="Seleccione" disabled selected hidden>Seleccione...</option>
+                      <option id="1" value="Femenino">Femenino</option>
+                      <option id="2" value="Masculino">Masculino</option>
+                    </select>
+                  </div>
+                </div>
+              <!-- <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos de Contacto</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="direccion_empleado" class="col-sm-2 control-label">Direccion</label>
+
+                <div class="col-sm-9">
+                  <textarea class="form-control" rows="3" placeholder="Ingrese la direccion ..."></textarea>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="telefono" class="col-sm-2 control-label">Telefono</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="telefono" placeholder="Ingrese el numero..">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="correo_empleado" class="col-sm-2 control-label">Email</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="correo_empleado" placeholder="Ingrese el email..">
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <!-- <div class="box-header with-border"> -->
+            <!-- <h3 class="box-title">Acciones</h3> -->
+          <!-- </div> -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-default">Cancelar</button>
+                <button type="submit" class="btn btn-success pull-right">Registrar</button>
+              </div>
+              <div class="col-sm-4"></div>
+            </div>
+            <!-- /.box-body -->
+          </form>
+        </div>
+      </div>
+      <!--/.col (izq) -->
+    </div>
     </section>
     <!-- /.content -->
   </div>
@@ -540,6 +690,8 @@
 <!-- DataTables -->
 <script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- SlimScroll -->
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -558,6 +710,13 @@
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : false
+    });
+    //Date picker
+    $('#fecha_nacimiento').datepicker({
+      autoclose: true
+    });
+    $('#fecha_ingreso').datepicker({
+      autoclose: true
     });
   })
   $(document).ready(function () {
