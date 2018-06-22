@@ -344,8 +344,9 @@
                             <td>'.$rowProveedores['Correo_Electronico'].'</td>
                             <td>'.$estado.'</td>
                             <td>
-                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><a href="proveedores_editar.php"><i class="fa fa-pencil"></i></button></a>
-
+                           <form method="GET" action="proveedores_editar.php">
+                           <input type="hidden" name="Id" Id="Id" value="'.$rowProveedores['Id_Proveedor'].'">
+                           <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip"  name="modificar" id="modificar" value="Modificar" ><i class="fa fa-pencil"></i></button>
                               <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash"></i></button>
                             </td>
                           </form>

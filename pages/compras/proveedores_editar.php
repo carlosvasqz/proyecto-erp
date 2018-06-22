@@ -231,19 +231,25 @@
   </aside>
 
   <!-- =============================================== -->
-
+<?php
+  include ('../../inc/conexion.php');
+  //$rowProveedores=$_GET['rowProveedores'];
+  $Id=$_GET['Id'];
+    $sql=mysqli_query($db,"SELECT * FROM proveedores WHERE Id_Proveedor='$Id'") or die(mysqli_error());
+    $row=mysqli_fetch_array($sql);
+  ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Registrar Proveedor
+        Modificar Proveedor
         <small>Administracion</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Administracion</a></li>
-        <li class="active">Registrar Proveedor</li>
+        <li class="active">Modificar Proveedor</li>
       </ol>
     </section>
 
@@ -253,50 +259,48 @@
         <div class="col-sm-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Nuevo Proveedor</h3>
+              <h3 class="box-title">Modificar Proveedor</h3>
             </div>
             <!-- /.box-header -->
             <div  id="Ventana_Proveedor" class="box-body">
-              <form method="POST"  action="guardar_proveedor.php" role="form">
+              <form method="GET" action="editar_Proveedor.php" role="form">
               <div class="box-body">
 </div>
-                 <div class="form-group">
-                  <label for="rtn">Código Proveedor</label>
-                  <input type="text" class="form-control" name="codigo" id="codigo" placeholder="Ingrese Codigo ">
-                  <div id="comprobarId"></div>
-                </div>
+              
 
                 <div class="form-group">
                   <label for="nombre">Nombre Proveedor</label>
-                  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Ingrese Nombre">
+                  <input type="hidden" name="Id" id="Id" value="<?php echo $row['Id_Proveedor'];?>">
+                  <input type="text" class="form-control" name="nombre" id="nombre" value="<?php echo $row['Nombre_Proveedor'];?>">
+                   <div id="comprobarId"></div>
 
                 </div>
                  <div class="form-group">
                   <label for="rtn">RTN Proveedor</label>
-                  <input type="text" class="form-control" name="rtn" id="rtn" placeholder="Ingrese RTN">
+                  <input type="text" class="form-control" name="rtn" id="rtn" value="<?php echo $row['RTN_Proveedor'];?>">
                 </div>
                  <div class="form-group">
                   <label for="direccion">Dirección</label>
-                  <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Ingrese Dirección">
+                  <input type="text" class="form-control" name="direccion" id="direccion" value="<?php echo $row['Direccion'];?>">
                 </div>
                  <div class="form-group">
                   <label for="telefono">Teléfono</label>
-                  <input type="text" class="form-control" name="telefono" id="telefono" placeholder="Ingrese Teléfono">
+                  <input type="text" class="form-control" name="telefono" id="telefono" value="<?php echo $row['Telefono'];?>">
                 </div>
                  <div class="form-group">
                   <label for="correo">Correo Electrónico</label>
-                  <input type="text" class="form-control" name="correo" id="correo" placeholder="Ingrese Correo">
+                  <input type="text" class="form-control" name="correo" id="correo" value="<?php echo $row['Correo_Electronico'];?>">
                 </div>
                 <div class="form-group">
                   <label for="estado">Estado</label>
-                  <input type="text" class="form-control" name="estado" id="estado" placeholder="Ingrese Estado">
+                  <input type="text" class="form-control" name="estado" id="estado" value="<?php echo $row['Estado'];?>">
                 </div>
                
               
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="submit"  name="modificar" id="modificar" value="Modificar" class="btn btn-primary">Guardar</button>
               </div>
             </form>
           
