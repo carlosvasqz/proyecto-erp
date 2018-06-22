@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Empleados</title>
+  <title>MaterialAdminLTE 2 | Registrar Empleado</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -237,134 +237,69 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Proveedores
-        <small>Compras</small>
+        Registrar Proveedor
+        <small>Administracion</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Compras</a></li>
-        <li class="active">Proveedor</li>
+        <li><a href="#">Administracion</a></li>
+        <li class="active">Registrar Proveedor</li>
       </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content">
-
+    <section class="content" style="width: 600px;">
       <div class="row">
-       
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Totales</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryTotalProveedores=mysqli_query($db, "SELECT COUNT(*) AS Total_Proveedores FROM proveedores") or die(mysqli_error());
-                  $rowProveedores=mysqli_fetch_array($queryTotalProveedores);
-                  echo $rowProveedores['Total_Proveedores'];
-                  // mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Desabilitados</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryProveedoresDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Proveedores_Desabilitados FROM proveedores WHERE Estado = 2") or die(mysqli_error());
-                  $rowProveedoresDesabilitados=mysqli_fetch_array($queryProveedoresDesabilitados);
-                  echo $rowProveedoresDesabilitados['Proveedores_Desabilitados'];
-                  // mysqli_close($queryEmpleadosDesabilitados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-      <div class="row">
-        <div class="col-xs-12">
+        <div class="col-sm-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Lista de Proveedores</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info"><a href="proveedores_registrar.php">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
-              </div>
-              <!-- /. tools -->
+              <h3 class="box-title">Nuevo Proveedor</h3>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-              <table id="lista-proveedores" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>Codigo</th>
-                    <th>Nombres</th>
-                    <th>RTN Proveedor</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>Email</th>
-                    <th>Estado</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $queryProveedores=mysqli_query($db, "SELECT * FROM proveedores") or die(mysqli_error());
-                    while ($rowProveedores=mysqli_fetch_array($queryProveedores)) {
-                      $estado = null;
-                      switch ($rowProveedores["Estado"]) {
-                        case 1:
-                          $estado = "<small class='label bg-blue'>Habilitado</small>";
-                          break;
-                        case 0:
-                          $estado = "<small class='label bg-red'>Desabilitado</small>";
-                          break;
-                      }
-                      echo '
-                        <tr>
-                            <td>'.$rowProveedores['Id_Proveedor'].'</td>
-                            <td>'.$rowProveedores['Nombre_Proveedor'].'</td>
-                            <td>'.$rowProveedores['RTN_Proveedor'].'</td>
-                            <td>'.$rowProveedores['Direccion'].'</td>
-                            <td>'.$rowProveedores['Telefono'].'</td>
-                            <td>'.$rowProveedores['Correo_Electronico'].'</td>
-                            <td>'.$estado.'</td>
-                            <td>
-                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><a href="proveedores_editar.php"><i class="fa fa-pencil"></i></button></a>
+            <div  id="Ventana_Proveedor" class="box-body">
+              <form method="POST"  action="guardar_proveedor.php" role="form">
+              <div class="box-body">
+</div>
+                 <div class="form-group">
+                  <label for="rtn">Código Proveedor</label>
+                  <input type="text" class="form-control" name="codigo" id="codigo" placeholder="Ingrese Codigo ">
+                  <div id="comprobarId"></div>
+                </div>
 
-                              <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash"></i></button>
-                            </td>
-                          </form>
-                        </tr>
-                      ';
-                    }
-                  ?>
-                </tbody>
-                <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                </tfoot> -->
-              </table>
-            </div>
+                <div class="form-group">
+                  <label for="nombre">Nombre Proveedor</label>
+                  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Ingrese Nombre">
+
+                </div>
+                 <div class="form-group">
+                  <label for="rtn">RTN Proveedor</label>
+                  <input type="text" class="form-control" name="rtn" id="rtn" placeholder="Ingrese RTN">
+                </div>
+                 <div class="form-group">
+                  <label for="direccion">Dirección</label>
+                  <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Ingrese Dirección">
+                </div>
+                 <div class="form-group">
+                  <label for="telefono">Teléfono</label>
+                  <input type="text" class="form-control" name="telefono" id="telefono" placeholder="Ingrese Teléfono">
+                </div>
+                 <div class="form-group">
+                  <label for="correo">Correo Electrónico</label>
+                  <input type="text" class="form-control" name="correo" id="correo" placeholder="Ingrese Correo">
+                </div>
+                <div class="form-group">
+                  <label for="estado">Estado</label>
+                  <input type="text" class="form-control" name="estado" id="estado" placeholder="Ingrese Estado">
+                </div>
+               
+              
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+            </form>
+          
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
@@ -593,6 +528,7 @@
 <script>
     $.material.init();
 </script>
+
 <!-- DataTables -->
 <script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -607,7 +543,7 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-proveedores').DataTable({
+    $('#lista-empleados').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -621,5 +557,6 @@
     // $('#lista-empleados').DataTable();
   })
 </script>
+<script src="js/agregar_proveedor.js"></script>
 </body>
 </html>
