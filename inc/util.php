@@ -78,6 +78,11 @@
         return $fecha[2] . "-" . $fecha[0] . "-" . $fecha[1];
     }
 
+    function fechaBDAIng($fecha){
+        $fecha = explode('-', $fecha);
+        return $fecha[1] . "/" . $fecha[2] . "/" . $fecha[0];
+    }
+
     function fechaFormato($fecha){
         $fecha = explode('/', $fecha);
         $diaMes = mktime(0,0,0,$fecha[1],$fecha[0],$fecha[2]);
