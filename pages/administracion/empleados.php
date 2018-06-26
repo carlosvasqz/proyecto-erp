@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Sweet Alert CSS -->
+  <link rel="stylesheet" href="../../plugins/sweet-alert/sweetalert.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
@@ -374,7 +376,7 @@
                                 <input type="hidden" name="codigo_empleado" value="'.$rowEmpleado['Codigo_Empleado'].'"/>
                                 <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
                               
-                                <button type="button" class="btn btn-'.$color.' btn-sm" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
+                                <button type="button" id="'.$rowEmpleado['Codigo_Empleado'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
                               </form>
                             </td>
                           </form>
@@ -629,6 +631,8 @@
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<!-- Sweet Alert -->
+<script src="../../plugins/sweet-alert/sweetalert.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -649,9 +653,79 @@
     $('.sidebar-menu').tree();
     // $('#lista-empleados').DataTable();
 
-    $("#btnEditar").click(function(){
-      
-    });    
+  $('.sweetalert').click(function(){
+    var codigoEmpleado = $(this).attr('id');
+    var accion = $(this).attr('class');
+    accion = accion.split(" ");
+    var nuevoEstado;
+    if (accion[4]=='Habilitar') {
+      nuevoEstado = 1;
+    } else {
+      nuevoEstado = 0;
+    }
+    // alert(accion[4] + " - " + nuevoEstado);
+    swal({
+        title: "¿Esta seguro?",
+        text: "Esta accion " + accion[4] + "á el elemento seleccionado",
+        type: "warning",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+    }, function () {
+        $.ajax({
+          //Direccion destino
+          url: "empleados_cambiar_estado.php",
+          // Variable con los datos necesarios
+          data: "codigo_empleado=" + codigoEmpleado + "&estado=" + nuevoEstado,
+          type: "POST",			
+          dataType: "html",
+          //cache: false,
+          //success
+          success: function (data) {
+            // alert(data);
+            setTimeout(function () {
+              if (data) {
+                swal({
+                  title: "¡Realizado!",
+                  text: "La acción se ha completado con éxito.",
+                  type: "success",
+                  showCancelButton: false,
+                  confirmButtonText: "Aceptar",
+                  closeOnConfirm: false
+                }, function(isConfirm) {
+                  if (isConfirm) {
+                    window.setTimeout('location.href="empleados.php"', 3);
+                  }
+                });
+              }
+              if (!data) {
+                swal({
+                  title: "¡Error!",
+                  text: "Ha ocurrido un problema, inténtelo más tarde.",
+                  type: "error",
+                  showCancelButton: false,
+                  confirmButtonText: "Aceptar",
+                  closeOnConfirm: true
+                });
+              }
+            }, 2000);
+          },
+          error : function(xhr, status) {
+            //  alert('Disculpe, existió un problema');
+          },
+          complete : function(xhr, status) {
+            // alert('Petición realizada');
+            // $.notify({
+            // 		title: "Informacion : ",
+            // 		message: "Petición realizada!",
+            // 		icon: 'fa fa-check' 
+            // 	},{
+            // 		type: "info"
+            // });
+          }		
+        });
+    });
+    });
   })
 </script>
 </body>
