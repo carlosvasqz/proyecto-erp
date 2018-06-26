@@ -741,7 +741,7 @@
     }
 
     $("#btnCancelar").click(function(){
-      window.setTimeout('location.href="empleados.php"', 1);
+      $(location).attr('href', 'empleados.php');
     });
 
     $("#btnRegistrar").click(function(){
