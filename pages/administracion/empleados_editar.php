@@ -2,13 +2,14 @@
   include ('../../inc/constructor.php');
   include ('../../inc/conexion.php');
   include ('../../inc/util.php');
+  if(isset($_POST["codigo_empleado"])){
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Blank Page</title>
+  <title>MaterialAdminLTE 2 | Editar Empleado</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -19,6 +20,8 @@
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="../../dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="../../dist/css/ripples.min.css">
@@ -237,158 +240,238 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Empleados
+        Editar Empleado
         <small>Administracion</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Administracion</a></li>
-        <li class="active">Empleados</li>
+        <li class="active">Editar Empleado</li>
       </ol>
     </section>
 
+    <?php
+      $queryEmpleado=mysqli_query($db, "SELECT * FROM empleados WHERE Codigo_Empleado = '".$_POST['codigo_empleado']."'") or die(mysqli_error());
+      $rowEmpleado=mysqli_fetch_array($queryEmpleado);
+    ?>
+
     <!-- Main content -->
     <section class="content">
-
-      <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-user-plus"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Nuevos</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $hoy = getdate();
-                  $fechaInicioAnioDB = $hoy["year"]."-01-01";
-                  $queryEmpleadosNuevos=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Nuevos FROM empleados WHERE Fecha_Ingreso >= $fechaInicioAnioDB;") or die(mysqli_error());
-                  $rowEmpleadosNuevos=mysqli_fetch_array($queryEmpleadosNuevos);
-                  echo $rowEmpleadosNuevos['Empleados_Nuevos'];
-                  mysqli_close($queryEmpleadosNuevos);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
+    <div class="row">
+      <!-- columna izq -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Administrativos</h3>
           </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Totales</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryTotalEmpleados=mysqli_query($db, "SELECT COUNT(*) AS Total_Empleados FROM empleados") or die(mysqli_error());
-                  $rowEmpleados=mysqli_fetch_array($queryTotalEmpleados);
-                  echo $rowEmpleados['Total_Empleados'];
-                  mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Desabilitados</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryEmpleadosDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Desabilitados FROM empleados WHERE Estado = 2") or die(mysqli_error());
-                  $rowEmpleadosDesabilitados=mysqli_fetch_array($queryEmpleadosDesabilitados);
-                  echo $rowEmpleadosDesabilitados['Empleados_Desabilitados'];
-                  mysqli_close($queryEmpleadosDesabilitados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Lista de Empleados</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-success">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
             <div class="box-body">
-              <table id="lista-empleados" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>Codigo</th>
-                    <th>Nombres</th>
-                    <th>Apellido</th>
-                    <th>Estado</th>
-                    <th>Fecha de Ingreso</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $queryEmpleados=mysqli_query($db, "SELECT * FROM empleados") or die(mysqli_error());
-                    while ($rowEmpleado=mysqli_fetch_array($queryEmpleados)) {
-                      $estado = null;
-                      switch ($rowEmpleado["Estado"]) {
-                        case 1:
-                          $estado = "<small class='label bg-blue'>Habilitado</small>";
-                          break;
-                        case 0:
-                          $estado = "<small class='label bg-red'>Desabilitado</small>";
-                          break;
-                      }
-                      echo '
-                        <tr>
-                            <td>'.$rowEmpleado['Codigo_Empleado'].'</td>
-                            <td>'.$rowEmpleado['Nombres'].'</td>
-                            <td>'.$rowEmpleado['Apellido_1'].'</td>
-                            <td>'.$estado.'</td>
-                            <td>'.fechaFormato(fechaIngAEsp($rowEmpleado['Fecha_Ingreso'])).'</td>
-                            <td>
-                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
-                              <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash"></i></button>
-                            </td>
-                          </form>
-                        </tr>
-                      ';
-                    }
-                  ?>
-                </tbody>
-                <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                </tfoot> -->
-              </table>
+              <div class="form-group" id="form_codigo">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Codigo*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo_empleado" placeholder="Codigo" value="<?php echo $rowEmpleado['Codigo_Empleado'];?>" disabled>
+                </div>
+              </div>
+              <!-- Date -->
+              <div class="form-group" id="form_fecha_ingreso">
+                <label for="fecha_ingreso" class="col-sm-2 control-label">Fecha de Ingreso*</label>
+
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" class="form-control pull-right" id="fecha_ingreso" placeholder="Seleccione la fecha..." value="<?php echo fechaBDAIng($rowEmpleado['Fecha_Ingreso']);?>" readonly>
+                  </div>
+                </div>
+                <!-- /.input group -->
+              </div>
+              <div class="form-group" id="form_estado">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Estado*</label>
+
+                <div class="col-sm-9">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="estado" value="1" <?php if($rowEmpleado['Estado']==1){echo 'checked';} ?>>
+                      Habilitado
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="estado" value="0" <?php if($rowEmpleado['Estado']==0){echo 'checked';} ?>>
+                      Desabilitado
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
             </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Personales</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group" id="form_id_empleado">
+                <label for="id_empleado" class="col-sm-2 control-label">Identidad*</label>
 
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" data-mask id="id_empleado" placeholder="Ingrese el numero..." value="<?php echo $rowEmpleado['ID'];?>" disabled>
+                </div>
+              </div>
+              <div class="form-group" id="form_nombres">
+                <label for="nombres_empleado" class="col-sm-2 control-label">Nombres*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="nombres_empleado" placeholder="Ingrese los nombres.." value="<?php echo $rowEmpleado['Nombres'];?>">
+                </div>
+              </div>
+              <div class="form-group" id="form_apellido_1">
+                <label for="apellido_1" class="col-sm-2 control-label">Apellido Paterno*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="apellido_1" placeholder="Ingrese el apellido.." value="<?php echo $rowEmpleado['Apellido_1'];?>">
+                </div>
+              </div>
+              <div class="form-group" id="form_apellido_2">
+                <label for="apellido_2" class="col-sm-2 control-label">Apellido Materno</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="apellido_2" placeholder="Ingrese el apellido.. " value="<?php echo $rowEmpleado['Apellido_2'];?>">
+                </div>
+              </div>
+              <!-- Date -->
+              <div class="form-group" id="form_fecha_nacimiento">
+                <label for="fecha_nacimiento" class="col-sm-2 control-label">Nacimiento*</label>
+
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" class="form-control pull-right" id="fecha_nacimiento" value="<?php echo fechaBDAIng($rowEmpleado['Fecha_Nacimiento']);?>" readonly>
+                  </div>
+                </div>
+                <!-- /.input group -->
+              </div>
+              <div class="form-group" id="form_genero">
+                  <label class="col-sm-2 control-label">Genero*</label>
+                  <div class="col-sm-9">
+                    <select class="form-control" id="genero">
+                      <option value="F" <?php if($rowEmpleado['Genero']=="F"){echo 'selected';} ?>>Femenino</option>
+                      <option value="M" <?php if($rowEmpleado['Genero']=="M"){echo 'selected';} ?>>Masculino</option>
+                    </select>
+                  </div>
+                </div>
+              <!-- <div class="form-group" id="form_">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos de Contacto</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group" id="form_direccion">
+                <label for="direccion_empleado" class="col-sm-2 control-label">Direccion*</label>
+
+                <div class="col-sm-9">
+                  <textarea class="form-control" rows="3" id="direccion_empleado" placeholder="Ingrese la direccion ..."><?php echo $rowEmpleado['Direccion'];?></textarea>
+                </div>
+              </div>
+              
+              <div class="form-group" id="form_telefono">
+                <label for="telefono" class="col-sm-2 control-label">Telefono*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask id="telefono" placeholder="Ingrese el numero.." value="<?php echo $rowEmpleado['Telefono'];?>">
+                </div>
+              </div>
+
+              <div class="form-group" id="form_correo">
+                <label for="correo_empleado" class="col-sm-2 control-label">Email*</label>
+
+                <div class="col-sm-9">
+                  <input type="email" class="form-control" id="correo_empleado" placeholder="Ingrese el email.." value="<?php echo $rowEmpleado['Correo_Electronico'];?>">
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <!-- <div class="box-header with-border"> -->
+            <!-- <h3 class="box-title">Acciones</h3> -->
+          <!-- </div> -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
+                <button type="button" id="btnActualizar" class="btn btn-success pull-right">Actualizar</button>
+              </div>
+              <div class="col-sm-4"></div>
+            </div>
+            <!-- /.box-body -->
+          </form>
+        </div>
+      </div>
+      <!--/.col (izq) -->
+    </div>
     </section>
     <!-- /.content -->
   </div>
@@ -612,10 +695,18 @@
 <!-- DataTables -->
 <script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap notify -->
+<script src="../../plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
 <!-- SlimScroll -->
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<!-- InputMask -->
+<script src="../../plugins/input-mask/jquery.inputmask.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -631,11 +722,292 @@
       'info'        : true,
       'autoWidth'   : false
     });
+    //Date picker
+    $('#fecha_nacimiento').datepicker({
+      autoclose: true
+    });
+    $('#fecha_ingreso').datepicker({
+      autoclose: true
+    });
   })
   $(document).ready(function () {
     $('.sidebar-menu').tree();
+    $('[data-mask]').inputmask()
     // $('#lista-empleados').DataTable();
+
+    function alertaIngresarDatos(){
+      $.notify({
+        title: "Error : ",
+        message: "Por favor, complete los campos obligatorios",
+        icon: 'fa fa-times' 
+      },{
+        type: "danger"
+      });
+    }
+
+    $("#btnCancelar").click(function(){
+      window.setTimeout('location.href="empleados.php"', 1);
+    });
+
+    $("#btnActualizar").click(function(){
+      //Obtencion de valores en los inputs
+      var codigoEmpleado = $("#codigo_empleado").val();
+      var fechaIngreso = $("#fecha_ingreso").val();
+      var estado = $('input[name="optionsRadios"]:checked').val();
+      var idEmpleado = $("#id_empleado").val();
+      var nombres = $("#nombres_empleado").val();
+      var apellido1 = $("#apellido_1").val();
+      var apellido2 = $("#apellido_2").val();
+      var fechaNacimiento = $("#fecha_nacimiento").val();
+      var genero = $("#genero").val();
+      var direccion = $("#direccion_empleado").val();
+      var telefono = $("#telefono").val();
+      var correo = $("#correo_empleado").val();
+      
+      // Validaciones
+      if (codigoEmpleado=='') {
+        $("#codigo_empleado").attr('required',true);
+        document.getElementById("codigo_empleado").focus();
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#codigo_empleado").attr('required',false);
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-success');
+      }
+
+      if (fechaIngreso=='') {
+        $("#fecha_ingreso").attr('required',true);
+        document.getElementById("fecha_ingreso").focus();
+        $("#form_fecha_ingreso").removeClass('has-success');
+        $("#form_fecha_ingreso").removeClass('has-error');
+        $("#form_fecha_ingreso").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#fecha_ingreso").attr('required',false);
+        $("#form_fecha_ingreso").removeClass('has-success');
+        $("#form_fecha_ingreso").removeClass('has-error');
+        $("#form_fecha_ingreso").addClass('has-success');
+      }
+
+      if (estado=='') {
+        $("#estado").attr('required',true);
+        document.getElementById("estado").focus();
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#estado").attr('required',false);
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-success');
+      }
+
+      if (idEmpleado=='') {
+        $("#id_empleado").attr('required',true);
+        document.getElementById("id_empleado").focus();
+        $("#form_id_empleado").removeClass('has-success');
+        $("#form_id_empleado").removeClass('has-error');
+        $("#form_id_empleado").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#id_empleado").attr('required',false);
+        $("#form_id_empleado").removeClass('has-success');
+        $("#form_id_empleado").removeClass('has-error');
+        $("#form_id_empleado").addClass('has-success');
+      }
+
+      if (nombres=='') {
+        $("#nombres_empleado").attr('required',true);
+        document.getElementById("nombres_empleado").focus();
+        $("#form_nombres").removeClass('has-success');
+        $("#form_nombres").removeClass('has-error');
+        $("#form_nombres").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#nombres_empleado").attr('required',false);
+        $("#form_nombres").removeClass('has-success');
+        $("#form_nombres").removeClass('has-error');
+        $("#form_nombres").addClass('has-success');
+      }
+
+      if (apellido1=='') {
+        $("#apellido_1").attr('required',true);
+        document.getElementById("apellido_1").focus();
+        $("#form_apellido_1").removeClass('has-success');
+        $("#form_apellido_1").removeClass('has-error');
+        $("#form_apellido_1").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#apellido_1").attr('required',false);
+        $("#form_apellido_1").removeClass('has-success');
+        $("#form_apellido_1").removeClass('has-error');
+        $("#form_apellido_1").addClass('has-success');
+      }
+
+      if (apellido2=='') {
+        // $("#apellido_2").attr('required',true);
+        // document.getElementById("apellido_2").focus();
+        // $("#form_apellido_2").removeClass('has-success');
+        // $("#form_apellido_2").removeClass('has-error');
+        // $("#form_apellido_2").addClass('has-error');
+        // return false;
+      } else {
+        $("#apellido_2").attr('required',false);
+        $("#form_apellido_2").removeClass('has-success');
+        $("#form_apellido_2").removeClass('has-error');
+        $("#form_apellido_2").addClass('has-success');
+      }
+
+      if (fechaNacimiento=='') {
+        $("#fecha_nacimiento").attr('required',true);
+        document.getElementById("fecha_nacimiento").focus();
+        $("#form_fecha_nacimiento").removeClass('has-success');
+        $("#form_fecha_nacimiento").removeClass('has-error');
+        $("#form_fecha_nacimiento").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#fecha_nacimiento").attr('required',false);
+        $("#form_fecha_nacimiento").removeClass('has-success');
+        $("#form_fecha_nacimiento").removeClass('has-error');
+        $("#form_fecha_nacimiento").addClass('has-success');
+      }
+
+      if (genero==null) {
+        $("#genero").attr('required',true);
+        document.getElementById("genero").focus();
+        $("#form_genero").removeClass('has-success');
+        $("#form_genero").removeClass('has-error');
+        $("#form_genero").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#genero").attr('required',false);
+        $("#form_genero").removeClass('has-success');
+        $("#form_genero").removeClass('has-error');
+        $("#form_genero").addClass('has-success');
+      }
+
+      if (direccion=='') {
+        $("#direccion_empleado").attr('required',true);
+        document.getElementById("direccion_empleado").focus();
+        $("#form_direccion").removeClass('has-success');
+        $("#form_direccion").removeClass('has-error');
+        $("#form_direccion").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#direccion_empleado").attr('required',false);
+        $("#form_direccion").removeClass('has-success');
+        $("#form_direccion").removeClass('has-error');
+        $("#form_direccion").addClass('has-success');
+      }
+
+      if (telefono=='') {
+        $("#telefono").attr('required',true);
+        document.getElementById("telefono").focus();
+        $("#form_telefono").removeClass('has-success');
+        $("#form_telefono").removeClass('has-error');
+        $("#form_telefono").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#telefono").attr('required',false);
+        $("#form_telefono").removeClass('has-success');
+        $("#form_telefono").removeClass('has-error');
+        $("#form_telefono").addClass('has-success');
+      }
+
+      if (correo=='') {
+        $("#correo_empleado").attr('required',true);
+        document.getElementById("correo_empleado").focus();
+        $("#form_correo").removeClass('has-success');
+        $("#form_correo").removeClass('has-error');
+        $("#form_correo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#correo_empleado").attr('required',false);
+        $("#form_correo").removeClass('has-success');
+        $("#form_correo").removeClass('has-error');
+        $("#form_correo").addClass('has-success');
+      }
+      //Fin validaciones
+
+      // Variable con todos los valores necesarios para la consulta
+		  var datos = 'codigo_empleado=' + codigoEmpleado + '&fecha_ingreso=' + fechaIngreso + '&estado=' + estado + '&id_empleado=' + idEmpleado + '&nombres_empleado=' + nombres + '&apellido_1=' + apellido1 +  '&apellido_2=' + apellido2 + '&fecha_nacimiento=' + fechaNacimiento + '&genero=' + genero + '&direccion_empleado=' + direccion + '&telefono=' + telefono + '&correo=' + correo;
+
+      // alert(datos);
+      $.ajax({
+        //Direccion destino
+        url: "empleados_actualizar.php",
+        // Variable con los datos necesarios
+        data: datos,
+        type: "POST",			
+        dataType: "html",
+        //cache: false,
+        //success
+        success: function (data) {
+          // alert(data);
+          if (data) {
+            $.notify({
+              title: "Correcto : ",
+              message: "¡El empleado se actualizó exitosamente!",
+              icon: 'fa fa-check' 
+            },{
+              type: "success"
+            });
+            window.setTimeout('location.href="empleados.php"', 5);
+          }
+          if (!data) {
+            $.notify({
+              title: "Error : ",
+              message: "¡El numero de Identidad ingresado NO existe!",
+              icon: 'fa fa-times' 
+            },{
+              type: "danger"
+            });
+            document.getElementById("id_empleado").focus();
+            $("#form_id_empleado").removeClass('has-success');
+            $("#form_id_empleado").removeClass('has-error');
+            $("#form_id_empleado").addClass('has-error');
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          // 		title: "Informacion : ",
+          // 		message: "Petición realizada!",
+          // 		icon: 'fa fa-check' 
+          // 	},{
+          // 		type: "info"
+          // });
+        }		
+      });
+
+    });
   })
 </script>
 </body>
 </html>
+<?php
+  } else {
+    header("location: ../examples/500.php");
+    exit();
+  }
+?>

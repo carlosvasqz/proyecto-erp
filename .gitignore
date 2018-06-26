@@ -1,4 +1,3 @@
 # Archivos sin seguimiento:
-.vscode/, 
-package-lock.json
-bd/proyecto_erp.sql
+/.vscode/
+/package-lock.json

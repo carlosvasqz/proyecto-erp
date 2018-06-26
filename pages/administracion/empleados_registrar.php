@@ -263,38 +263,38 @@
           <!-- form start -->
           <form class="form-horizontal">
             <div class="box-body">
-              <div class="form-group">
-                <label for="codigo_empleado" class="col-sm-2 control-label">Codigo</label>
+              <div class="form-group" id="form_codigo">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo_empleado" placeholder="Codigo">
+                  <input type="text" class="form-control" id="codigo_empleado" placeholder="Codigo" value="<?php echo nuevoCodigoEmpleado(obtenerUltimoCodigoEmpleado());?>" readonly>
                 </div>
               </div>
               <!-- Date -->
-              <div class="form-group">
-                <label for="fecha_ingreso" class="col-sm-2 control-label">Fecha de Ingreso</label>
+              <div class="form-group" id="form_fecha_ingreso">
+                <label for="fecha_ingreso" class="col-sm-2 control-label">Fecha de Ingreso*</label>
 
                 <div class="col-sm-9">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="text" class="form-control pull-right" id="fecha_ingreso">
+                    <input type="text" class="form-control pull-right" id="fecha_ingreso" placeholder="Seleccione la fecha..." readonly>
                   </div>
                 </div>
                 <!-- /.input group -->
               </div>
-              <div class="form-group">
-                <label for="codigo_empleado" class="col-sm-2 control-label">Estado</label>
+              <div class="form-group" id="form_estado">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Estado*</label>
 
                 <div class="col-sm-9">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="optionsRadios" id="habilitado" value="1" checked>
+                      <input type="radio" name="optionsRadios" id="estado" value="1" checked>
                       Habilitado
                     </label>
                   </div>
                   <div class="radio">
                     <label>
-                      <input type="radio" name="optionsRadios" id="desabilitado" value="2">
+                      <input type="radio" name="optionsRadios" id="estado" value="0">
                       Desabilitado
                     </label>
                   </div>
@@ -327,28 +327,28 @@
           <!-- form start -->
           <form class="form-horizontal">
             <div class="box-body">
-              <div class="form-group">
-                <label for="id_empleado" class="col-sm-2 control-label">Identidad</label>
+              <div class="form-group" id="form_id_empleado">
+                <label for="id_empleado" class="col-sm-2 control-label">Identidad*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="id_empleado" placeholder="Ingrese el numero...">
+                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" data-mask id="id_empleado" placeholder="Ingrese el numero...">
                 </div>
               </div>
-              <div class="form-group">
-                <label for="nombres_empleado" class="col-sm-2 control-label">Nombres</label>
+              <div class="form-group" id="form_nombres">
+                <label for="nombres_empleado" class="col-sm-2 control-label">Nombres*</label>
 
                 <div class="col-sm-9">
                   <input type="text" class="form-control" id="nombres_empleado" placeholder="Ingrese los nombres..">
                 </div>
               </div>
-              <div class="form-group">
-                <label for="apellido_1" class="col-sm-2 control-label">Apellido Paterno</label>
+              <div class="form-group" id="form_apellido_1">
+                <label for="apellido_1" class="col-sm-2 control-label">Apellido Paterno*</label>
 
                 <div class="col-sm-9">
                   <input type="text" class="form-control" id="apellido_1" placeholder="Ingrese el apellido..">
                 </div>
               </div>
-              <div class="form-group">
+              <div class="form-group" id="form_apellido_2">
                 <label for="apellido_2" class="col-sm-2 control-label">Apellido Materno</label>
 
                 <div class="col-sm-9">
@@ -356,28 +356,28 @@
                 </div>
               </div>
               <!-- Date -->
-              <div class="form-group">
-                <label for="fecha_nacimiento" class="col-sm-2 control-label">Nacimiento</label>
+              <div class="form-group" id="form_fecha_nacimiento">
+                <label for="fecha_nacimiento" class="col-sm-2 control-label">Nacimiento*</label>
 
                 <div class="col-sm-9">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="text" class="form-control pull-right" id="fecha_nacimiento">
+                    <input type="text" class="form-control pull-right" id="fecha_nacimiento" readonly>
                   </div>
                 </div>
                 <!-- /.input group -->
               </div>
-              <div class="form-group">
-                  <label class="col-sm-2 control-label">Genero</label>
+              <div class="form-group" id="form_genero">
+                  <label class="col-sm-2 control-label">Genero*</label>
                   <div class="col-sm-9">
-                    <select class="form-control">
-                      <option id="0" value="Seleccione" disabled selected hidden>Seleccione...</option>
-                      <option id="1" value="Femenino">Femenino</option>
-                      <option id="2" value="Masculino">Masculino</option>
+                    <select class="form-control" id="genero">
+                      <option value="Seleccione" disabled selected hidden>Seleccione...</option>
+                      <option value="F">Femenino</option>
+                      <option value="M">Masculino</option>
                     </select>
                   </div>
                 </div>
-              <!-- <div class="form-group">
+              <!-- <div class="form-group" id="form_">
                 <div class="col-sm-offset-2 col-sm-10">
                   <div class="checkbox">
                     <label>
@@ -404,27 +404,27 @@
           <!-- form start -->
           <form class="form-horizontal">
             <div class="box-body">
-              <div class="form-group">
-                <label for="direccion_empleado" class="col-sm-2 control-label">Direccion</label>
+              <div class="form-group" id="form_direccion">
+                <label for="direccion_empleado" class="col-sm-2 control-label">Direccion*</label>
 
                 <div class="col-sm-9">
-                  <textarea class="form-control" rows="3" placeholder="Ingrese la direccion ..."></textarea>
+                  <textarea class="form-control" rows="3" id="direccion_empleado" placeholder="Ingrese la direccion ..."></textarea>
                 </div>
               </div>
               
-              <div class="form-group">
-                <label for="telefono" class="col-sm-2 control-label">Telefono</label>
+              <div class="form-group" id="form_telefono">
+                <label for="telefono" class="col-sm-2 control-label">Telefono*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="telefono" placeholder="Ingrese el numero..">
+                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask id="telefono" placeholder="Ingrese el numero..">
                 </div>
               </div>
 
-              <div class="form-group">
-                <label for="correo_empleado" class="col-sm-2 control-label">Email</label>
+              <div class="form-group" id="form_correo">
+                <label for="correo_empleado" class="col-sm-2 control-label">Email*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="correo_empleado" placeholder="Ingrese el email..">
+                  <input type="email" class="form-control" id="correo_empleado" placeholder="Ingrese el email..">
                 </div>
               </div>
               <!-- <div class="form-group">
@@ -456,8 +456,8 @@
             <div class="box-body">
               <div class="col-sm-4"></div>
               <div class="col-sm-4">
-                <button type="submit" class="btn btn-default">Cancelar</button>
-                <button type="submit" class="btn btn-success pull-right">Registrar</button>
+                <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
+                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
               </div>
               <div class="col-sm-4"></div>
             </div>
@@ -692,10 +692,16 @@
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- bootstrap datepicker -->
 <script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap notify -->
+<script src="../../plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
 <!-- SlimScroll -->
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<!-- InputMask -->
+<script src="../../plugins/input-mask/jquery.inputmask.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -721,7 +727,275 @@
   })
   $(document).ready(function () {
     $('.sidebar-menu').tree();
+    $('[data-mask]').inputmask()
     // $('#lista-empleados').DataTable();
+
+    function alertaIngresarDatos(){
+      $.notify({
+        title: "Error : ",
+        message: "Por favor, complete los campos obligatorios",
+        icon: 'fa fa-times' 
+      },{
+        type: "danger"
+      });
+    }
+
+    $("#btnCancelar").click(function(){
+      $(location).attr('href', 'empleados.php');
+    });
+
+    $("#btnRegistrar").click(function(){
+      //Obtencion de valores en los inputs
+      var codigoEmpleado = $("#codigo_empleado").val();
+      var fechaIngreso = $("#fecha_ingreso").val();
+      var estado = $('input[name="optionsRadios"]:checked').val();
+      var idEmpleado = $("#id_empleado").val();
+      var nombres = $("#nombres_empleado").val();
+      var apellido1 = $("#apellido_1").val();
+      var apellido2 = $("#apellido_2").val();
+      var fechaNacimiento = $("#fecha_nacimiento").val();
+      var genero = $("#genero").val();
+      var direccion = $("#direccion_empleado").val();
+      var telefono = $("#telefono").val();
+      var correo = $("#correo_empleado").val();
+      
+      // Validaciones
+      if (codigoEmpleado=='') {
+        $("#codigo_empleado").attr('required',true);
+        document.getElementById("codigo_empleado").focus();
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#codigo_empleado").attr('required',false);
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-success');
+      }
+
+      if (fechaIngreso=='') {
+        $("#fecha_ingreso").attr('required',true);
+        document.getElementById("fecha_ingreso").focus();
+        $("#form_fecha_ingreso").removeClass('has-success');
+        $("#form_fecha_ingreso").removeClass('has-error');
+        $("#form_fecha_ingreso").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#fecha_ingreso").attr('required',false);
+        $("#form_fecha_ingreso").removeClass('has-success');
+        $("#form_fecha_ingreso").removeClass('has-error');
+        $("#form_fecha_ingreso").addClass('has-success');
+      }
+
+      if (estado=='') {
+        $("#estado").attr('required',true);
+        document.getElementById("estado").focus();
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#estado").attr('required',false);
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-success');
+      }
+
+      if (idEmpleado=='') {
+        $("#id_empleado").attr('required',true);
+        document.getElementById("id_empleado").focus();
+        $("#form_id_empleado").removeClass('has-success');
+        $("#form_id_empleado").removeClass('has-error');
+        $("#form_id_empleado").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#id_empleado").attr('required',false);
+        $("#form_id_empleado").removeClass('has-success');
+        $("#form_id_empleado").removeClass('has-error');
+        $("#form_id_empleado").addClass('has-success');
+      }
+
+      if (nombres=='') {
+        $("#nombres_empleado").attr('required',true);
+        document.getElementById("nombres_empleado").focus();
+        $("#form_nombres").removeClass('has-success');
+        $("#form_nombres").removeClass('has-error');
+        $("#form_nombres").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#nombres_empleado").attr('required',false);
+        $("#form_nombres").removeClass('has-success');
+        $("#form_nombres").removeClass('has-error');
+        $("#form_nombres").addClass('has-success');
+      }
+
+      if (apellido1=='') {
+        $("#apellido_1").attr('required',true);
+        document.getElementById("apellido_1").focus();
+        $("#form_apellido_1").removeClass('has-success');
+        $("#form_apellido_1").removeClass('has-error');
+        $("#form_apellido_1").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#apellido_1").attr('required',false);
+        $("#form_apellido_1").removeClass('has-success');
+        $("#form_apellido_1").removeClass('has-error');
+        $("#form_apellido_1").addClass('has-success');
+      }
+
+      if (apellido2=='') {
+        // $("#apellido_2").attr('required',true);
+        // document.getElementById("apellido_2").focus();
+        // $("#form_apellido_2").removeClass('has-success');
+        // $("#form_apellido_2").removeClass('has-error');
+        // $("#form_apellido_2").addClass('has-error');
+        // return false;
+      } else {
+        $("#apellido_2").attr('required',false);
+        $("#form_apellido_2").removeClass('has-success');
+        $("#form_apellido_2").removeClass('has-error');
+        $("#form_apellido_2").addClass('has-success');
+      }
+
+      if (fechaNacimiento=='') {
+        $("#fecha_nacimiento").attr('required',true);
+        document.getElementById("fecha_nacimiento").focus();
+        $("#form_fecha_nacimiento").removeClass('has-success');
+        $("#form_fecha_nacimiento").removeClass('has-error');
+        $("#form_fecha_nacimiento").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#fecha_nacimiento").attr('required',false);
+        $("#form_fecha_nacimiento").removeClass('has-success');
+        $("#form_fecha_nacimiento").removeClass('has-error');
+        $("#form_fecha_nacimiento").addClass('has-success');
+      }
+
+      if (genero==null) {
+        $("#genero").attr('required',true);
+        document.getElementById("genero").focus();
+        $("#form_genero").removeClass('has-success');
+        $("#form_genero").removeClass('has-error');
+        $("#form_genero").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#genero").attr('required',false);
+        $("#form_genero").removeClass('has-success');
+        $("#form_genero").removeClass('has-error');
+        $("#form_genero").addClass('has-success');
+      }
+
+      if (direccion=='') {
+        $("#direccion_empleado").attr('required',true);
+        document.getElementById("direccion_empleado").focus();
+        $("#form_direccion").removeClass('has-success');
+        $("#form_direccion").removeClass('has-error');
+        $("#form_direccion").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#direccion_empleado").attr('required',false);
+        $("#form_direccion").removeClass('has-success');
+        $("#form_direccion").removeClass('has-error');
+        $("#form_direccion").addClass('has-success');
+      }
+
+      if (telefono=='') {
+        $("#telefono").attr('required',true);
+        document.getElementById("telefono").focus();
+        $("#form_telefono").removeClass('has-success');
+        $("#form_telefono").removeClass('has-error');
+        $("#form_telefono").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#telefono").attr('required',false);
+        $("#form_telefono").removeClass('has-success');
+        $("#form_telefono").removeClass('has-error');
+        $("#form_telefono").addClass('has-success');
+      }
+
+      if (correo=='') {
+        $("#correo_empleado").attr('required',true);
+        document.getElementById("correo_empleado").focus();
+        $("#form_correo").removeClass('has-success');
+        $("#form_correo").removeClass('has-error');
+        $("#form_correo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#correo_empleado").attr('required',false);
+        $("#form_correo").removeClass('has-success');
+        $("#form_correo").removeClass('has-error');
+        $("#form_correo").addClass('has-success');
+      }
+      //Fin validaciones
+
+      // Variable con todos los valores necesarios para la consulta
+		  var datos = 'codigo_empleado=' + codigoEmpleado + '&fecha_ingreso=' + fechaIngreso + '&estado=' + estado + '&id_empleado=' + idEmpleado + '&nombres_empleado=' + nombres + '&apellido_1=' + apellido1 +  '&apellido_2=' + apellido2 + '&fecha_nacimiento=' + fechaNacimiento + '&genero=' + genero + '&direccion_empleado=' + direccion + '&telefono=' + telefono + '&correo=' + correo;
+
+      // alert(datos);
+      $.ajax({
+        //Direccion destino
+        url: "empleados_guardar.php",
+        // Variable con los datos necesarios
+        data: datos,
+        type: "POST",			
+        dataType: "html",
+        //cache: false,
+        //success
+        success: function (data) {
+          // alert(data);
+          if (data) {
+            $.notify({
+              title: "Correcto : ",
+              message: "¡El empleado se registró exitosamente!",
+              icon: 'fa fa-check' 
+            },{
+              type: "success"
+            });
+            window.setTimeout('location.href="empleados.php"', 5);
+          }
+          if (!data) {
+            $.notify({
+              title: "Error : ",
+              message: "¡El numero de Identidad ingresado ya existe!",
+              icon: 'fa fa-times' 
+            },{
+              type: "danger"
+            });
+            document.getElementById("id_empleado").focus();
+            $("#form_id_empleado").removeClass('has-success');
+            $("#form_id_empleado").removeClass('has-error');
+            $("#form_id_empleado").addClass('has-error');
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          // 		title: "Informacion : ",
+          // 		message: "Petición realizada!",
+          // 		icon: 'fa fa-check' 
+          // 	},{
+          // 		type: "info"
+          // });
+        }		
+      });
+
+    });
   })
 </script>
 </body>
