@@ -264,7 +264,7 @@
           <form class="form-horizontal">
             <div class="box-body">
               <div class="form-group" id="form_codigo">
-                <label for="codigo_empleado" class="col-sm-2 control-label">Codigo</label>
+                <label for="codigo_empleado" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
                   <input type="text" class="form-control" id="codigo_empleado" placeholder="Codigo" value="<?php echo nuevoCodigoEmpleado(obtenerUltimoCodigoEmpleado());?>" readonly>
@@ -272,7 +272,7 @@
               </div>
               <!-- Date -->
               <div class="form-group" id="form_fecha_ingreso">
-                <label for="fecha_ingreso" class="col-sm-2 control-label">Fecha de Ingreso</label>
+                <label for="fecha_ingreso" class="col-sm-2 control-label">Fecha de Ingreso*</label>
 
                 <div class="col-sm-9">
                   <div class="input-group">
@@ -283,7 +283,7 @@
                 <!-- /.input group -->
               </div>
               <div class="form-group" id="form_estado">
-                <label for="codigo_empleado" class="col-sm-2 control-label">Estado</label>
+                <label for="codigo_empleado" class="col-sm-2 control-label">Estado*</label>
 
                 <div class="col-sm-9">
                   <div class="radio">
@@ -328,21 +328,21 @@
           <form class="form-horizontal">
             <div class="box-body">
               <div class="form-group" id="form_id_empleado">
-                <label for="id_empleado" class="col-sm-2 control-label">Identidad</label>
+                <label for="id_empleado" class="col-sm-2 control-label">Identidad*</label>
 
                 <div class="col-sm-9">
                   <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" data-mask id="id_empleado" placeholder="Ingrese el numero...">
                 </div>
               </div>
               <div class="form-group" id="form_nombres">
-                <label for="nombres_empleado" class="col-sm-2 control-label">Nombres</label>
+                <label for="nombres_empleado" class="col-sm-2 control-label">Nombres*</label>
 
                 <div class="col-sm-9">
                   <input type="text" class="form-control" id="nombres_empleado" placeholder="Ingrese los nombres..">
                 </div>
               </div>
               <div class="form-group" id="form_apellido_1">
-                <label for="apellido_1" class="col-sm-2 control-label">Apellido Paterno</label>
+                <label for="apellido_1" class="col-sm-2 control-label">Apellido Paterno*</label>
 
                 <div class="col-sm-9">
                   <input type="text" class="form-control" id="apellido_1" placeholder="Ingrese el apellido..">
@@ -357,7 +357,7 @@
               </div>
               <!-- Date -->
               <div class="form-group" id="form_fecha_nacimiento">
-                <label for="fecha_nacimiento" class="col-sm-2 control-label">Nacimiento</label>
+                <label for="fecha_nacimiento" class="col-sm-2 control-label">Nacimiento*</label>
 
                 <div class="col-sm-9">
                   <div class="input-group">
@@ -368,7 +368,7 @@
                 <!-- /.input group -->
               </div>
               <div class="form-group" id="form_genero">
-                  <label class="col-sm-2 control-label">Genero</label>
+                  <label class="col-sm-2 control-label">Genero*</label>
                   <div class="col-sm-9">
                     <select class="form-control" id="genero">
                       <option value="Seleccione" disabled selected hidden>Seleccione...</option>
@@ -405,7 +405,7 @@
           <form class="form-horizontal">
             <div class="box-body">
               <div class="form-group" id="form_direccion">
-                <label for="direccion_empleado" class="col-sm-2 control-label">Direccion</label>
+                <label for="direccion_empleado" class="col-sm-2 control-label">Direccion*</label>
 
                 <div class="col-sm-9">
                   <textarea class="form-control" rows="3" id="direccion_empleado" placeholder="Ingrese la direccion ..."></textarea>
@@ -413,7 +413,7 @@
               </div>
               
               <div class="form-group" id="form_telefono">
-                <label for="telefono" class="col-sm-2 control-label">Telefono</label>
+                <label for="telefono" class="col-sm-2 control-label">Telefono*</label>
 
                 <div class="col-sm-9">
                   <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask id="telefono" placeholder="Ingrese el numero..">
@@ -421,7 +421,7 @@
               </div>
 
               <div class="form-group" id="form_correo">
-                <label for="correo_empleado" class="col-sm-2 control-label">Email</label>
+                <label for="correo_empleado" class="col-sm-2 control-label">Email*</label>
 
                 <div class="col-sm-9">
                   <input type="email" class="form-control" id="correo_empleado" placeholder="Ingrese el email..">
@@ -850,19 +850,19 @@
         $("#form_apellido_1").addClass('has-success');
       }
 
-      // if (apellido2=='') {
-      //   $("#apellido_2").attr('required',true);
-      //   document.getElementById("apellido_2").focus();
-      //   $("#form_apellido_2").removeClass('has-success');
-      //   $("#form_apellido_2").removeClass('has-error');
-      //   $("#form_apellido_2").addClass('has-error');
-      //   return false;
-      // } else {
-      //   $("#apellido_2").attr('required',false);
-      //   $("#form_apellido_2").removeClass('has-success');
-      //   $("#form_apellido_2").removeClass('has-error');
-      //   $("#form_apellido_2").addClass('has-success');
-      // }
+      if (apellido2=='') {
+        // $("#apellido_2").attr('required',true);
+        // document.getElementById("apellido_2").focus();
+        // $("#form_apellido_2").removeClass('has-success');
+        // $("#form_apellido_2").removeClass('has-error');
+        // $("#form_apellido_2").addClass('has-error');
+        // return false;
+      } else {
+        $("#apellido_2").attr('required',false);
+        $("#form_apellido_2").removeClass('has-success');
+        $("#form_apellido_2").removeClass('has-error');
+        $("#form_apellido_2").addClass('has-success');
+      }
 
       if (fechaNacimiento=='') {
         $("#fecha_nacimiento").attr('required',true);
@@ -943,7 +943,7 @@
       // Variable con todos los valores necesarios para la consulta
 		  var datos = 'codigo_empleado=' + codigoEmpleado + '&fecha_ingreso=' + fechaIngreso + '&estado=' + estado + '&id_empleado=' + idEmpleado + '&nombres_empleado=' + nombres + '&apellido_1=' + apellido1 +  '&apellido_2=' + apellido2 + '&fecha_nacimiento=' + fechaNacimiento + '&genero=' + genero + '&direccion_empleado=' + direccion + '&telefono=' + telefono + '&correo=' + correo;
 
-      alert(datos);
+      // alert(datos);
       $.ajax({
         //Direccion destino
         url: "empleados_guardar.php",
@@ -954,7 +954,7 @@
         //cache: false,
         //success
         success: function (data) {
-          alert(data);
+          // alert(data);
           if (data) {
             $.notify({
               title: "Correcto : ",
@@ -973,6 +973,10 @@
             },{
               type: "danger"
             });
+            document.getElementById("id_empleado").focus();
+            $("#form_id_empleado").removeClass('has-success');
+            $("#form_id_empleado").removeClass('has-error');
+            $("#form_id_empleado").addClass('has-error');
           }
           
         },
