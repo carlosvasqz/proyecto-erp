@@ -344,13 +344,22 @@
                   <?php
                     $queryEmpleados=mysqli_query($db, "SELECT * FROM empleados") or die(mysqli_error());
                     while ($rowEmpleado=mysqli_fetch_array($queryEmpleados)) {
-                      $estado = null;
+                      $etiqueta = null;
+                      $tootip = null;
+                      $icono = null;
+                      $color = null;
                       switch ($rowEmpleado["Estado"]) {
                         case 1:
-                          $estado = "<small class='label bg-blue'>Habilitado</small>";
+                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
+                          $tootip = "Deshabilitar";
+                          $icono = "fa fa-times-circle";
+                          $color = "danger";
                           break;
                         case 0:
-                          $estado = "<small class='label bg-red'>Desabilitado</small>";
+                          $etiqueta = "<small class='label bg-red'>Desabilitado</small>";
+                          $tootip = "Habilitar";
+                          $icono = "fa fa-check-circle";
+                          $color = "info";
                           break;
                       }
                       echo '
@@ -358,11 +367,15 @@
                             <td>'.$rowEmpleado['Codigo_Empleado'].'</td>
                             <td>'.$rowEmpleado['Nombres'].'</td>
                             <td>'.$rowEmpleado['Apellido_1'].'</td>
-                            <td>'.$estado.'</td>
+                            <td>'.$etiqueta.'</td>
                             <td>'.fechaFormato(fechaIngAEsp($rowEmpleado['Fecha_Ingreso'])).'</td>
                             <td>
-                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
-                              <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash"></i></button>
+                              <form action="empleados_editar.php" method="POST">
+                                <input type="hidden" name="codigo_empleado" value="'.$rowEmpleado['Codigo_Empleado'].'"/>
+                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+                              
+                                <button type="button" class="btn btn-'.$color.' btn-sm" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
+                              </form>
                             </td>
                           </form>
                         </tr>
@@ -636,7 +649,9 @@
     $('.sidebar-menu').tree();
     // $('#lista-empleados').DataTable();
 
-    
+    $("#btnEditar").click(function(){
+      
+    });    
   })
 </script>
 </body>
