@@ -261,7 +261,7 @@
                 <?php 
                   $hoy = getdate();
                   $fechaInicioAnioDB = $hoy["year"]."-01-01";
-                  $queryEmpleadosNuevos=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Nuevos FROM empleados WHERE Fecha_Ingreso >= $fechaInicioAnioDB;") or die(mysqli_error());
+                  $queryEmpleadosNuevos=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Nuevos FROM empleados WHERE Fecha_Ingreso >= '$fechaInicioAnioDB';") or die(mysqli_error());
                   $rowEmpleadosNuevos=mysqli_fetch_array($queryEmpleadosNuevos);
                   echo $rowEmpleadosNuevos['Empleados_Nuevos'];
                   // mysqli_close($queryEmpleadosNuevos);
@@ -635,6 +635,8 @@
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     // $('#lista-empleados').DataTable();
+
+    
   })
 </script>
 </body>
