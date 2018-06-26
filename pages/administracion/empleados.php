@@ -301,7 +301,7 @@
               <span class="info-box-text"><h4>Desabilitados</h4></span>
               <span class="info-box-number">
                 <?php 
-                  $queryEmpleadosDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Desabilitados FROM empleados WHERE Estado = 2") or die(mysqli_error());
+                  $queryEmpleadosDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Desabilitados FROM empleados WHERE Estado = 0") or die(mysqli_error());
                   $rowEmpleadosDesabilitados=mysqli_fetch_array($queryEmpleadosDesabilitados);
                   echo $rowEmpleadosDesabilitados['Empleados_Desabilitados'];
                   //mysqli_close($queryEmpleadosDesabilitados);
