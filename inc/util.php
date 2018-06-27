@@ -73,6 +73,16 @@
         return $fecha[2] . "/" . $fecha[1] . "/" . $fecha[0];
     }
 
+    function fechaIngABD($fecha){
+        $fecha = explode('/', $fecha);
+        return $fecha[2] . "-" . $fecha[0] . "-" . $fecha[1];
+    }
+
+    function fechaBDAIng($fecha){
+        $fecha = explode('-', $fecha);
+        return $fecha[1] . "/" . $fecha[2] . "/" . $fecha[0];
+    }
+
     function fechaFormato($fecha){
         $fecha = explode('/', $fecha);
         $diaMes = mktime(0,0,0,$fecha[1],$fecha[0],$fecha[2]);
@@ -87,4 +97,21 @@
         return $diaFullFormat;
     }
 
+    function obtenerUltimoCodigoEmpleado(){
+        include ("conexion.php");
+        $query = "SELECT MAX(Codigo_Empleado) AS Ultimo_Codigo FROM empleados;";
+        $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
+        $rowCodigo=mysqli_fetch_array($sqlcon);
+        if(is_null($rowCodigo['Ultimo_Codigo'])){
+            return "EMP.0";
+        }else{
+            return $rowCodigo['Ultimo_Codigo'];
+        }
+    }
+
+    function nuevoCodigoEmpleado($codigo){
+        $codigo = explode('.', $codigo);
+        $nuevo = $codigo[1]+1;
+        return $codigo[0] . "." . $nuevo;
+    }
 ?>

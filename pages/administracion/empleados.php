@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Sweet Alert CSS -->
+  <link rel="stylesheet" href="../../plugins/sweet-alert/sweetalert.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
@@ -261,7 +263,7 @@
                 <?php 
                   $hoy = getdate();
                   $fechaInicioAnioDB = $hoy["year"]."-01-01";
-                  $queryEmpleadosNuevos=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Nuevos FROM empleados WHERE Fecha_Ingreso >= $fechaInicioAnioDB;") or die(mysqli_error());
+                  $queryEmpleadosNuevos=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Nuevos FROM empleados WHERE Fecha_Ingreso >= '$fechaInicioAnioDB';") or die(mysqli_error());
                   $rowEmpleadosNuevos=mysqli_fetch_array($queryEmpleadosNuevos);
                   echo $rowEmpleadosNuevos['Empleados_Nuevos'];
                   // mysqli_close($queryEmpleadosNuevos);
@@ -301,7 +303,7 @@
               <span class="info-box-text"><h4>Desabilitados</h4></span>
               <span class="info-box-number">
                 <?php 
-                  $queryEmpleadosDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Desabilitados FROM empleados WHERE Estado = 2") or die(mysqli_error());
+                  $queryEmpleadosDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Desabilitados FROM empleados WHERE Estado = 0") or die(mysqli_error());
                   $rowEmpleadosDesabilitados=mysqli_fetch_array($queryEmpleadosDesabilitados);
                   echo $rowEmpleadosDesabilitados['Empleados_Desabilitados'];
                   //mysqli_close($queryEmpleadosDesabilitados);
@@ -344,13 +346,22 @@
                   <?php
                     $queryEmpleados=mysqli_query($db, "SELECT * FROM empleados") or die(mysqli_error());
                     while ($rowEmpleado=mysqli_fetch_array($queryEmpleados)) {
-                      $estado = null;
+                      $etiqueta = null;
+                      $tootip = null;
+                      $icono = null;
+                      $color = null;
                       switch ($rowEmpleado["Estado"]) {
                         case 1:
-                          $estado = "<small class='label bg-blue'>Habilitado</small>";
+                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
+                          $tootip = "Deshabilitar";
+                          $icono = "fa fa-times-circle";
+                          $color = "danger";
                           break;
                         case 0:
-                          $estado = "<small class='label bg-red'>Desabilitado</small>";
+                          $etiqueta = "<small class='label bg-red'>Desabilitado</small>";
+                          $tootip = "Habilitar";
+                          $icono = "fa fa-check-circle";
+                          $color = "info";
                           break;
                       }
                       echo '
@@ -358,11 +369,15 @@
                             <td>'.$rowEmpleado['Codigo_Empleado'].'</td>
                             <td>'.$rowEmpleado['Nombres'].'</td>
                             <td>'.$rowEmpleado['Apellido_1'].'</td>
-                            <td>'.$estado.'</td>
+                            <td>'.$etiqueta.'</td>
                             <td>'.fechaFormato(fechaIngAEsp($rowEmpleado['Fecha_Ingreso'])).'</td>
                             <td>
-                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
-                              <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash"></i></button>
+                              <form action="empleados_editar.php" method="POST">
+                                <input type="hidden" name="codigo_empleado" value="'.$rowEmpleado['Codigo_Empleado'].'"/>
+                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+                              
+                                <button type="button" id="'.$rowEmpleado['Codigo_Empleado'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
+                              </form>
                             </td>
                           </form>
                         </tr>
@@ -616,6 +631,8 @@
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<!-- Sweet Alert -->
+<script src="../../plugins/sweet-alert/sweetalert.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -635,6 +652,80 @@
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     // $('#lista-empleados').DataTable();
+
+  $('.sweetalert').click(function(){
+    var codigoEmpleado = $(this).attr('id');
+    var accion = $(this).attr('class');
+    accion = accion.split(" ");
+    var nuevoEstado;
+    if (accion[4]=='Habilitar') {
+      nuevoEstado = 1;
+    } else {
+      nuevoEstado = 0;
+    }
+    // alert(accion[4] + " - " + nuevoEstado);
+    swal({
+        title: "¿Esta seguro?",
+        text: "Esta accion " + accion[4] + "á el elemento seleccionado",
+        type: "warning",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+    }, function () {
+        $.ajax({
+          //Direccion destino
+          url: "empleados_cambiar_estado.php",
+          // Variable con los datos necesarios
+          data: "codigo_empleado=" + codigoEmpleado + "&estado=" + nuevoEstado,
+          type: "POST",			
+          dataType: "html",
+          //cache: false,
+          //success
+          success: function (data) {
+            // alert(data);
+            setTimeout(function () {
+              if (data) {
+                swal({
+                  title: "¡Realizado!",
+                  text: "La acción se ha completado con éxito.",
+                  type: "success",
+                  showCancelButton: false,
+                  confirmButtonText: "Aceptar",
+                  closeOnConfirm: false
+                }, function(isConfirm) {
+                  if (isConfirm) {
+                    window.setTimeout('location.href="empleados.php"', 3);
+                  }
+                });
+              }
+              if (!data) {
+                swal({
+                  title: "¡Error!",
+                  text: "Ha ocurrido un problema, inténtelo más tarde.",
+                  type: "error",
+                  showCancelButton: false,
+                  confirmButtonText: "Aceptar",
+                  closeOnConfirm: true
+                });
+              }
+            }, 2000);
+          },
+          error : function(xhr, status) {
+            //  alert('Disculpe, existió un problema');
+          },
+          complete : function(xhr, status) {
+            // alert('Petición realizada');
+            // $.notify({
+            // 		title: "Informacion : ",
+            // 		message: "Petición realizada!",
+            // 		icon: 'fa fa-check' 
+            // 	},{
+            // 		type: "info"
+            // });
+          }		
+        });
+    });
+    });
   })
 </script>
 </body>
