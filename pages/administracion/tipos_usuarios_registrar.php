@@ -311,7 +311,7 @@
             <div class="box-body">
               <div class="col-sm-4"></div>
               <div class="col-sm-4">
-                <button type="submit" class="btn btn-default">Cancelar</button>
+               <button type="submit" class="btn btn-default"><a href="tipos_usuarios.php">Cancelar</button></a>
                 <button type="submit" class="btn btn-success pull-right">Registrar</button>
               </div>
               <div class="col-sm-4"></div>
