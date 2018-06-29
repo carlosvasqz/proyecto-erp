@@ -274,16 +274,35 @@
           </div>
           <!-- /.info-box -->
         </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-user-plus"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Habilitados</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $queryProveedoresDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Proveedores_Desabilitados FROM proveedores WHERE Estado = 1") or die(mysqli_error());
+                  $rowProveedoresDesabilitados=mysqli_fetch_array($queryProveedoresDesabilitados);
+                  echo $rowProveedoresDesabilitados['Proveedores_Desabilitados'];
+                  // mysqli_close($queryEmpleadosDesabilitados);
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
         <!-- /.col -->
         <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text"><h4>Desabilitados</h4></span>
+              <span class="info-box-text"><h4>Deshabilitados</h4></span>
               <span class="info-box-number">
                 <?php 
-                  $queryProveedoresDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Proveedores_Desabilitados FROM proveedores WHERE Estado = 2") or die(mysqli_error());
+                  $queryProveedoresDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Proveedores_Desabilitados FROM proveedores WHERE Estado = 0") or die(mysqli_error());
                   $rowProveedoresDesabilitados=mysqli_fetch_array($queryProveedoresDesabilitados);
                   echo $rowProveedoresDesabilitados['Proveedores_Desabilitados'];
                   // mysqli_close($queryEmpleadosDesabilitados);
@@ -340,7 +359,7 @@
                           $color = "danger";
                           break;
                         case 0:
-                          $etiqueta = "<small class='label bg-red'>Desabilitado</small>";
+                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
                           $tootip = "Habilitar";
                           $icono = "fa fa-check-circle";
                           $color = "info";

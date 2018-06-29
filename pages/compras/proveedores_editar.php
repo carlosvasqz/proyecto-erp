@@ -824,7 +824,7 @@ var correo=$('#correo').val();
       // Variable con todos los valores necesarios para la consulta
       var datos = 'codigo=' + codigo + '&estado=' + estado + '&nombre=' + nombre + '&rtn=' + rtn + '&direccion=' + direccion  + '&telefono=' + telefono + '&correo=' + correo;
 
-       alert(datos);
+       //alert(datos);
       $.ajax({
         //Direccion destino
         url: "editar_Proveedor.php",
