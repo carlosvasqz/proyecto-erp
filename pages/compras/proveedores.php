@@ -8,13 +8,15 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Empleados</title>
+  <title>MaterialAdminLTE 2 | Proveedores</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Sweet Alert CSS -->
+  <link rel="stylesheet" href="../../plugins/sweet-alert/sweetalert.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
@@ -319,19 +321,29 @@
                     <th>Teléfono</th>
                     <th>Email</th>
                     <th>Estado</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
                     $queryProveedores=mysqli_query($db, "SELECT * FROM proveedores") or die(mysqli_error());
-                    while ($rowProveedores=mysqli_fetch_array($queryProveedores)) {
-                      $estado = null;
+                   while ($rowProveedores=mysqli_fetch_array($queryProveedores)) {
+                      $etiqueta = null;
+                      $tootip = null;
+                      $icono = null;
+                      $color = null;
                       switch ($rowProveedores["Estado"]) {
                         case 1:
-                          $estado = "<small class='label bg-blue'>Habilitado</small>";
+                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
+                          $tootip = "Deshabilitar";
+                          $icono = "fa fa-times-circle";
+                          $color = "danger";
                           break;
                         case 0:
-                          $estado = "<small class='label bg-red'>Desabilitado</small>";
+                          $etiqueta = "<small class='label bg-red'>Desabilitado</small>";
+                          $tootip = "Habilitar";
+                          $icono = "fa fa-check-circle";
+                          $color = "info";
                           break;
                       }
                       echo '
@@ -342,12 +354,13 @@
                             <td>'.$rowProveedores['Direccion'].'</td>
                             <td>'.$rowProveedores['Telefono'].'</td>
                             <td>'.$rowProveedores['Correo_Electronico'].'</td>
-                            <td>'.$estado.'</td>
+                            <td>'.$etiqueta.'</td>
                             <td>
-                           <form method="GET" action="proveedores_editar.php">
-                           <input type="hidden" name="Id" Id="Id" value="'.$rowProveedores['Id_Proveedor'].'">
-                           <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip"  name="modificar" id="modificar" value="Modificar" ><i class="fa fa-pencil"></i></button>
-                              <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash"></i></button>
+                            <form action="proveedores_editar.php" method="POST">
+                                <input type="hidden" name="codigo_proveedor" value="'.$rowProveedores['Id_Proveedor'].'"/>
+                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+
+                                <button type="button" id="'.$rowProveedores['Id_Proveedor'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
                             </td>
                           </form>
                         </tr>
@@ -601,6 +614,8 @@
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<script src="../../plugins/sweet-alert/sweetalert.min.js"></script>
+
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -620,6 +635,80 @@
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     // $('#lista-empleados').DataTable();
+
+  $('.sweetalert').click(function(){
+    var codigoProveedor = $(this).attr('id');
+    var accion = $(this).attr('class');
+    accion = accion.split(" ");
+    var nuevoEstado;
+    if (accion[4]=='Habilitar') {
+      nuevoEstado = 1;
+    } else {
+      nuevoEstado = 0;
+    }
+    // alert(accion[4] + " - " + nuevoEstado);
+    swal({
+        title: "¿Esta seguro?",
+        text: "Esta accion " + accion[4] + "á el elemento seleccionado",
+        type: "warning",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+    }, function () {
+        $.ajax({
+          //Direccion destino
+          url: "proveedor_cambiar_estado.php",
+          // Variable con los datos necesarios
+          data: "codigo_proveedor=" + codigoProveedor + "&estado=" + nuevoEstado,
+          type: "POST",     
+          dataType: "html",
+          //cache: false,
+          //success
+          success: function (data) {
+            // alert(data);
+            setTimeout(function () {
+              if (data) {
+                swal({
+                  title: "¡Realizado!",
+                  text: "La acción se ha completado con éxito.",
+                  type: "success",
+                  showCancelButton: false,
+                  confirmButtonText: "Aceptar",
+                  closeOnConfirm: false
+                }, function(isConfirm) {
+                  if (isConfirm) {
+                    window.setTimeout('location.href="proveedores.php"', 3);
+                  }
+                });
+              }
+              if (!data) {
+                swal({
+                  title: "¡Error!",
+                  text: "Ha ocurrido un problema, inténtelo más tarde.",
+                  type: "error",
+                  showCancelButton: false,
+                  confirmButtonText: "Aceptar",
+                  closeOnConfirm: true
+                });
+              }
+            }, 2000);
+          },
+          error : function(xhr, status) {
+            //  alert('Disculpe, existió un problema');
+          },
+          complete : function(xhr, status) {
+            // alert('Petición realizada');
+            // $.notify({
+            //    title: "Informacion : ",
+            //    message: "Petición realizada!",
+            //    icon: 'fa fa-check' 
+            //  },{
+            //    type: "info"
+            // });
+          }   
+        });
+    });
+    });
   })
 </script>
 </body>

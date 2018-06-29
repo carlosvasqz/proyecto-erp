@@ -323,7 +323,7 @@
             <div class="box-header">
               <h3 class="box-title">Lista de Empleados</h3>
               <!-- tools box -->
-              <div class="pull-right box-tools">
+             <div class="pull-right box-tools">
                 <button type="button" class="btn btn-info"><a href="empleados_registrar.php">
                   <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
               </div>
@@ -332,8 +332,8 @@
             <!-- /.box-header -->
             <div class="box-body">
               <table id="lista-empleados" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
+                <thea >
+                  <tr >
                     <th>Codigo</th>
                     <th>Nombres</th>
                     <th>Apellido</th>
