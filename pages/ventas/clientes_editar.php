@@ -2,13 +2,14 @@
   include ('../../inc/constructor.php');
   include ('../../inc/conexion.php');
   include ('../../inc/util.php');
+  if(isset($_POST["codigo_cliente"])){
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Registrar Cliente</title>
+  <title>MaterialAdminLTE 2 | Editar Cliente</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -239,15 +240,20 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Registrar Cliente
+        Editar Cliente
         <small>Ventas</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Ventas</a></li>
-        <li class="active">Registrar Cliente</li>
+        <li class="active">Editar Cliente</li>
       </ol>
     </section>
+
+    <?php
+      $queryCliente=mysqli_query($db, "SELECT * FROM clientes WHERE Id_Cliente = '".$_POST['codigo_cliente']."'") or die(mysqli_error());
+      $rowCliente=mysqli_fetch_array($queryCliente);
+    ?>
 
     <!-- Main content -->
     <section class="content">
@@ -267,14 +273,11 @@
                 <label for="codigo_cliente" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo_cliente" placeholder="Codigo" value=" CLI.<?php $queryTotalClientes=mysqli_query($db, "SELECT COUNT(*) AS Total_Clientes FROM clientes") or die(mysqli_error());
-                  $rowClientes=mysqli_fetch_array($queryTotalClientes);
-                  echo $rowClientes['Total_Clientes']+1;?>" readonly>
+                  <input type="text" class="form-control" id="codigo_cliente" placeholder="Codigo" value="<?php echo $rowCliente['Id_Cliente'];?>" disabled>
                 </div>
               </div>
               <!-- Date -->
-  
-              
+
               <!-- <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                   <div class="checkbox">
@@ -306,43 +309,33 @@
                 <label for="id_cliente" class="col-sm-2 control-label">Identidad*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" data-mask id="id_cliente" placeholder="Ingrese el numero...">
+                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" data-mask id="id_cliente" placeholder="Ingrese el numero..." value="<?php echo $rowCliente['Numero_Identidad'];?>" disabled>
                 </div>
               </div>
+              <!--_______________________________________________________________________________________________________________________-->
               <div class="form-group" id="form_nombres">
                 <label for="nombres_cliente" class="col-sm-2 control-label">Nombres*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="nombres_cliente" placeholder="Ingrese los nombres..">
+                  <input type="text" class="form-control" id="nombres_cliente" placeholder="Ingrese los nombres.." value="<?php echo $rowCliente['Nombres'];?>">
                 </div>
               </div>
               <div class="form-group" id="form_apellido">
                 <label for="apellido" class="col-sm-2 control-label">Apellido*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="apellido" placeholder="Ingrese el apellido..">
+                  <input type="text" class="form-control" id="apellido" placeholder="Ingrese el apellido.." value="<?php echo $rowCliente['Apellido'];?>">
                 </div>
               </div>
 
-               <div class="form-group" id="form_rtn_cliente">
+             <div class="form-group" id="form_rtn_cliente">
                 <label for="rtn_cliente" class="col-sm-2 control-label">RTN*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;99999999999999&quot;" data-mask id="rtn_cliente" placeholder="Ingrese el numero...">
+                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;99999999999999&quot;" data-mask id="rtn_cliente" placeholder="Ingrese el numero..." value="<?php echo $rowCliente['RTN'];?>">
                 </div>
               </div>
-           
-              <!-- Date -->
-
-              <!-- <div class="form-group" id="form_">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
-                </div>
-              </div> -->
+    
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
@@ -365,26 +358,23 @@
                 <label for="telefono" class="col-sm-2 control-label">Telefono*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask id="telefono" placeholder="Ingrese el numero..">
+                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask id="telefono" placeholder="Ingrese el numero..." value="<?php echo $rowCliente['Telefono'];?>">
                 </div>
               </div>
               
-
               <div class="form-group" id="form_direccion">
                 <label for="direccion_cliente" class="col-sm-2 control-label">Direccion*</label>
 
                 <div class="col-sm-9">
-                  <textarea class="form-control" rows="3" id="direccion_cliente" placeholder="Ingrese la direccion ..."></textarea>
+                  <textarea class="form-control" rows="3" id="direccion_cliente" placeholder="Ingrese la direccion ..." ><?php echo $rowCliente['Direccion'];?></textarea>
                 </div>
               </div>
               
-             
-
               <div class="form-group" id="form_correo">
                 <label for="correo_cliente" class="col-sm-2 control-label">Email*</label>
 
                 <div class="col-sm-9">
-                  <input type="email" class="form-control" id="correo_cliente" placeholder="Ingrese el email..">
+                  <input type="email" class="form-control" id="correo_cliente" placeholder="Ingrese el email.." value="<?php echo $rowCliente['Correo_Electronico'];?>">
                 </div>
               </div>
               <!-- <div class="form-group">
@@ -417,7 +407,7 @@
               <div class="col-sm-4"></div>
               <div class="col-sm-4">
                 <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
-                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
+                <button type="button" id="btnActualizar" class="btn btn-success pull-right">Actualizar</button>
               </div>
               <div class="col-sm-4"></div>
             </div>
@@ -669,7 +659,7 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-empleados').DataTable({
+    $('#lista-clientes').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -701,12 +691,12 @@
     }
 
     $("#btnCancelar").click(function(){
-      $(location).attr('href', 'clientes.php');
+      window.setTimeout('location.href="clientes.php"', 1);
     });
 
-    $("#btnRegistrar").click(function(){
+    $("#btnActualizar").click(function(){
       //Obtencion de valores en los inputs
-      var codigoCliente = $("#codigo_cliente").val();
+    var codigoCliente = $("#codigo_cliente").val();
       var  idCliente= $("#id_cliente").val();
       var nombreCliente= $("#nombres_cliente").val();
       var apellido= $("#apellido").val();
@@ -714,11 +704,9 @@
       var telefono= $("#telefono").val();
       var direccionCliente= $("#direccion_cliente").val();
       var correoCliente= $("#correo_cliente").val();
-
-    
       
       // Validaciones
-      if (codigoCliente=='') {
+     if (codigoCliente=='') {
         $("#codigo_cliente").attr('required',true);
         document.getElementById("codigo_cliente").focus();
         $("#form_codigo").removeClass('has-success');
@@ -839,29 +827,15 @@
         $("#form_correo").addClass('has-success');
       }
    
-
-
-
-      
-
-
-
-   
-
-    
-
-    
-
-   
       //Fin validaciones
 
       // Variable con todos los valores necesarios para la consulta
 		  var datos = 'codigo_cliente=' + codigoCliente + '&id_cliente=' + idCliente + '&nombres_cliente=' + nombreCliente + '&apellido=' + apellido + '&rtn_cliente=' + rtnCliente + '&telefono=' + telefono +  '&direccion_cliente=' + direccionCliente + '&correo_cliente=' + correoCliente;
 
-      //alert(datos);
+      // alert(datos);
       $.ajax({
         //Direccion destino
-        url: "clientes_guardar.php",
+        url: "clientes_actualizar.php",
         // Variable con los datos necesarios
         data: datos,
         type: "POST",			
@@ -873,18 +847,17 @@
           if (data) {
             $.notify({
               title: "Correcto : ",
-              message: "¡El cliente se registró exitosamente!",
+              message: "¡El cliente se actualizó exitosamente!",
               icon: 'fa fa-check' 
             },{
               type: "success"
             });
-            window.setTimeout('location.href="clientes.php"', 1000);
+            window.setTimeout('location.href="clientes.php"', 5);
           }
-         
-           if (!data) {
+          if (!data) {
             $.notify({
               title: "Error : ",
-              message: "¡El numero de Identidad ingresado ya existe!",
+              message: "¡El numero de Identidad ingresado NO existe!",
               icon: 'fa fa-times' 
             },{
               type: "danger"
@@ -916,3 +889,9 @@
 </script>
 </body>
 </html>
+<?php
+  } else {
+    header("location: ../examples/500.php");
+    exit();
+  }
+?>
