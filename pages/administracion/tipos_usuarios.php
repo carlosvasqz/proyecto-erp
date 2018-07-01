@@ -251,12 +251,54 @@
 
     <!-- Main content -->
     <section class="content">
+
+ <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Totales</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $queryTotalUsuario=mysqli_query($db, "SELECT COUNT(*) AS Total_Usuarios FROM tipos_usuarios") or die(mysqli_error());
+                  $rowTipo=mysqli_fetch_array($queryTotalUsuario);
+                  echo $rowTipo['Total_Usuarios'];
+                  // mysqli_close($queryTotalEmpleados);
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+ <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+          <span class="info-box-icon bg-aqua"><i class="fa fa-user-plus"></i></span>
+
+              <div class="info-box-content">
+              <span class="info-box-text"><h4>Habilitados</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $queryTiposDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Tipos_Desabilitados FROM tipos_usuarios WHERE Estado = 1") or die(mysqli_error());
+                  $rowTiposDesabilitados=mysqli_fetch_array($queryTiposDesabilitados);
+                  echo $rowTiposDesabilitados['Tipos_Desabilitados'];
+                  //mysqli_close($queryEmpleadosDesabilitados);
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>  
+
+
           <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
           <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
 
               <div class="info-box-content">
-              <span class="info-box-text"><h4>Desabilitados</h4></span>
+              <span class="info-box-text"><h4>Deshabilitados</h4></span>
               <span class="info-box-number">
                 <?php 
                   $queryTiposDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Tipos_Desabilitados FROM tipos_usuarios WHERE Estado = 0") or die(mysqli_error());
