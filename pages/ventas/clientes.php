@@ -298,6 +298,7 @@
                     <th>Numero de identidad</th>
                     <th>Nombres</th>
                     <th>Apellido</th>
+                    <th>Estado</th>
                     <th>Telefono</th>
                     <th>RTN</th>
                     <th>Correo Electronico</th>
@@ -310,10 +311,25 @@
                  <?php
                     $queryClientes=mysqli_query($db, "SELECT * FROM clientes") or die(mysqli_error());
                    while ($rowCliente=mysqli_fetch_array($queryClientes)){
+                      $etiqueta = null;
+                      $tootip = null;
+                      $icono = null;
+                      $color = null;
 
-                      $tootip = "Eliminar";
-                      $icono = "fa fa-times-circle";
-                      $color = "danger";
+                        switch ($rowCliente["Estado"]) {
+                        case 1:
+                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
+                          $tootip = "Deshabilitar";
+                          $icono = "fa fa-times-circle";
+                          $color = "danger";
+                          break;
+                        case 0:
+                          $etiqueta = "<small class='label bg-red'>Desabilitado</small>";
+                          $tootip = "Habilitar";
+                          $icono = "fa fa-check-circle";
+                          $color = "info";
+                          break;
+                      }
                     
                       echo '
                         <tr>
@@ -321,6 +337,7 @@
                             <td>'.$rowCliente['Numero_Identidad'].'</td>
                             <td>'.$rowCliente['Nombres'].'</td>
                             <td>'.$rowCliente['Apellido'].'</td>
+                            <td>'.$etiqueta.'</td>
                             <td>'.$rowCliente['Telefono'].'</td>
                             <td>'.$rowCliente['RTN'].'</td>
                             <td>'.$rowCliente['Correo_Electronico'].'</td>
@@ -606,11 +623,18 @@
 
   $(document).ready(function () {
     $('.sidebar-menu').tree();
+
+    
     $('.sweetalert').click(function(){
      var codigoCliente = $(this).attr('id');
     var accion = $(this).attr('class');
     accion = accion.split(" ");
-    accion[4];
+    var Estado;
+    if (accion[4]=='Habilitar') {
+      Estado = 1;
+    } else {
+      Estado = 0;
+    }
 
   
     
@@ -625,15 +649,15 @@
     }, function () {
         $.ajax({
           //Direccion destino
-          url: "clientes_eliminar.php",
+          url: "clientes_cambiar_estado.php",
           // Variable con los datos necesarios
-          data: "codigo_cliente=" + codigoCliente,
+          data: "codigo_cliente=" + codigoCliente + "&estado=" +  Estado,
           type: "POST",     
           dataType: "html",
           //cache: false,
           //success
           success: function (data) {
-             alert(data);
+             //alert(data);
             setTimeout(function () {
               if (data) {
                 swal({
@@ -662,7 +686,7 @@
             }, 2000);
           },
           error : function(xhr, status) {
-            //  alert('Disculpe, existió un problema');
+            //alert('Disculpe, existió un problema');
           },
           complete : function(xhr, status) {
             // alert('Petición realizada');
