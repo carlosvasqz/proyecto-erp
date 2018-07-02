@@ -654,7 +654,7 @@
           data: "codigo_cliente=" + codigoCliente + "&estado=" +  Estado,
           type: "POST",     
           dataType: "html",
-          //cache: false,
+          //cache: false, 
           //success
           success: function (data) {
              //alert(data);
