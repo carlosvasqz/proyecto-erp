@@ -324,8 +324,12 @@
               <h3 class="box-title">Lista de Empleados</h3>
               <!-- tools box -->
              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info"><a href="empleados_registrar.php">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
+                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
+                  <!-- <a href="empleados_registrar.php"> -->
+                  <i class="fa fa-plus"></i> 
+                  <b>Registrar Nuevo</b>
+                </button>
+                <!-- </a> -->
               </div>
               <!-- /. tools -->
             </div>
@@ -652,6 +656,10 @@
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     // $('#lista-empleados').DataTable();
+
+    $("#btnRegistrarNuevo").click(function (){
+      $(location).attr('href', 'empleados_registrar.php');
+    });
 
   $('.sweetalert').click(function(){
     var codigoEmpleado = $(this).attr('id');
