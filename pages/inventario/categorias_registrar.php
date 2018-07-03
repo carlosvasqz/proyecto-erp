@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Categorias</title>
+  <title>MaterialAdminLTE 2 | Registrar Empleado</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="../../dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="../../dist/css/ripples.min.css">
@@ -237,142 +239,91 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Categorias
+        Registrar Categoria
         <small>Inventario</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Inventario</a></li>
-        <li class="active">Categorias</li>
+        <li><a href="#">Administracion</a></li>
+        <li class="active">Registrar Categoria</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
-      <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-user-plus"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Nuevos</h4></span>
-              <span class="info-box-number">
-               
-              </span>
-            </div>
-            <!-- /.info-box-content -->
+    <div class="row">
+      <!-- columna izq -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos de Registro</h3>
           </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Totales</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryTotalCategorias=mysqli_query($db, "SELECT COUNT(*) AS Total_Categorias FROM categorias") or die(mysqli_error());
-                  $rowCategorias=mysqli_fetch_array($queryTotalCategorias);
-                  echo $rowCategorias['Total_Categorias'];
-                  // mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Desabilitadas</h4></span>
-              <span class="info-box-number">
-               
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Lista de Categorias</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info"><a href="categorias_registrar.php">
-                  <i class="fa fa-plus"></i> <b>Registrar Categoria</b></button></a>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
             <div class="box-body">
-              <table id="lista-Categorias" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>Registro de Categorias</th>
-                    <th>Nombre</th>
-                    <th>Descripcion</th>
-                   
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $queryCategorias=mysqli_query($db, "SELECT * FROM categorias") or die(mysqli_error());
-                    while ($rowCategorias=mysqli_fetch_array($queryCategorias)) {
-                      $estado = null;
-                      echo '
-                        <tr>
-                            <td>'.$rowCategorias['Id_Categoria'].'</td>
-                            <td>'.$rowCategorias['Nombre'].'</td>
-                            <td>'.$rowCategorias['Descripcion'].'</td>
-                          
-                           
-                            <td>
-                             <form action="categorias_editar.php" method="POST">
-                                <input type="hidden" name="id_categoria" value="'.$rowCategorias['Id_Categoria'].'"/>
-                              <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+              <div class="form-group" id="form_codigo">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Codigo*</label>
 
-                              
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo_categoria" placeholder="Codigo" value="<?php echo nuevoCodigoCategoria(obtenerUltimoCodigoCategoria());?>" readonly>
+                </div>
+              </div>
+              <!-- Date -->
+              
+              
+            <!-- /.box-body -->
+           
+          
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group" id="form_nombre_categoria">
+                <label for="nombre_categoria" class="col-sm-2 control-label">Nombre*</label>
 
-                              
-                            </td>
-                          </form>
-                        </tr>
-                      ';
-                    }
-                  ?>
-                </tbody>
-                <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                </tfoot> -->
-              </table>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="nombre_categoria"placeholder="Ingrese el numero...">
+                </div>
+              </div>
+              <div class="form-group" id="form_descripcion_categoria">
+                <label for="descripcion_categoria" class="col-sm-2 control-label">Descripcion*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="descripcion_categoria" placeholder="Ingrese la descripcion de categoria..">
+                </div>
+              </div>
+             
+              <!-- Date -->
+              
+              <!-- <div class="form-group" id="form_">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
+
+     
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
+                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
+              </div>
+              <div class="col-sm-4"></div>
             </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+          </form>
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-
+      <!--/.col (izq) -->
+    </div>
     </section>
     <!-- /.content -->
   </div>
@@ -596,10 +547,18 @@
 <!-- DataTables -->
 <script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap notify -->
+<script src="../../plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
 <!-- SlimScroll -->
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<!-- InputMask -->
+<script src="../../plugins/input-mask/jquery.inputmask.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -607,7 +566,7 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-categorias').DataTable({
+    $('#lista-empleados').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -615,10 +574,144 @@
       'info'        : true,
       'autoWidth'   : false
     });
+    //Date picker
+    $('#fecha_nacimiento').datepicker({
+      autoclose: true
+    });
+    $('#fecha_ingreso').datepicker({
+      autoclose: true
+    });
   })
   $(document).ready(function () {
     $('.sidebar-menu').tree();
+    $('[data-mask]').inputmask()
     // $('#lista-empleados').DataTable();
+
+    function alertaIngresarDatos(){
+      $.notify({
+        title: "Error : ",
+        message: "Por favor, complete los campos obligatorios",
+        icon: 'fa fa-times' 
+      },{
+        type: "danger"
+      });
+    }
+
+    $("#btnCancelar").click(function(){
+      $(location).attr('href', 'empleados.php');
+    });
+
+    $("#btnRegistrar").click(function(){
+      //Obtencion de valores en los inputs
+      var codigoCategoria = $("#codigo_categoria").val();
+      var nombreCategoria = $("#nombre_categoria").val();
+      var descripcionCategoria = $('#descripcion_categoria').val();
+      
+      
+      // Validaciones
+      if (codigoCategoria=='') {
+        $("#codigo_categoria").attr('required',true);
+        document.getElementById("codigo_categoria").focus();
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#codigo_categoria").attr('required',false);
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-success');
+      }
+
+      if (nombre_categoria=='') {
+        $("#nombre_categoria").attr('required',true);
+        document.getElementById("nombre_categoria").focus();
+        $("#form_nombre_categoria").removeClass('has-success');
+        $("#form_nombre_categoria").removeClass('has-error');
+        $("#form_nombre_categoria").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#fecha_ingreso").attr('required',false);
+        $("#form_nombre_categoria").removeClass('has-success');
+        $("#form_nombre_categoria").removeClass('has-error');
+        $("#form_nombre_categoria").addClass('has-success');
+      }
+
+      if (descripcionCategoria=='') {
+        $("#descripcion_categoria").attr('required',true);
+        document.getElementById("descripcion_categoria").focus();
+        $("#form_descripcion_categoria").removeClass('has-success');
+        $("#form_descripcion_categoria").removeClass('has-error');
+        $("#form_descripcion_categoria").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#descripcion_categoria").attr('required',false);
+        $("#form_descripcion_categoria").removeClass('has-success');
+        $("#form_descripcion_categoria").removeClass('has-error');
+        $("#form_descripcion_categoria").addClass('has-success');
+      }
+
+      //Fin validaciones
+
+      // Variable con todos los valores necesarios para la consulta
+      var datos = '&codigo_categoria=' + codigoCategoria + '&nombre_categoria=' + nombreCategoria + '&descripcion_categoria=' + descripcionCategoria;
+
+      // alert(datos);
+      $.ajax({
+        //Direccion destino
+        url: "empleados_guardar.php",
+        // Variable con los datos necesarios
+        data: datos,
+        type: "POST",     
+        dataType: "html",
+        //cache: false,
+        //success
+        success: function (data) {
+          // alert(data);
+          if (data) {
+            $.notify({
+              title: "Correcto : ",
+              message: "¡El empleado se registró exitosamente!",
+              icon: 'fa fa-check' 
+            },{
+              type: "success"
+            });
+            window.setTimeout('location.href="empleados.php"', 5);
+          }
+          if (!data) {
+            $.notify({
+              title: "Error : ",
+              message: "¡El numero de Identidad ingresado ya existe!",
+              icon: 'fa fa-times' 
+            },{
+              type: "danger"
+            });
+            document.getElementById("id_empleado").focus();
+            $("#form_id_empleado").removeClass('has-success');
+            $("#form_id_empleado").removeClass('has-error');
+            $("#form_id_empleado").addClass('has-error');
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          //    title: "Informacion : ",
+          //    message: "Petición realizada!",
+          //    icon: 'fa fa-check' 
+          //  },{
+          //    type: "info"
+          // });
+        }   
+      });
+
+    });
   })
 </script>
 </body>

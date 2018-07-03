@@ -120,7 +120,7 @@
         $query = "SELECT MAX(Id_Cliente) AS Ultimo_Codigo FROM clientes;";
         $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
         $rowCodigo=mysqli_fetch_array($sqlcon);
-        if(is_null($rowCodigo['Ultimo_Codigo'])){
+             if(is_null($rowCodigo['Ultimo_Codigo'])){
             return "CLI.0";
         }else{
             return $rowCodigo['Ultimo_Codigo'];
@@ -142,4 +142,25 @@
         $nuevo = $codigo[1]+1;
         return $codigo[0] . "." . $nuevo;
     }
+
+     function obtenerUltimoCodigoCategoria(){
+        include ("conexion.php");
+        $query = "SELECT MAX(Id_Categoria) AS Ultimo_Codigo FROM categorias;";
+        $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
+        $rowCodigo=mysqli_fetch_array($sqlcon);
+             if(is_null($rowCodigo['Ultimo_Codigo'])){
+            return "CAT.0";
+        }else{
+            return $rowCodigo['Ultimo_Codigo'];
+        }
+
+          function nuevoCodigoCategoria($codigo){
+        $codigo = explode('.', $codigo);
+        $nuevo = $codigo[1]+1;
+        return $codigo[0] . "." . $nuevo;
+    }
+    }
+    
+
+
 ?>
