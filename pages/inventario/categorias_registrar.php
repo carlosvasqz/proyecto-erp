@@ -264,10 +264,10 @@
           <form class="form-horizontal">
             <div class="box-body">
               <div class="form-group" id="form_codigo">
-                <label for="codigo_empleado" class="col-sm-2 control-label">Codigo*</label>
+                <label for="codigo_categoria" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo_categoria" placeholder="Codigo" value="<?php echo nuevoCodigoCategoria(obtenerUltimoCodigoCategoria());?>" readonly>
+                  <input type="text" class="form-control" id="codigo_categoria" placeholder="Codigo" value="<?php echo nuevoCodigoCliente(obtenerUltimoCodigoCategoria());?>" readonly>
                 </div>
               </div>
               <!-- Date -->
@@ -657,12 +657,12 @@
       //Fin validaciones
 
       // Variable con todos los valores necesarios para la consulta
-      var datos = '&codigo_categoria=' + codigoCategoria + '&nombre_categoria=' + nombreCategoria + '&descripcion_categoria=' + descripcionCategoria;
+      var datos = 'codigo_categoria=' + codigoCategoria + '&nombre_categoria=' + nombreCategoria + '&descripcion_categoria=' + descripcionCategoria;
 
-      // alert(datos);
+      alert(datos);
       $.ajax({
         //Direccion destino
-        url: "empleados_guardar.php",
+        url: "guardar_categoria.php",
         // Variable con los datos necesarios
         data: datos,
         type: "POST",     
@@ -679,7 +679,7 @@
             },{
               type: "success"
             });
-            window.setTimeout('location.href="empleados.php"', 5);
+            window.setTimeout('location.href="categorias.php"', 5);
           }
           if (!data) {
             $.notify({
@@ -689,10 +689,10 @@
             },{
               type: "danger"
             });
-            document.getElementById("id_empleado").focus();
-            $("#form_id_empleado").removeClass('has-success');
-            $("#form_id_empleado").removeClass('has-error');
-            $("#form_id_empleado").addClass('has-error');
+            document.getElementById("codigo_categoria").focus();
+            $("#form_codigo").removeClass('has-success');
+            $("#form_codigo").removeClass('has-error');
+            $("#form_codigo").addClass('has-error');
           }
           
         },

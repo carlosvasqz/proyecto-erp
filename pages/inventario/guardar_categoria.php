@@ -10,7 +10,7 @@
 		
     //  echo $codigoEmpleado . ' <-> ' . $fechaIngreso . ' <-> ' . $estado . ' <-> ' . $idEmpleado . ' <-> ' . $nombres . ' <-> ' . $apellido1 .  ' <-> ' . $apellido2 . ' <-> ' . $fechaNacimiento . ' <-> ' . $genero . ' <-> ' . $direccion . ' <-> ' . $telefono . ' <-> ' . $correo;
 
-	$queryVerificar = mysqli_query($db, "SELECT COUNT(*) as Existe FROM categoria WHERE 	Id_Categoria = '$codigoCategoria'") or die (mysqli_error());
+	$queryVerificar = mysqli_query($db, "SELECT COUNT(*) as Existe FROM categorias WHERE 	Id_Categoria = '$codigoCategoria'") or die (mysqli_error());
     
 	$rowExiste=mysqli_fetch_array($queryVerificar);
 	if($rowExiste['Existe']==0){

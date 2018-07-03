@@ -154,7 +154,7 @@
             return $rowCodigo['Ultimo_Codigo'];
         }
 
-          function nuevoCodigoCategoria($codigo){
+    function nuevoCodigoCategoria($codigo){
         $codigo = explode('.', $codigo);
         $nuevo = $codigo[1]+1;
         return $codigo[0] . "." . $nuevo;
