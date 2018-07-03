@@ -1,12 +1,15 @@
 <?php
   include ('../../inc/constructor.php');
+  include ('../../inc/conexion.php');
+  include ('../../inc/util.php');
+  if(isset($_POST["codigo_cliente"])){
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Blank Page</title>
+  <title>MaterialAdminLTE 2 | Editar Cliente</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -17,6 +20,8 @@
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="../../dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="../../dist/css/ripples.min.css">
@@ -35,13 +40,13 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="skin-blue sidebar-mini fixed">
 <!-- Site wrapper -->
 <div class="wrapper">
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index2.php" class="logo">
+    <a href="../../index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">M<b>A</b>L</span>
       <!-- logo for regular state and mobile devices -->
@@ -210,7 +215,7 @@
         </div>
       </div>
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <!-- <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
@@ -218,180 +223,12 @@
                 </button>
               </span>
         </div>
-      </form>
+      </form> -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../../index.php"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="../../index2.php"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-files-o"></i>
-            <span>Layout Options</span>
-            <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../layout/top-nav.php"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-            <li><a href="../layout/boxed.php"><i class="fa fa-circle-o"></i> Boxed</a></li>
-            <li><a href="../layout/fixed.php"><i class="fa fa-circle-o"></i> Fixed</a></li>
-            <li><a href="../layout/collapsed-sidebar.php"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="../widgets.php">
-            <i class="fa fa-th"></i> <span>Widgets</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">Hot</small>
-            </span>
-          </a>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>Charts</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../charts/chartjs.php"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-            <li><a href="../charts/morris.php"><i class="fa fa-circle-o"></i> Morris</a></li>
-            <li><a href="../charts/flot.php"><i class="fa fa-circle-o"></i> Flot</a></li>
-            <li><a href="../charts/inline.php"><i class="fa fa-circle-o"></i> Inline charts</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-laptop"></i>
-            <span>UI Elements</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../UI/general.php"><i class="fa fa-circle-o"></i> General</a></li>
-            <li><a href="../UI/icons.php"><i class="fa fa-circle-o"></i> Icons</a></li>
-            <li><a href="../UI/buttons.php"><i class="fa fa-circle-o"></i> Buttons</a></li>
-            <li><a href="../UI/sliders.php"><i class="fa fa-circle-o"></i> Sliders</a></li>
-            <li><a href="../UI/timeline.php"><i class="fa fa-circle-o"></i> Timeline</a></li>
-            <li><a href="../UI/modals.php"><i class="fa fa-circle-o"></i> Modals</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-edit"></i> <span>Forms</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../forms/general.php"><i class="fa fa-circle-o"></i> General Elements</a></li>
-            <li><a href="../forms/advanced.php"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
-            <li><a href="../forms/editors.php"><i class="fa fa-circle-o"></i> Editors</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-table"></i> <span>Tables</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../tables/simple.php"><i class="fa fa-circle-o"></i> Simple tables</a></li>
-            <li><a href="../tables/data.php"><i class="fa fa-circle-o"></i> Data tables</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="../calendar.php">
-            <i class="fa fa-calendar"></i> <span>Calendar</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-red">3</small>
-              <small class="label pull-right bg-blue">17</small>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="../mailbox/mailbox.php">
-            <i class="fa fa-envelope"></i> <span>Mailbox</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-yellow">12</small>
-              <small class="label pull-right bg-green">16</small>
-              <small class="label pull-right bg-red">5</small>
-            </span>
-          </a>
-        </li>
-        <li class="treeview active">
-          <a href="#">
-            <i class="fa fa-folder"></i> <span>Examples</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="invoice.php"><i class="fa fa-circle-o"></i> Invoice</a></li>
-            <li><a href="profile.php"><i class="fa fa-circle-o"></i> Profile</a></li>
-            <li><a href="login.php"><i class="fa fa-circle-o"></i> Login</a></li>
-            <li><a href="register.php"><i class="fa fa-circle-o"></i> Register</a></li>
-            <li><a href="lockscreen.php"><i class="fa fa-circle-o"></i> Lockscreen</a></li>
-            <li><a href="404.php"><i class="fa fa-circle-o"></i> 404 Error</a></li>
-            <li><a href="500.php"><i class="fa fa-circle-o"></i> 500 Error</a></li>
-            <li class="active"><a href="blank.php"><i class="fa fa-circle-o"></i> Blank Page</a></li>
-            <li><a href="pace.php"><i class="fa fa-circle-o"></i> Pace Page</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-share"></i> <span>Multilevel</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Level One
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                <li class="treeview">
-                  <a href="#"><i class="fa fa-circle-o"></i> Level Two
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                  </a>
-                  <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-          </ul>
-        </li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
-        <li class="header">LABELS</li>
-        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
-      </ul>
+      <?php
+        menu();
+      ?>
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -403,88 +240,187 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Tipo de Usuario
-        <small>Administración</small>
+        Editar Cliente
+        <small>Ventas</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Administración</a></li>
-        <li class="active">Tipo de Usuario</li>
+        <li><a href="#">Ventas</a></li>
+        <li class="active">Editar Cliente</li>
       </ol>
     </section>
 
+    <?php
+      $queryCliente=mysqli_query($db, "SELECT * FROM clientes WHERE Id_Cliente = '".$_POST['codigo_cliente']."'") or die(mysqli_error());
+      $rowCliente=mysqli_fetch_array($queryCliente);
+    ?>
+
     <!-- Main content -->
     <section class="content">
-
-          <!-- /.box -->
-          <!-- general form elements disabled -->
-     <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Listar</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info"><a href="tipos_usuarios_registrar.php">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
+    <div class="row">
+      <!-- columna izq -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Administrativos</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
             <div class="box-body">
-              <table id="lista-tipos" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>Id Tipo de Usuario</th>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    include("../../inc/conexion.php");
-                      $sql=mysqli_query($db,"SELECT * FROM tipos_usuarios") or die(mysqli_error());
-                      while($row=mysqli_fetch_array($sql)) {
-      echo '
-      <tr>
-      <td id="fil" >'.$row['Id_Tipo_Usuario'].'</td>
-      <td id="fil" >'.$row['Nombre'].'</td>
-      <td id="fil" >'.$row['Descripcion'].'</td>
-      <td>
-                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><a href="tipos_usuarios_editar.php"> <i class="fa fa-pencil"></i></button></a>
-                              
-                            </td>
-      </tr>
+              <div class="form-group" id="form_codigo">
+                <label for="codigo_cliente" class="col-sm-2 control-label">Codigo*</label>
 
-      ';
-      }
-      ?>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo_cliente" placeholder="Codigo" value="<?php echo $rowCliente['Id_Cliente'];?>" disabled>
+                </div>
+              </div>
+              <!-- Date -->
 
-                </tbody>
-                <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                </tfoot> -->
-              </table>
+              <!-- <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
             </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
         </div>
-        <!-- /.col -->
-      </div>
-            
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Personales</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group" id="form_id_cliente">
+                <label for="id_cliente" class="col-sm-2 control-label">Identidad*</label>
 
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" data-mask id="id_cliente" placeholder="Ingrese el numero..." value="<?php echo $rowCliente['Numero_Identidad'];?>" disabled>
+                </div>
+              </div>
+              <!--_______________________________________________________________________________________________________________________-->
+              <div class="form-group" id="form_nombres">
+                <label for="nombres_cliente" class="col-sm-2 control-label">Nombres*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="nombres_cliente" placeholder="Ingrese los nombres.." value="<?php echo $rowCliente['Nombres'];?>">
+                </div>
+              </div>
+              <div class="form-group" id="form_apellido">
+                <label for="apellido" class="col-sm-2 control-label">Apellido*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="apellido" placeholder="Ingrese el apellido.." value="<?php echo $rowCliente['Apellido'];?>">
+                </div>
+              </div>
+
+             <div class="form-group" id="form_rtn_cliente">
+                <label for="rtn_cliente" class="col-sm-2 control-label">RTN*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;99999999999999&quot;" data-mask id="rtn_cliente" placeholder="Ingrese el numero..." value="<?php echo $rowCliente['RTN'];?>">
+                </div>
+              </div>
+    
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos de Contacto</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+               <div class="form-group" id="form_telefono">
+                <label for="telefono" class="col-sm-2 control-label">Telefono*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask id="telefono" placeholder="Ingrese el numero..." value="<?php echo $rowCliente['Telefono'];?>">
+                </div>
+              </div>
+              
+              <div class="form-group" id="form_direccion">
+                <label for="direccion_cliente" class="col-sm-2 control-label">Direccion*</label>
+
+                <div class="col-sm-9">
+                  <textarea class="form-control" rows="3" id="direccion_cliente" placeholder="Ingrese la direccion ..." ><?php echo $rowCliente['Direccion'];?></textarea>
+                </div>
+              </div>
+              
+              <div class="form-group" id="form_correo">
+                <label for="correo_cliente" class="col-sm-2 control-label">Email*</label>
+
+                <div class="col-sm-9">
+                  <input type="email" class="form-control" id="correo_cliente" placeholder="Ingrese el email.." value="<?php echo $rowCliente['Correo_Electronico'];?>">
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <!-- <div class="box-header with-border"> -->
+            <!-- <h3 class="box-title">Acciones</h3> -->
+          <!-- </div> -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
+                <button type="button" id="btnActualizar" class="btn btn-success pull-right">Actualizar</button>
+              </div>
+              <div class="col-sm-4"></div>
+            </div>
+            <!-- /.box-body -->
+          </form>
+        </div>
+      </div>
+      <!--/.col (izq) -->
+    </div>
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
+  <!-- /.content-wrapper -->  
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -701,20 +637,29 @@
 <script>
     $.material.init();
 </script>
-<!-- SlimScroll -->
-<script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- DataTables -->
 <script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap notify -->
+<script src="../../plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
+<!-- SlimScroll -->
+<script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<!-- InputMask -->
+<script src="../../plugins/input-mask/jquery.inputmask.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
+<!-- page script -->
 <script>
   $(function () {
-    $('#lista-tipos').DataTable({
+    $('#lista-clientes').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -722,10 +667,231 @@
       'info'        : true,
       'autoWidth'   : false
     });
+    //Date picker
+    $('#fecha_nacimiento').datepicker({
+      autoclose: true
+    });
+    $('#fecha_ingreso').datepicker({
+      autoclose: true
+    });
   })
   $(document).ready(function () {
-    $('.sidebar-menu').tree()
+    $('.sidebar-menu').tree();
+    $('[data-mask]').inputmask()
+    // $('#lista-empleados').DataTable();
+
+    function alertaIngresarDatos(){
+      $.notify({
+        title: "Error : ",
+        message: "Por favor, complete los campos obligatorios",
+        icon: 'fa fa-times' 
+      },{
+        type: "danger"
+      });
+    }
+
+    $("#btnCancelar").click(function(){
+      window.setTimeout('location.href="clientes.php"', 1);
+    });
+
+    $("#btnActualizar").click(function(){
+      //Obtencion de valores en los inputs
+    var codigoCliente = $("#codigo_cliente").val();
+      var  idCliente= $("#id_cliente").val();
+      var nombreCliente= $("#nombres_cliente").val();
+      var apellido= $("#apellido").val();
+      var rtnCliente= $("#rtn_cliente").val();
+      var telefono= $("#telefono").val();
+      var direccionCliente= $("#direccion_cliente").val();
+      var correoCliente= $("#correo_cliente").val();
+      
+      // Validaciones
+     if (codigoCliente=='') {
+        $("#codigo_cliente").attr('required',true);
+        document.getElementById("codigo_cliente").focus();
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#codigo_cliente").attr('required',false);
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-success');
+      }
+
+       if (idCliente=='') {
+        $("#id_cliente").attr('required',true);
+        document.getElementById("id_cliente").focus();
+        $("#form_id_cliente").removeClass('has-success');
+        $("#form_id_cliente").removeClass('has-error');
+        $("#form_id_cliente").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#id_cliente").attr('required',false);
+        $("#form_id_cliente").removeClass('has-success');
+        $("#form_id_cliente").removeClass('has-error');
+        $("#form_id_cliente").addClass('has-success');
+      }
+
+       if (nombreCliente=='') {
+        $("#nombres_cliente").attr('required',true);
+        document.getElementById("nombres_cliente").focus();
+        $("#form_nombres").removeClass('has-success');
+        $("#form_nombres").removeClass('has-error');
+        $("#form_nombres").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#nombres_cliente").attr('required',false);
+        $("#form_nombres").removeClass('has-success');
+        $("#form_nombres").removeClass('has-error');
+        $("#form_nombres").addClass('has-success');
+      }
+
+         if (apellido=='') {
+        $("#apellido").attr('required',true);
+        document.getElementById("apellido").focus();
+        $("#form_apellido").removeClass('has-success');
+        $("#form_apellido").removeClass('has-error');
+        $("#form_apellido").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#apellido").attr('required',false);
+        $("#form_apellido").removeClass('has-success');
+        $("#form_apellido").removeClass('has-error');
+        $("#form_apellido").addClass('has-success');
+      }
+    
+        if (rtnCliente=='') {
+        $("#rtn_cliente").attr('required',true);
+        document.getElementById("rtn_cliente").focus();
+        $("#form_rtn_cliente").removeClass('has-success');
+        $("#form_rtn_cliente").removeClass('has-error');
+        $("#form_rtn_cliente").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#rtn_cliente").attr('required',false);
+        $("#form_rtn_cliente").removeClass('has-success');
+        $("#form_rtn_cliente").removeClass('has-error');
+        $("#form_rtn_cliente").addClass('has-success');
+      }
+
+
+        if (telefono=='') {
+        $("#telefono").attr('required',true);
+        document.getElementById("telefono").focus();
+        $("#form_telefono").removeClass('has-success');
+        $("#form_telefono").removeClass('has-error');
+        $("#form_telefono").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#telefono").attr('required',false);
+        $("#form_telefono").removeClass('has-success');
+        $("#form_telefono").removeClass('has-error');
+        $("#form_telefono").addClass('has-success');
+      }
+
+       if (direccionCliente=='') {
+        $("#direccion_cliente").attr('required',true);
+        document.getElementById("direccion_cliente").focus();
+        $("#form_direccion").removeClass('has-success');
+        $("#form_direccion").removeClass('has-error');
+        $("#form_direccion").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#direccion_cliente").attr('required',false);
+        $("#form_direccion").removeClass('has-success');
+        $("#form_direccion").removeClass('has-error');
+        $("#form_direccion").addClass('has-success');
+      }
+
+      if (correoCliente=='') {
+        $("#correo_cliente").attr('required',true);
+        document.getElementById("correo_cliente").focus();
+        $("#form_correo").removeClass('has-success');
+        $("#form_correo").removeClass('has-error');
+        $("#form_correo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#correo_cliente").attr('required',false);
+        $("#form_correo").removeClass('has-success');
+        $("#form_correo").removeClass('has-error');
+        $("#form_correo").addClass('has-success');
+      }
+   
+      //Fin validaciones
+
+      // Variable con todos los valores necesarios para la consulta
+		  var datos = 'codigo_cliente=' + codigoCliente + '&id_cliente=' + idCliente + '&nombres_cliente=' + nombreCliente + '&apellido=' + apellido + '&rtn_cliente=' + rtnCliente + '&telefono=' + telefono +  '&direccion_cliente=' + direccionCliente + '&correo_cliente=' + correoCliente;
+
+      // alert(datos);
+      $.ajax({
+        //Direccion destino
+        url: "clientes_actualizar.php",
+        // Variable con los datos necesarios
+        data: datos,
+        type: "POST",			
+        dataType: "html",
+        //cache: false,
+        //success
+        success: function (data) {
+          // alert(data);
+          if (data) {
+            $.notify({
+              title: "Correcto : ",
+              message: "¡El cliente se actualizó exitosamente!",
+              icon: 'fa fa-check' 
+            },{
+              type: "success"
+            });
+            window.setTimeout('location.href="clientes.php"', 5);
+          }
+          if (!data) {
+            $.notify({
+              title: "Error : ",
+              message: "¡El numero de Identidad ingresado NO existe!",
+              icon: 'fa fa-times' 
+            },{
+              type: "danger"
+            });
+            document.getElementById("id_cliente").focus();
+            $("#form_id_cliente").removeClass('has-success');
+            $("#form_id_cliente").removeClass('has-error');
+            $("#form_id_cliente").addClass('has-error');
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          // 		title: "Informacion : ",
+          // 		message: "Petición realizada!",
+          // 		icon: 'fa fa-check' 
+          // 	},{
+          // 		type: "info"
+          // });
+        }		
+      });
+
+    });
   })
 </script>
 </body>
 </html>
+<?php
+  } else {
+    header("location: ../examples/500.php");
+    exit();
+  }
+?>

@@ -19,8 +19,6 @@
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
-  <!-- bootstrap datepicker -->
-  <link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="../../dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="../../dist/css/ripples.min.css">
@@ -240,179 +238,76 @@
     <section class="content-header">
       <h1>
         Registrar Proveedor
-        <small>Compras</small>
+        <small>Administracion</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Compras</a></li>
-        <li class="active">Registro Proveedores</li>
+        <li><a href="#">Administracion</a></li>
+        <li class="active">Registrar Proveedor</li>
       </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content">
-    <div class="row">
-      <!-- columna izq -->
-      <div class="col-md-12">
-        <!-- Horizontal Form -->
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Datos Administrativos</h3>
-          </div>
-          <!-- /.box-header -->
-          <!-- form start -->
-          <form class="form-horizontal">
-            <div class="box-body">
-              <div class="form-group" id="form_codigo">
-                <label for="codigo" class="col-sm-2 control-label">Codigo*</label>
-
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" value="<?php echo nuevoCodigoProveedor(obtenerUltimoCodigoProveedor());?>" readonly>
-                </div>
-              </div>
-              
-              <div class="form-group" id="form_estado">
-                <label for="estado"  class="col-sm-2 control-label">Estado*</label>
-
-                <div class="col-sm-9">
-                  <div class="radio">
-                    <label>
-                      <input type="radio" name="optionsRadios" id="estado" value="1" checked>
-                      Habilitado
-                    </label>
-                  </div>
-                  <div class="radio">
-                    <label>
-                      <input type="radio" name="optionsRadios" id="estado" value="0">
-                      Desabilitado
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <!-- <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
-                </div>
-              </div> -->
+    <section class="content" style="width: 600px;">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Nuevo Proveedor</h3>
             </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
-            <!-- /.box-footer -->
-          </form>
-        </div>
-        <!-- Horizontal Form -->
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Datos Personales</h3>
-          </div>
-          <!-- /.box-header -->
-          <!-- form start -->
-           <form class="form-horizontal">
-            <div class="box-body">
-              <div class="form-group" id="form_nombre">
-                  <label for="nombre" class="col-sm-2 control-label">Nombre Proveedor</label>
-                  <div class="col-sm-9">
+            <!-- /.box-header -->
+            <div  id="Ventana_Proveedor" class="box-body">
+              <form method="POST"  action="guardar_proveedor.php" role="form">
+              <div class="box-body">
+</div>
+                 <div class="form-group">
+                  <label for="rtn">Código Proveedor</label>
+                  <input type="text" class="form-control" name="codigo" id="codigo" placeholder="Ingrese Codigo ">
+                  <div id="comprobarId"></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="nombre">Nombre Proveedor</label>
                   <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Ingrese Nombre">
 
                 </div>
+                 <div class="form-group">
+                  <label for="rtn">RTN Proveedor</label>
+                  <input type="text" class="form-control" name="rtn" id="rtn" placeholder="Ingrese RTN">
                 </div>
-     
-              <div class="form-group" id="form_rtn">
-                <label for="rtn" class="col-sm-2 control-label">RTN*</label>
-
-                <div class="col-sm-9">
-                  <input type="text"  name="rtn" class="form-control" data-inputmask="&quot;mask&quot;: &quot;9999-9999-999999&quot;" data-mask id="rtn" placeholder="Ingrese el numero...">
+                 <div class="form-group">
+                  <label for="direccion">Dirección</label>
+                  <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Ingrese Dirección">
                 </div>
-              </div>
-             
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
-            <!-- /.box-footer -->
-          </form>
-        </div>
-        <!-- Horizontal Form -->
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Datos de Contacto</h3>
-          </div>
-          <!-- /.box-header -->
-          <!-- form start -->
-          <form class="form-horizontal">
-            <div class="box-body">
-              <div class="form-group" id="form_direccion">
-                <label for="direccion" class="col-sm-2 control-label">Direccion*</label>
-
-                <div class="col-sm-9">
-                  <textarea class="form-control" name="direccion" rows="3" id="direccion" placeholder="Ingrese la direccion ..."></textarea>
+                 <div class="form-group">
+                  <label for="telefono">Teléfono</label>
+                  <input type="text" class="form-control" name="telefono" id="telefono" placeholder="Ingrese Teléfono">
                 </div>
-              </div>
+                 <div class="form-group">
+                  <label for="correo">Correo Electrónico</label>
+                  <input type="text" class="form-control" name="correo" id="correo" placeholder="Ingrese Correo">
+                </div>
+                <div class="form-group">
+                  <label for="estado">Estado</label>
+                  <input type="text" class="form-control" name="estado" id="estado" placeholder="Ingrese Estado">
+                </div>
+               
               
-              <div class="form-group" id="form_telefono">
-                <label for="telefono" class="col-sm-2 control-label">Telefono*</label>
+              <!-- /.box-body -->
 
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask id="telefono" name="telefono" placeholder="Ingrese el numero..">
-                </div>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Guardar</button>
               </div>
-
-              <div class="form-group" id="form_correo">
-                <label for="correo" class="col-sm-2 control-label">Email*</label>
-
-                <div class="col-sm-9">
-                  <input type="email" name="correo" class="form-control" id="correo" placeholder="Ingrese el email..">
-                </div>
-              </div>
-              <!-- <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
-                </div>
-              </div> -->
-            </div>
+            </form>
+          
             <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
-            <!-- /.box-footer -->
-          </form>
+          </div>
+          <!-- /.box -->
         </div>
-        <!-- Horizontal Form -->
-        <div class="box box-info">
-          <!-- <div class="box-header with-border"> -->
-            <!-- <h3 class="box-title">Acciones</h3> -->
-          <!-- </div> -->
-          <!-- /.box-header -->
-          <!-- form start -->
-          <form class="form-horizontal">
-            <div class="box-body">
-              <div class="col-sm-4"></div>
-              <div class="col-sm-4">
-                <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
-                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
-              </div>
-              <div class="col-sm-4"></div>
-            </div>
-            <!-- /.box-body -->
-          </form>
-        </div>
+        <!-- /.col -->
       </div>
-      <!--/.col (izq) -->
-    </div>
+      <!-- /.row -->
+
     </section>
     <!-- /.content -->
   </div>
@@ -633,21 +528,14 @@
 <script>
     $.material.init();
 </script>
+
 <!-- DataTables -->
 <script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<!-- bootstrap datepicker -->
-<script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-<!-- bootstrap notify -->
-<script src="../../plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
 <!-- SlimScroll -->
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
-<!-- InputMask -->
-<script src="../../plugins/input-mask/jquery.inputmask.js"></script>
-<script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="../../plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -663,203 +551,12 @@
       'info'        : true,
       'autoWidth'   : false
     });
-    //Date picker
-  
   })
   $(document).ready(function () {
     $('.sidebar-menu').tree();
-    $('[data-mask]').inputmask()
     // $('#lista-empleados').DataTable();
-
-    function alertaIngresarDatos(){
-      $.notify({
-        title: "Error : ",
-        message: "Por favor, complete los campos obligatorios",
-        icon: 'fa fa-times' 
-      },{
-        type: "danger"
-      });
-    }
-
-    $("#btnCancelar").click(function(){
-      $(location).attr('href', 'proveedores.php');
-    });
-
-    $("#btnRegistrar").click(function(){
-      //Obtencion de valores en los inputs
-     var codigo=$('#codigo').val();
-     var estado=$('input[name="optionsRadios"]:checked').val();
-var nombre=$('#nombre').val();
-var rtn=$('#rtn').val();
-var direccion=$('#direccion').val();
-var telefono=$('#telefono').val();
-var correo=$('#correo').val();
-
-      
-      // Validaciones
-      if (codigo=='') {
-        $("#codigo").attr('required',true);
-        document.getElementById("codigo").focus();
-        $("#form_codigo").removeClass('has-success');
-        $("#form_codigo").removeClass('has-error');
-        $("#form_codigo").addClass('has-error');
-        alertaIngresarDatos();
-        return false;
-      } else {
-        $("#codigo").attr('required',false);
-        $("#form_codigo").removeClass('has-success');
-        $("#form_codigo").removeClass('has-error');
-        $("#form_codigo").addClass('has-success');
-      }
-
-      
-      if (estado=='') {
-        $("#estado").attr('required',true);
-        document.getElementById("estado").focus();
-        $("#form_estado").removeClass('has-success');
-        $("#form_estado").removeClass('has-error');
-        $("#form_estado").addClass('has-error');
-        alertaIngresarDatos();
-        return false;
-      } else {
-        $("#estado").attr('required',false);
-        $("#form_estado").removeClass('has-success');
-        $("#form_estado").removeClass('has-error');
-        $("#form_estado").addClass('has-success');
-      }
-       if (nombre=='') {
-        $("#nombre").attr('required',true);
-        document.getElementById("nombre").focus();
-        $("#form_nombre").removeClass('has-success');
-        $("#form_nombre").removeClass('has-error');
-        $("#form_nombre").addClass('has-error');
-        alertaIngresarDatos();
-        return false;
-      } else {
-        $("#nombre").attr('required',false);
-        $("#form_nombre").removeClass('has-success');
-        $("#form_nombre").removeClass('has-error');
-        $("#form_nombre").addClass('has-success');
-      }
-
-      if (rtn=='') {
-        $("#rtn").attr('required',true);
-        document.getElementById("rtn").focus();
-        $("#form_rtn").removeClass('has-success');
-        $("#form_rtn").removeClass('has-error');
-        $("#form_rtn").addClass('has-error');
-        alertaIngresarDatos();
-        return false;
-      } else {
-        $("#rtn").attr('required',false);
-        $("#form_rtn").removeClass('has-success');
-        $("#form_rtn").removeClass('has-error');
-        $("#form_rtn").addClass('has-success');
-      }
-
-      if (direccion=='') {
-        $("#direccion").attr('required',true);
-        document.getElementById("direccion").focus();
-        $("#form_direccion").removeClass('has-success');
-        $("#form_direccion").removeClass('has-error');
-        $("#form_direccion").addClass('has-error');
-        alertaIngresarDatos();
-        return false;
-      } else {
-        $("#direccion").attr('required',false);
-        $("#form_direccion").removeClass('has-success');
-        $("#form_direccion").removeClass('has-error');
-        $("#form_direccion").addClass('has-success');
-      }
-
-      if (telefono=='') {
-        $("#telefono").attr('required',true);
-        document.getElementById("telefono").focus();
-        $("#form_telefono").removeClass('has-success');
-        $("#form_telefono").removeClass('has-error');
-        $("#form_telefono").addClass('has-error');
-        alertaIngresarDatos();
-        return false;
-      } else {
-        $("#telefono").attr('required',false);
-        $("#form_telefono").removeClass('has-success');
-        $("#form_telefono").removeClass('has-error');
-        $("#form_telefono").addClass('has-success');
-      }
-
-      if (correo=='') {
-        $("#correo").attr('required',true);
-        document.getElementById("correo").focus();
-        $("#form_correo").removeClass('has-success');
-        $("#form_correo").removeClass('has-error');
-        $("#form_correo").addClass('has-error');
-        alertaIngresarDatos();
-        return false;
-      } else {
-        $("#correo").attr('required',false);
-        $("#form_correo").removeClass('has-success');
-        $("#form_correo").removeClass('has-error');
-        $("#form_correo").addClass('has-success');
-      }
-      //Fin validaciones
-
-      // Variable con todos los valores necesarios para la consulta
-      var datos = 'codigo=' + codigo + '&estado=' + estado + '&nombre=' + nombre + '&rtn=' + rtn + '&direccion=' + direccion  + '&telefono=' + telefono + '&correo=' + correo;
-
-      // alert(datos);
-      $.ajax({
-        //Direccion destino
-        url: "guardar_proveedor.php",
-        // Variable con los datos necesarios
-        data: datos,
-        type: "POST",     
-        dataType: "html",
-        //cache: false,
-        //success
-        success: function (data) {
-          // alert(data);
-          if (data) {
-            $.notify({
-              title: "Correcto : ",
-              message: "¡El proveedor se registró exitosamente!",
-              icon: 'fa fa-check' 
-            },{
-              type: "success"
-            });
-            window.setTimeout('location.href="proveedores.php"', 5);
-          }
-          if (!data) {
-            $.notify({
-              title: "Error : ",
-              message: "¡El numero de RTN ingresado ya existe!",
-              icon: 'fa fa-times' 
-            },{
-              type: "danger"
-            });
-            document.getElementById("rtn").focus();
-            $("#form_rtn").removeClass('has-success');
-            $("#form_rtn").removeClass('has-error');
-            $("#form_rtn").addClass('has-error');
-          }
-          
-        },
-        error : function(xhr, status) {
-          //  alert('Disculpe, existió un problema');
-        },
-        complete : function(xhr, status) {
-          // alert('Petición realizada');
-          // $.notify({
-          //    title: "Informacion : ",
-          //    message: "Petición realizada!",
-          //    icon: 'fa fa-check' 
-          //  },{
-          //    type: "info"
-          // });
-        }   
-      });
-
-    });
   })
 </script>
+<script src="js/agregar_proveedor.js"></script>
 </body>
 </html>

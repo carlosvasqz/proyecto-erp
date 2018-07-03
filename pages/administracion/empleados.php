@@ -300,7 +300,7 @@
             <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text"><h4>Deshabilitados</h4></span>
+              <span class="info-box-text"><h4>Desabilitados</h4></span>
               <span class="info-box-number">
                 <?php 
                   $queryEmpleadosDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Desabilitados FROM empleados WHERE Estado = 0") or die(mysqli_error());
@@ -323,6 +323,7 @@
             <div class="box-header">
               <h3 class="box-title">Lista de Empleados</h3>
               <!-- tools box -->
+<<<<<<< HEAD
              <div class="pull-right box-tools">
                 <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
                   <!-- <a href="empleados_registrar.php"> -->
@@ -330,14 +331,19 @@
                   <b>Registrar Nuevo</b>
                 </button>
                 <!-- </a> -->
+=======
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info"><a href="empleados_registrar.php">
+                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
+>>>>>>> 9de3224ba0abe8360dd88009bfa300526aa7a8ea
               </div>
               <!-- /. tools -->
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="lista-empleados" class="table table-bordered table-striped table-hover">
-                <thea >
-                  <tr >
+                <thead>
+                  <tr>
                     <th>Codigo</th>
                     <th>Nombres</th>
                     <th>Apellido</th>
@@ -362,7 +368,7 @@
                           $color = "danger";
                           break;
                         case 0:
-                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
+                          $etiqueta = "<small class='label bg-red'>Desabilitado</small>";
                           $tootip = "Habilitar";
                           $icono = "fa fa-check-circle";
                           $color = "info";

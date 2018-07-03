@@ -4,19 +4,19 @@
 
         include ('../../inc/conexion.php');
         include ('../../inc/util.php');
-		 $tipos = $_POST['id_tipos'];
+		 $codigoCliente = $_POST['codigo_cliente'];
 		 $estado = $_POST['estado'];
 
     //  echo $codigoEmpleado . ' <-> ' . $fechaIngreso . ' <-> ' . $estado . ' <-> ' . $idEmpleado . ' <-> ' . $nombres . ' <-> ' . $apellido1 .  ' <-> ' . $apellido2 . ' <-> ' . $fechaNacimiento . ' <-> ' . $genero . ' <-> ' . $direccion . ' <-> ' . $telefono . ' <-> ' . $correo;
 
-	$queryVerificar = mysqli_query($db, "SELECT COUNT(*) as Existe FROM tipos_usuarios WHERE Id_Tipo_Usuario = '$tipos'") or die (mysqli_error());
+	$queryVerificar = mysqli_query($db, "SELECT COUNT(*) as Existe FROM clientes WHERE Id_Cliente = '$codigoCliente'") or die (mysqli_error());
     
 	$rowExiste=mysqli_fetch_array($queryVerificar);
 	if($rowExiste['Existe']==0){
 		#echo 'No existe';
 	}
 	if ($rowExiste['Existe']==1) {
-			$queryActualizar = mysqli_query($db, "UPDATE tipos_usuarios SET Estado=$estado WHERE Id_Tipo_Usuario='$tipos'") or die(mysqli_error());
+			$queryActualizar = mysqli_query($db, "UPDATE clientes SET Estado=$estado WHERE Codigo_cliente='$codigoCliente'") or die(mysqli_error());
 			echo 'Actualizado';
     }
             

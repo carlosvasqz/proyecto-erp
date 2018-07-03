@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Empleados</title>
+  <title>MaterialAdminLTE 2 | Clientes</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -237,13 +237,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Empleados
-        <small>Administracion</small>
+        Clientes
+        <small>Ventas</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Administracion</a></li>
-        <li class="active">Empleados</li>
+        <li><a href="#">Ventas</a></li>
+        <li class="active">Clientes</li>
       </ol>
     </section>
 
@@ -280,10 +280,10 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Lista de Empleados</h3>
+              <h3 class="box-title">Lista de Clientes</h3>
               <!-- tools box -->
               <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info"><a href="empleados_registrar.php">
+                <button type="button" class="btn btn-info"><a href="registrar_cliente.php">
                   <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
               </div>
               <!-- /. tools -->
@@ -295,12 +295,15 @@
                   <tr>
               
                     <th>ID</th>
+                    <th>Numero de identidad</th>
                     <th>Nombres</th>
                     <th>Apellido</th>
+                    <th>Estado</th>
                     <th>Telefono</th>
                     <th>RTN</th>
                     <th>Correo Electronico</th>
                     <th>Direccion</th>
+                    <th>Acciones</th>
                   
                   </tr>
                 </thead>
@@ -308,18 +311,43 @@
                  <?php
                     $queryClientes=mysqli_query($db, "SELECT * FROM clientes") or die(mysqli_error());
                    while ($rowCliente=mysqli_fetch_array($queryClientes)){
+                      $etiqueta = null;
+                      $tootip = null;
+                      $icono = null;
+                      $color = null;
+
+                        switch ($rowCliente["Estado"]) {
+                        case 1:
+                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
+                          $tootip = "Deshabilitar";
+                          $icono = "fa fa-times-circle";
+                          $color = "danger";
+                          break;
+                        case 0:
+                          $etiqueta = "<small class='label bg-red'>Desabilitado</small>";
+                          $tootip = "Habilitar";
+                          $icono = "fa fa-check-circle";
+                          $color = "info";
+                          break;
+                      }
+                    
                       echo '
                         <tr>
                             <td>'.$rowCliente['Id_Cliente'].'</td>
+                            <td>'.$rowCliente['Numero_Identidad'].'</td>
                             <td>'.$rowCliente['Nombres'].'</td>
                             <td>'.$rowCliente['Apellido'].'</td>
+                            <td>'.$etiqueta.'</td>
                             <td>'.$rowCliente['Telefono'].'</td>
                             <td>'.$rowCliente['RTN'].'</td>
                             <td>'.$rowCliente['Correo_Electronico'].'</td>
                             <td>'.$rowCliente['Direccion'].'</td>
                             <td>
-                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
-                              <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash"></i></button>
+                              <form action="clientes_editar.php" method="POST">
+                             <input type="hidden" name="codigo_cliente" value="'.$rowCliente['Id_Cliente'].'"/>
+                              <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+
+                              <button type="button" id="'.$rowCliente['Id_Cliente'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
                             </td>
                           </form>
                         </tr>
@@ -573,6 +601,8 @@
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<!-- Sweet Alert -->
+<script src="../../plugins/sweet-alert/sweetalert.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -589,8 +619,88 @@
       'autoWidth'   : false
     });
   })
+
+
   $(document).ready(function () {
     $('.sidebar-menu').tree();
+
+    
+    $('.sweetalert').click(function(){
+     var codigoCliente = $(this).attr('id');
+    var accion = $(this).attr('class');
+    accion = accion.split(" ");
+    var Estado;
+    if (accion[4]=='Habilitar') {
+      Estado = 1;
+    } else {
+      Estado = 0;
+    }
+
+  
+    
+    //alert(accion[4]);
+    swal({
+        title: "¿Esta seguro?",
+        text: "Esta accion " + accion[4] + "á el elemento seleccionado",
+        type: "warning",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+    }, function () {
+        $.ajax({
+          //Direccion destino
+          url: "clientes_cambiar_estado.php",
+          // Variable con los datos necesarios
+          data: "codigo_cliente=" + codigoCliente + "&estado=" +  Estado,
+          type: "POST",     
+          dataType: "html",
+          //cache: false, 
+          //success
+          success: function (data) {
+             //alert(data);
+            setTimeout(function () {
+              if (data) {
+                swal({
+                  title: "¡Realizado!",
+                  text: "La acción se ha completado con éxito.",
+                  type: "success",
+                  showCancelButton: false,
+                  confirmButtonText: "Aceptar",
+                  closeOnConfirm: false
+                }, function(isConfirm) {
+                  if (isConfirm) {
+                    window.setTimeout('location.href="clientes.php"', 3);
+                  }
+                });
+              }
+              if (!data) {
+                swal({
+                  title: "¡Error!",
+                  text: "Ha ocurrido un problema, inténtelo más tarde.",
+                  type: "error",
+                  showCancelButton: false,
+                  confirmButtonText: "Aceptar",
+                  closeOnConfirm: true
+                });
+              }
+            }, 2000);
+          },
+          error : function(xhr, status) {
+            //alert('Disculpe, existió un problema');
+          },
+          complete : function(xhr, status) {
+            // alert('Petición realizada');
+            // $.notify({
+            //    title: "Informacion : ",
+            //    message: "Petición realizada!",
+            //    icon: 'fa fa-check' 
+            //  },{
+            //    type: "info"
+            // });
+          }   
+        });
+    });
+    });
     // $('#lista-empleados').DataTable();
   })
 </script>

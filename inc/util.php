@@ -115,20 +115,29 @@
         return $codigo[0] . "." . $nuevo;
     }
 
-
- function obtenerUltimoCodigoProveedor(){
+     function obtenerUltimoCodigoCliente(){
         include ("conexion.php");
-        $query = "SELECT MAX(Id_Proveedor) AS Ultimo_Codigo FROM proveedores;";
+        $query = "SELECT MAX(Id_Cliente) AS Ultimo_Codigo FROM clientes;";
         $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
         $rowCodigo=mysqli_fetch_array($sqlcon);
         if(is_null($rowCodigo['Ultimo_Codigo'])){
-            return "PRO.0";
+            return "CLI.0";
         }else{
             return $rowCodigo['Ultimo_Codigo'];
         }
     }
 
-     function nuevoCodigoProveedor($codigo){
+    function totalClientes($codigo){
+
+        $queryTotalClientes=mysqli_query($db, "SELECT COUNT(*) AS Total_Clientes FROM clientes") or die(mysqli_error());
+        $rowClientes=mysqli_fetch_array($queryTotalClientes);
+        $rowClientes['Total_Clientes'];
+        
+        return $rowClientes;
+        // mysqli_close($queryTotalEmpleados);           
+    }
+
+    function nuevoCodigoCliente($codigo){
         $codigo = explode('.', $codigo);
         $nuevo = $codigo[1]+1;
         return $codigo[0] . "." . $nuevo;
