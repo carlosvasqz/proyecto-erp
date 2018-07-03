@@ -638,7 +638,7 @@
 
   
     
-    //alert(accion[4]);
+    alert(accion[4]);
     swal({
         title: "¿Esta seguro?",
         text: "Esta accion " + accion[4] + "á el elemento seleccionado",
@@ -654,7 +654,7 @@
           data: "codigo_cliente=" + codigoCliente + "&estado=" +  Estado,
           type: "POST",     
           dataType: "html",
-          //cache: false, 
+          //cache: false,  
           //success
           success: function (data) {
              //alert(data);
