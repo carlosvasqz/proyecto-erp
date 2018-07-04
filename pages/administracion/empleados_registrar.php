@@ -270,9 +270,6 @@
                   <input type="text" class="form-control" id="codigo_empleado" placeholder="Codigo" value="<?php echo nuevoCodigoEmpleado(obtenerUltimoCodigoEmpleado());?>" readonly>
                 </div>
               </div>
-
-
-              
               <!-- Date -->
               <div class="form-group" id="form_fecha_ingreso">
                 <label for="fecha_ingreso" class="col-sm-2 control-label">Fecha de Ingreso*</label>

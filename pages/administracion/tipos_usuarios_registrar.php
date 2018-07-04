@@ -263,7 +263,7 @@
                 <label for="id_tipos" class="col-sm-2 control-label">Id del Tipo de Usuario</label>
 
                 <div class="col-sm-9">
-                  <textarea class="form-control" rows="3" placeholder="Ingrese el Tipo de Usuario ..."></textarea>
+                  <textarea class="form-control" rows="3" id="id_tipos" placeholder="Ingrese el Tipo de Usuario ..."></textarea>
                 </div>
               </div>
               
@@ -280,6 +280,24 @@
 
                 <div class="col-sm-9">
                   <input type="text" class="form-control" id="des" placeholder="Ingrese la descripción..">
+                </div>
+              </div>
+              <div class="form-group" id="form_estado">
+                <label for="id_tipos" class="col-sm-2 control-label">Estado*</label>
+
+                <div class="col-sm-9">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="estado" value="1" checked>
+                      Habilitado
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="estado" value="0">
+                      Desabilitado
+                    </label>
+                  </div>
                 </div>
               </div>
               <!-- <div class="form-group">
@@ -311,8 +329,8 @@
             <div class="box-body">
               <div class="col-sm-4"></div>
               <div class="col-sm-4">
-               <button type="submit" class="btn btn-default"><a href="tipos_usuarios.php">Cancelar</button></a>
-                <button type="submit" class="btn btn-success pull-right">Registrar</button>
+               <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
+                <button type="button"  id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
               </div>
               <div class="col-sm-4"></div>
             </div>
@@ -556,6 +574,9 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <!-- page script -->
+<!-- bootstrap notify -->
+<script src="../../plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
+
 <script>
   $(function () {
     $('#lista-empleados').DataTable({
@@ -577,6 +598,145 @@
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     // $('#lista-empleados').DataTable();
+ 
+  function alertaIngresarDatos(){
+      $.notify({
+        title: "Error : ",
+        message: "Por favor, complete los campos obligatorios",
+        icon: 'fa fa-times' 
+      },{
+        type: "danger"
+      });
+    }
+
+    $("#btnCancelar").click(function(){
+      $(location).attr('href', 'tipos_usuarios.php');
+    });
+
+    $("#btnRegistrar").click(function(){
+      //Obtencion de valores en los inputs
+      
+      var tipos = $("#id_tipos").val();
+      var nomb = $("#nombre").val();
+      var desc = $("#des").val();
+      var estado = $('input[name="optionsRadios"]:checked').val();
+      // Validaciones
+      if (tipos=='') {
+        $("#id_tipos").attr('required',true);
+        document.getElementById("id_tipos").focus();
+        $("#form_tipos").removeClass('has-success');
+        $("#form_tipos").removeClass('has-error');
+        $("#form_tipos").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#id_tipos").attr('required',false);
+        $("#form_tipos").removeClass('has-success');
+        $("#form_tipos").removeClass('has-error');
+        $("#form_tipos").addClass('has-success');
+      }
+
+      if (nomb=='') {
+        $("#nombre").attr('required',true);
+        document.getElementById("nombre").focus();
+        $("#form_nomb").removeClass('has-success');
+        $("#form_nomb").removeClass('has-error');
+        $("#form_nomb").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#nombre").attr('required',false);
+        $("#form_nomb").removeClass('has-success');
+        $("#form_nomb").removeClass('has-error');
+        $("#form_nomb").addClass('has-success');
+      }
+
+      if (desc=='') {
+        $("#des").attr('required',true);
+        document.getElementById("des").focus();
+        $("#form_desc").removeClass('has-success');
+        $("#form_desc").removeClass('has-error');
+        $("#form_desc").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#des").attr('required',false);
+        $("#form_desc").removeClass('has-success');
+        $("#form_desc").removeClass('has-error');
+        $("#form_desc").addClass('has-success');
+      }
+      if (estado=='') {
+        $("#estado").attr('required',true);
+        document.getElementById("estado").focus();
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#estado").attr('required',false);
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-success');
+      }
+      //Fin validaciones
+
+      // Variable con todos los valores necesarios para la consulta
+      var datos = '&id_tipos=' + tipos + '&nombre=' + nomb + '&des=' + desc + '&estado=' + estado;
+
+      // alert(datos);
+      $.ajax({
+        //Direccion destino
+        url: "tipos_usuarios_guardar.php",
+        // Variable con los datos necesarios
+        data: datos,
+        type: "POST",     
+        dataType: "html",
+        //cache: false,
+        //success
+        success: function (data) {
+          // alert(data);
+          if (data) {
+            $.notify({
+              title: "Correcto : ",
+              message: "¡El Tipo de Usuario se registró exitosamente!",
+              icon: 'fa fa-check' 
+            },{
+              type: "success"
+            });
+            window.setTimeout('location.href="tipos_usuarios.php"', 5);
+          }
+          if (!data) {
+            $.notify({
+              title: "Error : ",
+              message: "¡El ID del Tipo de Usuario ya existe!",
+              icon: 'fa fa-times' 
+            },{
+              type: "danger"
+            });
+            document.getElementById("id_tipos").focus();
+            $("#form_id_tipos").removeClass('has-success');
+            $("#form_id_tipos").removeClass('has-error');
+            $("#form_id_tipos").addClass('has-error');
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          //    title: "Informacion : ",
+          //    message: "Petición realizada!",
+          //    icon: 'fa fa-check' 
+          //  },{
+          //    type: "info"
+          // });
+        }   
+      });
+
+    });
   })
 </script>
 </body>

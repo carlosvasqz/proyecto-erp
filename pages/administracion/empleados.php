@@ -300,7 +300,7 @@
             <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text"><h4>Desabilitados</h4></span>
+              <span class="info-box-text"><h4>Deshabilitados</h4></span>
               <span class="info-box-number">
                 <?php 
                   $queryEmpleadosDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Desabilitados FROM empleados WHERE Estado = 0") or die(mysqli_error());
@@ -323,17 +323,17 @@
             <div class="box-header">
               <h3 class="box-title">Lista de Empleados</h3>
               <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
+             <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info"><a href="empleados_registrar.php">
+                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
               </div>
               <!-- /. tools -->
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="lista-empleados" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
+                <thea >
+                  <tr >
                     <th>Codigo</th>
                     <th>Nombres</th>
                     <th>Apellido</th>
@@ -358,7 +358,7 @@
                           $color = "danger";
                           break;
                         case 0:
-                          $etiqueta = "<small class='label bg-red'>Desabilitado</small>";
+                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
                           $tootip = "Habilitar";
                           $icono = "fa fa-check-circle";
                           $color = "info";
@@ -652,10 +652,6 @@
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     // $('#lista-empleados').DataTable();
-    
-  $("#btnRegistrarNuevo").click(function(){
-    $(location).attr('href', 'empleados_registrar.php');
-  });
 
   $('.sweetalert').click(function(){
     var codigoEmpleado = $(this).attr('id');
