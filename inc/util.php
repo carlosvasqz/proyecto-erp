@@ -133,4 +133,26 @@
         $nuevo = $codigo[1]+1;
         return $codigo[0] . "." . $nuevo;
     }
+
+
+
+
+
+     function obtenerUltimoCodigoConversiones(){
+        include ("conexion.php");
+        $query = "SELECT MAX(Id_Conversion) AS Ultimo_Codigo FROM conversiones;";
+        $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
+        $rowCodigo=mysqli_fetch_array($sqlcon);
+        if(is_null($rowCodigo['Ultimo_Codigo'])){
+            return "CON.0";
+        }else{
+            return $rowCodigo['Ultimo_Codigo'];
+        }
+    }
+
+     function nuevoCodigoConversiones($codigo){
+        $codigo = explode('.', $codigo);
+        $nuevo = $codigo[1]+1;
+        return $codigo[0] . "." . $nuevo;
+    }
 ?>

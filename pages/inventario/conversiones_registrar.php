@@ -8,19 +8,19 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Conversiones</title>
+  <title>MaterialAdminLTE 2 | Registrar Empleado</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Sweet Alert CSS -->
-  <link rel="stylesheet" href="../../plugins/sweet-alert/sweetalert.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="../../dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="../../dist/css/ripples.min.css">
@@ -38,21 +38,6 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-   <style>
-    .example-modal .modal {
-      position: relative;
-      top: auto;
-      bottom: auto;
-      right: auto;
-      left: auto;
-      display: block;
-      z-index: 1;
-    }
-
-    .example-modal .modal {
-      background: transparent !important;
-    }
-  </style>
 </head>
 <body class="skin-blue sidebar-mini fixed">
 <!-- Site wrapper -->
@@ -254,171 +239,165 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Conversiones
+        Registrar Conversión
         <small>Inventario</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Inventario</a></li>
-        <li class="active">Conversiones</li>
+        <li class="active">Registrar Conversión</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
-      <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-floppy-o"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Ingresos</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryConversiones=mysqli_query($db, "SELECT COUNT(*) AS Conversiones_Ingresos FROM conversiones WHERE Tipo = 1") or die(mysqli_error());
-                  $rowCoversionesIngresadas=mysqli_fetch_array($queryConversiones);
-                  echo $rowCoversionesIngresadas['Conversiones_Ingresos'];
-                  //mysqli_close($queryEmpleadosDesabilitados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
+    <div class="row">
+      <!-- columna izq -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Administrativos</h3>
           </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-list-alt"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Total Registros</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryTotalConversiones=mysqli_query($db, "SELECT COUNT(*) AS Total_Conversiones FROM conversiones") or die(mysqli_error());
-                  $rowCoversiones=mysqli_fetch_array($queryTotalConversiones);
-                  echo $rowCoversiones['Total_Conversiones'];
-                  // mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa  fa-cut (alias)"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Rebajas</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryConversiones=mysqli_query($db, "SELECT COUNT(*) AS Conversiones_Ingresos FROM conversiones WHERE Tipo = 0") or die(mysqli_error());
-                  $rowCoversionesIngresadas=mysqli_fetch_array($queryConversiones);
-                  echo $rowCoversionesIngresadas['Conversiones_Ingresos'];
-                  //mysqli_close($queryEmpleadosDesabilitados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Listado de Entradas y Salidas de Inventario</h3>
-              <!-- tools box -->
-             <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info"><a href="conversiones_registrar.php">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
-              </div>
-              <!-- /. tools -->
-            </div>
-
+          <!-- /.box-header -->
+          <!-- form start -->
+           <form class="form-horizontal">
             <div class="box-body">
-              <table id="lista-conversiones" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>Código</th>
-                    <th>Código de Artículo</th>
-                    <th>Cantidad Inicial</th>
-                    <th>Cantidad Final</th>
-                    <th>Tipo de Transacción</th>
-                    <th>Justificación</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $queryConversiones=mysqli_query($db, "SELECT * FROM conversiones") or die(mysqli_error());
-                    while ($rowCoversiones=mysqli_fetch_array($queryConversiones)) {
-                      $etiqueta = null;
-                      $tootip = null;
-                      $icono = null;
-                      $color = null;
-                      switch ($rowCoversiones["Tipo"]) {
-                        case 1:
-                          $etiqueta = "<small class='label bg-blue'>Entradas</small>";
-                          $tootip = "Salidas";
-                          $icono = "fa fa-times-circle";
-                          $color = "danger";
-                          break;
-                        case 0:
-                          $etiqueta = "<small class='label bg-red'>Salidas</small>";
-                          $tootip = "Entradas";
-                          $icono = "fa fa-check-circle";
-                          $color = "info";
-                          break;
-                      }
-                      echo '
-                        <tr>
-                            <td>'.$rowCoversiones['Id_Conversion'].'</td>
-                            <td>'.$rowCoversiones['Id_Articulo'].'</td>
-                            <td>'.$rowCoversiones['Cantidad_Inicial'].'</td>
-                             <td>'.$rowCoversiones['Cantidad_Final'].'</td>
-                            <td>'.$etiqueta.'</td>
-                             <td>'.$rowCoversiones['Justificacion'].'</td>
-                            <td>
-                              <form action="empleados_editar.php" method="POST">
-                                <input type="hidden" name="codigo_empleado" value="'.$rowCoversiones['Codigo_Empleado'].'"/>
-                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
-                              
-                                <button type="button" id="'.$rowCoversiones['Codigo_Empleado'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
-                              </form>
-                            </td>
-                          </form>
-                        </tr>
-                      ';
-                    }
-                  ?>
-                </tbody>
-                <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                </tfoot> -->
-              </table>
+              <div class="form-group" id="form_codigo">
+                <label for="codigo_conversiones" class="col-sm-2 control-label">Codigo*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo_conversiones" placeholder="Codigo" value="<?php echo nuevoCodigoConversiones(obtenerUltimoCodigoConversiones());?>" readonly>
+                </div>
+              </div>
+              <!-- Date -->
+              <div class="form-group" id="form_tipo">
+                <label for="codigo_conversiones" class="col-sm-2 control-label">Tipo*</label>
+
+                <div class="col-sm-9">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="tipo" value="1" checked>
+                      Entradas a Inventario
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="tipo" value="0">
+                      Salidas del Inventario
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Remember me
+                    </label>
+                  </div>
+                </div>
+              </div> -->
             </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos de Artículo</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group" id="form_articulo">
+                <label for="id_articulo" class="col-sm-2 control-label">Código Artículo*</label>
 
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="id_articulo" placeholder="Ingrese Codigo de Artiulo..">
+                </div>
+              </div>
+              <div class="form-group" id="form_cantidadi">
+                <label for="cantidad_inicial" class="col-sm-2 control-label">Cantidad Actual*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="nombres_empleado" placeholder="Ingrese los nombres..">
+                </div>
+              </div>
+             
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos de Conversión</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group" id="form_cantidadf">
+                <label for="cantidad_final" class="col-sm-2 control-label">Cantidad a Convertir*</label>
+
+                <div class="col-sm-9">
+                  <input class="form-control" rows="3" id="cantidad_final" placeholder="Ingrese la cantidad a convertir ..."></input>
+                </div>
+              </div>
+              
+              <div class="form-group" id="form_justificacion">
+                <label for="justificacion" class="col-sm-2 control-label">Justicaión*</label>
+
+                <div class="col-sm-9">
+                  <textarea class="form-control" rows="4" id="cantidad_final" placeholder="Justifique la Conversión ..."></textarea>
+                </div>
+              </div>
+
+           
+              
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <!-- <div class="box-header with-border"> -->
+            <!-- <h3 class="box-title">Acciones</h3> -->
+          <!-- </div> -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
+                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
+              </div>
+              <div class="col-sm-4"></div>
+            </div>
+            <!-- /.box-body -->
+          </form>
+        </div>
+      </div>
+      <!--/.col (izq) -->
+    </div>
     </section>
     <!-- /.content -->
   </div>
@@ -642,12 +621,18 @@
 <!-- DataTables -->
 <script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap notify -->
+<script src="../../plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
 <!-- SlimScroll -->
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="../../bower_components/fastclick/lib/fastclick.js"></script>
-<!-- Sweet Alert -->
-<script src="../../plugins/sweet-alert/sweetalert.min.js"></script>
+<!-- InputMask -->
+<script src="../../plugins/input-mask/jquery.inputmask.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -655,7 +640,7 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-conversiones').DataTable({
+    $('#lista-empleados').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -663,84 +648,284 @@
       'info'        : true,
       'autoWidth'   : false
     });
+    //Date picker
+    $('#fecha_nacimiento').datepicker({
+      autoclose: true
+    });
+    $('#fecha_ingreso').datepicker({
+      autoclose: true
+    });
   })
   $(document).ready(function () {
     $('.sidebar-menu').tree();
+    $('[data-mask]').inputmask()
     // $('#lista-empleados').DataTable();
 
-
-  $('.sweetalert').click(function(){
-    var codigoEmpleado = $(this).attr('id');
-    var accion = $(this).attr('class');
-    accion = accion.split(" ");
-    var nuevoEstado;
-    if (accion[4]=='Habilitar') {
-      nuevoEstado = 1;
-    } else {
-      nuevoEstado = 0;
+    function alertaIngresarDatos(){
+      $.notify({
+        title: "Error : ",
+        message: "Por favor, complete los campos obligatorios",
+        icon: 'fa fa-times' 
+      },{
+        type: "danger"
+      });
     }
-    // alert(accion[4] + " - " + nuevoEstado);
-    swal({
-        title: "¿Esta seguro?",
-        text: "Esta accion " + accion[4] + "á el elemento seleccionado",
-        type: "warning",
-        showCancelButton: true,
-        closeOnConfirm: false,
-        showLoaderOnConfirm: true,
-    }, function () {
-        $.ajax({
-          //Direccion destino
-          url: "empleados_cambiar_estado.php",
-          // Variable con los datos necesarios
-          data: "codigo_empleado=" + codigoEmpleado + "&estado=" + nuevoEstado,
-          type: "POST",     
-          dataType: "html",
-          //cache: false,
-          //success
-          success: function (data) {
-            // alert(data);
-            setTimeout(function () {
-              if (data) {
-                swal({
-                  title: "¡Realizado!",
-                  text: "La acción se ha completado con éxito.",
-                  type: "success",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: false
-                }, function(isConfirm) {
-                  if (isConfirm) {
-                    window.setTimeout('location.href="empleados.php"', 3);
-                  }
-                });
-              }
-              if (!data) {
-                swal({
-                  title: "¡Error!",
-                  text: "Ha ocurrido un problema, inténtelo más tarde.",
-                  type: "error",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: true
-                });
-              }
-            }, 2000);
-          },
-          error : function(xhr, status) {
-            //  alert('Disculpe, existió un problema');
-          },
-          complete : function(xhr, status) {
-            // alert('Petición realizada');
-            // $.notify({
-            //    title: "Informacion : ",
-            //    message: "Petición realizada!",
-            //    icon: 'fa fa-check' 
-            //  },{
-            //    type: "info"
-            // });
-          }   
-        });
+
+    $("#btnCancelar").click(function(){
+      $(location).attr('href', 'conversiones.php');
     });
+
+    $("#btnRegistrar").click(function(){
+      //Obtencion de valores en los inputs
+      var codigoEmpleado = $("#codigo_empleado").val();
+      var fechaIngreso = $("#fecha_ingreso").val();
+      var estado = $('input[name="optionsRadios"]:checked').val();
+      var idEmpleado = $("#id_empleado").val();
+      var nombres = $("#nombres_empleado").val();
+      var apellido1 = $("#apellido_1").val();
+      var apellido2 = $("#apellido_2").val();
+      var fechaNacimiento = $("#fecha_nacimiento").val();
+      var genero = $("#genero").val();
+      var direccion = $("#direccion_empleado").val();
+      var telefono = $("#telefono").val();
+      var correo = $("#correo_empleado").val();
+      
+      // Validaciones
+      if (codigoEmpleado=='') {
+        $("#codigo_empleado").attr('required',true);
+        document.getElementById("codigo_empleado").focus();
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#codigo_empleado").attr('required',false);
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-success');
+      }
+
+      if (fechaIngreso=='') {
+        $("#fecha_ingreso").attr('required',true);
+        document.getElementById("fecha_ingreso").focus();
+        $("#form_fecha_ingreso").removeClass('has-success');
+        $("#form_fecha_ingreso").removeClass('has-error');
+        $("#form_fecha_ingreso").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#fecha_ingreso").attr('required',false);
+        $("#form_fecha_ingreso").removeClass('has-success');
+        $("#form_fecha_ingreso").removeClass('has-error');
+        $("#form_fecha_ingreso").addClass('has-success');
+      }
+
+      if (estado=='') {
+        $("#estado").attr('required',true);
+        document.getElementById("estado").focus();
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#estado").attr('required',false);
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-success');
+      }
+
+      if (idEmpleado=='') {
+        $("#id_empleado").attr('required',true);
+        document.getElementById("id_empleado").focus();
+        $("#form_id_empleado").removeClass('has-success');
+        $("#form_id_empleado").removeClass('has-error');
+        $("#form_id_empleado").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#id_empleado").attr('required',false);
+        $("#form_id_empleado").removeClass('has-success');
+        $("#form_id_empleado").removeClass('has-error');
+        $("#form_id_empleado").addClass('has-success');
+      }
+
+      if (nombres=='') {
+        $("#nombres_empleado").attr('required',true);
+        document.getElementById("nombres_empleado").focus();
+        $("#form_nombres").removeClass('has-success');
+        $("#form_nombres").removeClass('has-error');
+        $("#form_nombres").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#nombres_empleado").attr('required',false);
+        $("#form_nombres").removeClass('has-success');
+        $("#form_nombres").removeClass('has-error');
+        $("#form_nombres").addClass('has-success');
+      }
+
+      if (apellido1=='') {
+        $("#apellido_1").attr('required',true);
+        document.getElementById("apellido_1").focus();
+        $("#form_apellido_1").removeClass('has-success');
+        $("#form_apellido_1").removeClass('has-error');
+        $("#form_apellido_1").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#apellido_1").attr('required',false);
+        $("#form_apellido_1").removeClass('has-success');
+        $("#form_apellido_1").removeClass('has-error');
+        $("#form_apellido_1").addClass('has-success');
+      }
+
+      if (apellido2=='') {
+        // $("#apellido_2").attr('required',true);
+        // document.getElementById("apellido_2").focus();
+        // $("#form_apellido_2").removeClass('has-success');
+        // $("#form_apellido_2").removeClass('has-error');
+        // $("#form_apellido_2").addClass('has-error');
+        // return false;
+      } else {
+        $("#apellido_2").attr('required',false);
+        $("#form_apellido_2").removeClass('has-success');
+        $("#form_apellido_2").removeClass('has-error');
+        $("#form_apellido_2").addClass('has-success');
+      }
+
+      if (fechaNacimiento=='') {
+        $("#fecha_nacimiento").attr('required',true);
+        document.getElementById("fecha_nacimiento").focus();
+        $("#form_fecha_nacimiento").removeClass('has-success');
+        $("#form_fecha_nacimiento").removeClass('has-error');
+        $("#form_fecha_nacimiento").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#fecha_nacimiento").attr('required',false);
+        $("#form_fecha_nacimiento").removeClass('has-success');
+        $("#form_fecha_nacimiento").removeClass('has-error');
+        $("#form_fecha_nacimiento").addClass('has-success');
+      }
+
+      if (genero==null) {
+        $("#genero").attr('required',true);
+        document.getElementById("genero").focus();
+        $("#form_genero").removeClass('has-success');
+        $("#form_genero").removeClass('has-error');
+        $("#form_genero").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#genero").attr('required',false);
+        $("#form_genero").removeClass('has-success');
+        $("#form_genero").removeClass('has-error');
+        $("#form_genero").addClass('has-success');
+      }
+
+      if (direccion=='') {
+        $("#direccion_empleado").attr('required',true);
+        document.getElementById("direccion_empleado").focus();
+        $("#form_direccion").removeClass('has-success');
+        $("#form_direccion").removeClass('has-error');
+        $("#form_direccion").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#direccion_empleado").attr('required',false);
+        $("#form_direccion").removeClass('has-success');
+        $("#form_direccion").removeClass('has-error');
+        $("#form_direccion").addClass('has-success');
+      }
+
+      if (telefono=='') {
+        $("#telefono").attr('required',true);
+        document.getElementById("telefono").focus();
+        $("#form_telefono").removeClass('has-success');
+        $("#form_telefono").removeClass('has-error');
+        $("#form_telefono").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#telefono").attr('required',false);
+        $("#form_telefono").removeClass('has-success');
+        $("#form_telefono").removeClass('has-error');
+        $("#form_telefono").addClass('has-success');
+      }
+
+      if (correo=='') {
+        $("#correo_empleado").attr('required',true);
+        document.getElementById("correo_empleado").focus();
+        $("#form_correo").removeClass('has-success');
+        $("#form_correo").removeClass('has-error');
+        $("#form_correo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#correo_empleado").attr('required',false);
+        $("#form_correo").removeClass('has-success');
+        $("#form_correo").removeClass('has-error');
+        $("#form_correo").addClass('has-success');
+      }
+      //Fin validaciones
+
+      // Variable con todos los valores necesarios para la consulta
+		  var datos = 'codigo_empleado=' + codigoEmpleado + '&fecha_ingreso=' + fechaIngreso + '&estado=' + estado + '&id_empleado=' + idEmpleado + '&nombres_empleado=' + nombres + '&apellido_1=' + apellido1 +  '&apellido_2=' + apellido2 + '&fecha_nacimiento=' + fechaNacimiento + '&genero=' + genero + '&direccion_empleado=' + direccion + '&telefono=' + telefono + '&correo=' + correo;
+
+      // alert(datos);
+      $.ajax({
+        //Direccion destino
+        url: "empleados_guardar.php",
+        // Variable con los datos necesarios
+        data: datos,
+        type: "POST",			
+        dataType: "html",
+        //cache: false,
+        //success
+        success: function (data) {
+          // alert(data);
+          if (data) {
+            $.notify({
+              title: "Correcto : ",
+              message: "¡El empleado se registró exitosamente!",
+              icon: 'fa fa-check' 
+            },{
+              type: "success"
+            });
+            window.setTimeout('location.href="empleados.php"', 5);
+          }
+          if (!data) {
+            $.notify({
+              title: "Error : ",
+              message: "¡El numero de Identidad ingresado ya existe!",
+              icon: 'fa fa-times' 
+            },{
+              type: "danger"
+            });
+            document.getElementById("id_empleado").focus();
+            $("#form_id_empleado").removeClass('has-success');
+            $("#form_id_empleado").removeClass('has-error');
+            $("#form_id_empleado").addClass('has-error');
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          // 		title: "Informacion : ",
+          // 		message: "Petición realizada!",
+          // 		icon: 'fa fa-check' 
+          // 	},{
+          // 		type: "info"
+          // });
+        }		
+      });
+
     });
   })
 </script>
