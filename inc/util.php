@@ -109,13 +109,27 @@
         }
     }
 
-    function nuevoCodigoEmpleado($codigo){
+    function nuevoCodigo($codigo){
         $codigo = explode('.', $codigo);
         $nuevo = $codigo[1]+1;
-        return $codigo[0] . "." . $nuevo;
+        if ($nuevo<10) {           
+            return $codigo[0] . ".0000" . $nuevo;
+        }
+        else if ($nuevo<100) {           
+            return $codigo[0] . ".000" . $nuevo;
+        }
+        else if ($nuevo<1000) {
+            return $codigo[0] . ".00" . $nuevo;  
+        }
+        else if ($nuevo<10000) {
+            return $codigo[0] . ".0" . $nuevo; 
+        }
+        else{
+            return $codigo[0] . "." . $nuevo;
+        }
     }
 
-
+    
  function obtenerUltimoCodigoProveedor(){
         include ("conexion.php");
         $query = "SELECT MAX(Id_Proveedor) AS Ultimo_Codigo FROM proveedores;";
