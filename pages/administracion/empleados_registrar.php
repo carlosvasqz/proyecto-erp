@@ -267,7 +267,7 @@
                 <label for="codigo_empleado" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo_empleado" placeholder="Codigo" value="<?php echo nuevoCodigoEmpleado(obtenerUltimoCodigoEmpleado());?>" readonly>
+                  <input type="text" class="form-control" id="codigo_empleado" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoEmpleado());?>" readonly>
                 </div>
               </div>
               <!-- Date -->
