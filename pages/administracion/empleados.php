@@ -331,9 +331,9 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="lista-empleados" class="table table-bordered table-striped table-hover">
-                <thea >
-                  <tr >
+              <table id="lista" class="table table-bordered table-striped table-hover">
+                <thead>
+                  <tr>
                     <th>Codigo</th>
                     <th>Nombres</th>
                     <th>Apellido</th>
@@ -379,7 +379,6 @@
                                 <button type="button" id="'.$rowEmpleado['Codigo_Empleado'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
                               </form>
                             </td>
-                          </form>
                         </tr>
                       ';
                     }
@@ -627,6 +626,8 @@
 <!-- DataTables -->
 <script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- <script src="../../plugins/dataTables/jquery.dataTables.min.js"></script> -->
+<!-- <script src="../../plugins/dataTables/dataTables.bootstrap.min.js"></script> -->
 <!-- SlimScroll -->
 <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -640,15 +641,16 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-empleados').DataTable({
+    $('#lista').DataTable({
       'paging'      : true,
-      'lengthChange': false,
+      'lengthChange': true,
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : false
+      'autoWidth'   : true
     });
-  })
+  });
+
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     // $('#lista-empleados').DataTable();
