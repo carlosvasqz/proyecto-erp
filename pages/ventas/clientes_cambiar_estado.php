@@ -16,7 +16,7 @@
 		#echo 'No existe';
 	}
 	if ($rowExiste['Existe']==1) {
-			$queryActualizar = mysqli_query($db, "UPDATE clientes SET Estado=$estado WHERE Codigo_cliente='$codigoCliente'") or die(mysqli_error());
+			$queryActualizar = mysqli_query($db, "UPDATE clientes SET Estado=$estado WHERE Id_Cliente='$codigoCliente'") or die(mysqli_error());
 			echo 'Actualizado';
     }
             
