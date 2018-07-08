@@ -13,7 +13,7 @@
  *
  * https://github.com/lipis/bootstrap-social
  */
-@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,600,700,300italic,400italic,600italic);
+@import url(fonts.css);
 .btn.btn-social,
 .btn.btn-social-icon {
   text-align: center;
