@@ -276,6 +276,25 @@
                   <input type="text" class="form-control" id="codigo_cliente" placeholder="Codigo" value="<?php echo $rowCliente['Id_Cliente'];?>" disabled>
                 </div>
               </div>
+
+               <div class="form-group" id="form_estado">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Estado*</label>
+
+                <div class="col-sm-9">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="estado" value="1" <?php if($rowCliente['Estado']==1){echo 'checked';} ?>>
+                      Habilitado
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="estado" value="0" <?php if($rowCliente['Estado']==0){echo 'checked';} ?>>
+                      Desabilitado
+                    </label>
+                  </div>
+                </div>
+              </div>
               <!-- Date -->
 
               <!-- <div class="form-group">
@@ -704,6 +723,7 @@
       var telefono= $("#telefono").val();
       var direccionCliente= $("#direccion_cliente").val();
       var correoCliente= $("#correo_cliente").val();
+      var estado = $('input[name="optionsRadios"]:checked').val();
       
       // Validaciones
      if (codigoCliente=='') {
@@ -830,9 +850,9 @@
       //Fin validaciones
 
       // Variable con todos los valores necesarios para la consulta
-		  var datos = 'codigo_cliente=' + codigoCliente + '&id_cliente=' + idCliente + '&nombres_cliente=' + nombreCliente + '&apellido=' + apellido + '&rtn_cliente=' + rtnCliente + '&telefono=' + telefono +  '&direccion_cliente=' + direccionCliente + '&correo_cliente=' + correoCliente;
+		  var datos = 'codigo_cliente=' + codigoCliente + '&id_cliente=' + idCliente + '&nombres_cliente=' + nombreCliente + '&apellido=' + apellido + '&rtn_cliente=' + rtnCliente + '&telefono=' + telefono +  '&direccion_cliente=' + direccionCliente + '&correo_cliente=' + correoCliente + '&estado=' + estado;
 
-      // alert(datos);
+      alert(datos);
       $.ajax({
         //Direccion destino
         url: "clientes_actualizar.php",
@@ -857,15 +877,15 @@
           if (!data) {
             $.notify({
               title: "Error : ",
-              message: "¡El numero de Identidad ingresado NO existe!",
+              message: "¡El codigo ingresado NO existe!",
               icon: 'fa fa-times' 
             },{
               type: "danger"
             });
-            document.getElementById("id_cliente").focus();
-            $("#form_id_cliente").removeClass('has-success');
-            $("#form_id_cliente").removeClass('has-error');
-            $("#form_id_cliente").addClass('has-error');
+            document.getElementById("codigo_cliente").focus();
+            $("#form_codigo_cliente").removeClass('has-success');
+            $("#form_codigo_cliente").removeClass('has-error');
+            $("#form_codigo_cliente").addClass('has-error');
           }
           
         },
