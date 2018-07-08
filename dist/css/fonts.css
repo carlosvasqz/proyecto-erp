@@ -1,0 +1,57 @@
+@charset "UTF-8";
+ /* latin */
+ @font-face {
+  font-family: 'SourceSansPro';
+  font-style: normal;
+  font-weight: 300;
+  src: local('SourceSansPro ExtraLight'), local('SourceSansPro-ExtraLight'), url(./fonts/source-sans-pro/SourceSansPro-ExtraLight.otf) format('opentype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* latin */
+@font-face {
+  font-family: 'SourceSansPro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('SourceSansPro Light'), local('SourceSansPro-Light'), url(./fonts/source-sans-pro/SourceSansPro-Light.otf) format('opentype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* latin */
+@font-face {
+  font-family: 'SourceSansPro';
+  font-style: normal;
+  font-weight: 600;
+  src: local('SourceSansPro Regular'), local('SourceSansPro-Regular'), url(./fonts/source-sans-pro/SourceSansPro-Regular.otf) format('opentype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* latin */
+@font-face {
+    font-family: 'SourceSansPro';
+    font-style: normal;
+    font-weight: 700;
+    src: local('SourceSansPro Semibold'), local('SourceSansPro-Semibold'), url(./fonts/source-sans-pro/SourceSansPro-Semibold.otf) format('opentype');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+  }
+/* latin */
+@font-face {
+  font-family: 'SourceSansPro';
+  font-style: italic;
+  font-weight: 300;
+  src: local('SourceSansPro ExtraLightIt'), local('SourceSansPro-ExtraLightIt'), url(./fonts/source-sans-pro/SourceSansPro-ExtraLightIt.otf) format('opentype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* latin */
+@font-face {
+    font-family: 'SourceSansPro';
+    font-style: italic;
+    font-weight: 400;
+    src: local('SourceSansPro LightIt'), local('SourceSansPro-LightIt'), url(./fonts/source-sans-pro/SourceSansPro-LightIt.otf) format('opentype');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+  }
+/* latin */
+@font-face {
+    font-family: 'SourceSansPro';
+    font-style: italic;
+    font-weight: 700;
+    src: local('SourceSansPro SemiboldIt'), local('SourceSansPro-SemiboldIt'), url(./fonts/source-sans-pro/SourceSansPro-SemiboldIt.otf) format('opentype');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+  }
