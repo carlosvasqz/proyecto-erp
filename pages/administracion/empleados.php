@@ -258,7 +258,7 @@
             <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text"><h4>Deshabilitados</h4></span>
+              <span class="info-box-text"><h4>Desabilitados</h4></span>
               <span class="info-box-number">
                 <?php 
                   $queryEmpleadosDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Empleados_Desabilitados FROM empleados WHERE Estado = 0") or die(mysqli_error());
@@ -284,6 +284,7 @@
              <div class="pull-right box-tools">
                 <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
                   <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
+                </button>
               </div>
               <!-- /. tools -->
             </div>
@@ -316,7 +317,7 @@
                           $color = "danger";
                           break;
                         case 0:
-                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
+                          $etiqueta = "<small class='label bg-red'>Desabilitado</small>";
                           $tootip = "Habilitar";
                           $icono = "fa fa-check-circle";
                           $color = "info";
@@ -613,7 +614,7 @@
     $('.sidebar-menu').tree();
     // $('#lista-empleados').DataTable();
 
-    $("#btnRegistrarNuevo").click(function(){
+    $("#btnRegistrarNuevo").click(function (){
       $(location).attr('href', 'empleados_registrar.php');
     });
 
@@ -697,3 +698,4 @@
 <?php
   }
 ?>
+

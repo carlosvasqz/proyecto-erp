@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="../../plugins/sweet-alert/sweetalert.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
   <!-- Material Design -->
@@ -638,7 +639,7 @@
 
   
     
-    //alert(accion[4]);
+    alert(accion[4]);
     swal({
         title: "¿Esta seguro?",
         text: "Esta accion " + accion[4] + "á el elemento seleccionado",
@@ -654,7 +655,7 @@
           data: "codigo_cliente=" + codigoCliente + "&estado=" +  Estado,
           type: "POST",     
           dataType: "html",
-          //cache: false, 
+          //cache: false,  
           //success
           success: function (data) {
              //alert(data);

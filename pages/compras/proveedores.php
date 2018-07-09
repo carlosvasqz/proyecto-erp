@@ -23,7 +23,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Proveedores</title>
+  <title>MaterialAdminLTE 2 | Empleados</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -232,35 +232,16 @@
           </div>
           <!-- /.info-box -->
         </div>
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-user-plus"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Habilitados</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryProveedoresDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Proveedores_Desabilitados FROM proveedores WHERE Estado = 1") or die(mysqli_error());
-                  $rowProveedoresDesabilitados=mysqli_fetch_array($queryProveedoresDesabilitados);
-                  echo $rowProveedoresDesabilitados['Proveedores_Desabilitados'];
-                  // mysqli_close($queryEmpleadosDesabilitados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
         <!-- /.col -->
         <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text"><h4>Deshabilitados</h4></span>
+              <span class="info-box-text"><h4>Desabilitados</h4></span>
               <span class="info-box-number">
                 <?php 
-                  $queryProveedoresDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Proveedores_Desabilitados FROM proveedores WHERE Estado = 0") or die(mysqli_error());
+                  $queryProveedoresDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Proveedores_Desabilitados FROM proveedores WHERE Estado = 2") or die(mysqli_error());
                   $rowProveedoresDesabilitados=mysqli_fetch_array($queryProveedoresDesabilitados);
                   echo $rowProveedoresDesabilitados['Proveedores_Desabilitados'];
                   // mysqli_close($queryEmpleadosDesabilitados);
@@ -298,29 +279,19 @@
                     <th>Teléfono</th>
                     <th>Email</th>
                     <th>Estado</th>
-                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
                     $queryProveedores=mysqli_query($db, "SELECT * FROM proveedores") or die(mysqli_error());
-                   while ($rowProveedores=mysqli_fetch_array($queryProveedores)) {
-                      $etiqueta = null;
-                      $tootip = null;
-                      $icono = null;
-                      $color = null;
+                    while ($rowProveedores=mysqli_fetch_array($queryProveedores)) {
+                      $estado = null;
                       switch ($rowProveedores["Estado"]) {
                         case 1:
-                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
-                          $tootip = "Deshabilitar";
-                          $icono = "fa fa-times-circle";
-                          $color = "danger";
+                          $estado = "<small class='label bg-blue'>Habilitado</small>";
                           break;
                         case 0:
-                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
-                          $tootip = "Habilitar";
-                          $icono = "fa fa-check-circle";
-                          $color = "info";
+                          $estado = "<small class='label bg-red'>Desabilitado</small>";
                           break;
                       }
                       echo '
@@ -331,13 +302,12 @@
                             <td>'.$rowProveedores['Direccion'].'</td>
                             <td>'.$rowProveedores['Telefono'].'</td>
                             <td>'.$rowProveedores['Correo_Electronico'].'</td>
-                            <td>'.$etiqueta.'</td>
+                            <td>'.$estado.'</td>
                             <td>
-                            <form action="proveedores_editar.php" method="POST">
-                                <input type="hidden" name="codigo_proveedor" value="'.$rowProveedores['Id_Proveedor'].'"/>
-                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
-
-                                <button type="button" id="'.$rowProveedores['Id_Proveedor'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
+                           <form method="GET" action="proveedores_editar.php">
+                           <input type="hidden" name="Id" Id="Id" value="'.$rowProveedores['Id_Proveedor'].'">
+                           <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip"  name="modificar" id="modificar" value="Modificar" ><i class="fa fa-pencil"></i></button>
+                              <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash"></i></button>
                             </td>
                           </form>
                         </tr>

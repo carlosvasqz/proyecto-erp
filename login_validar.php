@@ -8,10 +8,11 @@
             session_start();
             $_SESSION['Id_Usuario'] = "root";            
             $_SESSION['Tipo_Usuario'] = 'Superusuario';
-            $_SESSION['Estado'] = 'N/A';
-            $_SESSION['Codigo_Empleado'] = 'N/A';
+            $_SESSION['Estado'] = 1;
+            $_SESSION['Codigo_Empleado'] = 'root';
             $_SESSION['Nombre'] = 'root';
-            $_SESSION['Apellido'] = 'root';            
+            $_SESSION['Apellido'] = 'root';   
+            $_SESSION['Fecha_Ingreso'] = ' el BigBang';           
             echo "1"; // Valido
             exit();
         } else {

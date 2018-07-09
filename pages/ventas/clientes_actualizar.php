@@ -12,17 +12,18 @@
 		 $telefono = $_POST['telefono'];
 		 $direccionCliente = $_POST['direccion_cliente'];
          $correoCliente = $_POST['correo_cliente'];
+         $estado = $_POST['estado'];
 
     //  echo $codigoEmpleado . ' <-> ' . $fechaIngreso . ' <-> ' . $estado . ' <-> ' . $idEmpleado . ' <-> ' . $nombres . ' <-> ' . $apellido1 .  ' <-> ' . $apellido2 . ' <-> ' . $fechaNacimiento . ' <-> ' . $genero . ' <-> ' . $direccion . ' <-> ' . $telefono . ' <-> ' . $correo;
 
-	$queryVerificar = mysqli_query($db, "SELECT COUNT(*) as Existe FROM clientes WHERE Numero_Identidad = '$idCliente'") or die (mysqli_error());
+	$queryVerificar = mysqli_query($db, "SELECT COUNT(*) as Existe FROM clientes WHERE Id_Cliente = '$codigoCliente'") or die (mysqli_error());
     
 	$rowExiste=mysqli_fetch_array($queryVerificar);
 	if($rowExiste['Existe']==0){
 		#echo 'No existe';
 	}
 	if ($rowExiste['Existe']==1) {
-			$queryActualizar = mysqli_query($db, "UPDATE clientes SET Nombres='$nombreCliente',Apellido='$apellido',RTN='$rtnCliente',Telefono='$telefono',Direccion='$direccionCliente',Correo_Electronico='$correoCliente',Numero_Identidad='$idCliente' WHERE Id_Cliente='$codigoCliente' AND Numero_Identidad='$idCliente'") or die(mysqli_error());
+			$queryActualizar = mysqli_query($db, "UPDATE clientes SET Nombres='$nombreCliente',Apellido='$apellido',RTN='$rtnCliente',Telefono='$telefono',Direccion='$direccionCliente',Correo_Electronico='$correoCliente',Numero_Identidad='$idCliente',Estado='$estado' WHERE Id_Cliente='$codigoCliente' AND Numero_Identidad='$idCliente'") or die(mysqli_error());
 			echo 'Guardado';
         }
             
