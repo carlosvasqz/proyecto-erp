@@ -289,6 +289,8 @@
               <!-- /. tools -->
             </div>
             <!-- /.box-header -->
+            <div class="box-body">
+              <table id="lista-empleados" class="table table-bordered table-striped table-hover">
                 <thead>
                   <tr>
                     <th>Codigo</th>
@@ -694,9 +696,12 @@
 </body>
 </html>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <?php
   }
 ?>
 
+=======
+>>>>>>> 4555daa230b62c73f9343b6fd9a24a6bca15859d
 =======
 >>>>>>> 4555daa230b62c73f9343b6fd9a24a6bca15859d
