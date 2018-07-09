@@ -97,6 +97,11 @@
         return $diaFullFormat;
     }
 
+    function anioDeFecha($fecha){
+        $fecha = explode('-', $fecha);
+        return $fecha[0];
+    }
+
     function obtenerUltimoCodigoEmpleado(){
         include ("conexion.php");
         $query = "SELECT MAX(Codigo_Empleado) AS Ultimo_Codigo FROM empleados;";
