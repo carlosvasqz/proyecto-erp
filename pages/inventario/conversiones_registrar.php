@@ -2,14 +2,28 @@
   include ('../../inc/constructor.php');
   include ('../../inc/conexion.php');
   include ('../../inc/util.php');
-  if(isset($_POST["codigo_proveedor"])){
+ include ('../../class/database.php');
+$objData = new Database();
+
+if (isset($_GET['opcion'])) {
+  $sth1 = $objData->prepare('SELECT * FROM `articulos` WHERE Id_Articulo = :Id_Articulo');
+  $sth1->bindParam(':Id_Articulo', $_GET['opcion']);
+  $sth1->execute();
+
+  $result1 = $sth1->fetchAll();
+}
+
+$sth = $objData->prepare('SELECT * FROM articulos');
+$sth->execute();
+
+$result = $sth->fetchAll();
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Editar Empleado</title>
+  <title>MaterialAdminLTE 2 | Registrar Empleado</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -26,6 +40,8 @@
   <link rel="stylesheet" href="../../dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="../../dist/css/ripples.min.css">
   <link rel="stylesheet" href="../../dist/css/MaterialAdminLTE.min.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../../dist/css/skins/all-md-skins.min.css">
@@ -39,7 +55,175 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
+  .custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+  }
+  </style>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<!-- Logo 
+<script>
+  $( function() {
+    $.widget( "custom.combobox", {
+      _create: function() {
+        this.wrapper = $( "<span>" )
+          .addClass( "custom-combobox" )
+          .insertAfter( this.element );
+ 
+        this.element.hide();
+        this._createAutocomplete();
+        this._createShowAllButton();
+      },
+ 
+      _createAutocomplete: function() {
+        var selected = this.element.children( ":selected" ),
+          value = selected.val() ? selected.text() : "";
+ 
+        this.input = $( "<input>" )
+          .appendTo( this.wrapper )
+          .val( value )
+          .attr( "title", "" )
+          .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+          .autocomplete({
+            delay: 0,
+            minLength: 0,
+            source: $.proxy( this, "_source" )
+          })
+          .tooltip({
+            classes: {
+              "ui-tooltip": "ui-state-highlight"
+            }
+          });
+ 
+        this._on( this.input, {
+          autocompleteselect: function( event, ui ) {
+            ui.item.option.selected = true;
+            this._trigger( "select", event, {
+              item: ui.item.option
+            });
+          },
+ 
+          autocompletechange: "_removeIfInvalid"
+        });
+      },
+ 
+      _createShowAllButton: function() {
+        var input = this.input,
+          wasOpen = false;
+ 
+        $( "<a>" )
+          .attr( "tabIndex", -1 )
+          .attr( "title", "Mostrar Todos los Articulos" )
+          .tooltip()
+          .appendTo( this.wrapper )
+          .button({
+            icons: {
+              primary: "ui-icon-triangle-1-s"
+            },
+            text: false
+          })
+          .removeClass( "ui-corner-all" )
+          .addClass( "custom-combobox-toggle ui-corner-right" )
+          .on( "mousedown", function() {
+            wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+          })
+          .on( "click", function() {
+            input.trigger( "focus" );
+ 
+            // Close if already visible
+            if ( wasOpen ) {
+              return;
+            }
+ 
+            // Pass empty string as value to search for, displaying all results
+            input.autocomplete( "search", "" );
+          });
+      },
+ 
+      _source: function( request, response ) {
+        var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+        response( this.element.children( "option" ).map(function() {
+          var text = $( this ).text();
+          if ( this.value && ( !request.term || matcher.test(text) ) )
+            return {
+              label: text,
+              value: text,
+              option: this
+            };
+        }) );
+      },
+ 
+      _removeIfInvalid: function( event, ui ) {
+ 
+        // Selected an item, nothing to do
+        if ( ui.item ) {
+          return;
+        }
+ 
+        // Search for a match (case-insensitive)
+        var value = this.input.val(),
+          valueLowerCase = value.toLowerCase(),
+          valid = false;
+        this.element.children( "option" ).each(function() {
+          if ( $( this ).text().toLowerCase() === valueLowerCase ) {
+            this.selected = valid = true;
+            return false;
+          }
+        });
+ 
+        // Found a match, nothing to do
+        if ( valid ) {
+          return;
+        }
+ 
+        // Remove invalid value
+        this.input
+          .val( "" )
+          .attr( "title", value + " Ese Articulo no Existe" )
+          .tooltip( "open" );
+        this.element.val( "" );
+        this._delay(function() {
+          this.input.tooltip( "close" ).attr( "title", "" );
+        }, 2500 );
+        this.input.autocomplete( "instance" ).term = "";
+      },
+ 
+      _destroy: function() {
+        this.wrapper.remove();
+        this.element.show();
+      }
+    });
+ 
+    $( "#Id_Articulo" ).combobox();
+    $( "#toggle" ).on( "click", function() {
+      $( "#Id_Articulo" ).toggle();
+    });
+  } );
+  </script> -->
+
+
 </head>
+<script type="text/javascript">
+  function buscar(){
+    //alert("Mensaje de Prueba");
+    var opcion= document.getElementById('Id_Articulo').value;
+    window.location.href = 'http://localhost/proyecto-erp/pages/inventario/conversiones_registrar.php?opcion='+opcion;
+  }
+</script>
 <body class="skin-blue sidebar-mini fixed">
 <!-- Site wrapper -->
 <div class="wrapper">
@@ -240,20 +424,15 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Editar Proveedor
-        <small>Compras</small>
+        Registrar Conversión
+        <small>Inventario</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Compras</a></li>
-        <li class="active">Editar Proveedor</li>
+        <li><a href="#">Inventario</a></li>
+        <li class="active">Registrar Conversión</li>
       </ol>
     </section>
-
-    <?php
-      $queryProveedor=mysqli_query($db, "SELECT * FROM proveedores WHERE Id_Proveedor = '".$_POST['codigo_proveedor']."'") or die(mysqli_error());
-      $rowProveedor=mysqli_fetch_array($queryProveedor);
-    ?>
 
     <!-- Main content -->
     <section class="content">
@@ -267,30 +446,30 @@
           </div>
           <!-- /.box-header -->
           <!-- form start -->
-          <form class="form-horizontal">
+           <form class="form-horizontal">
             <div class="box-body">
               <div class="form-group" id="form_codigo">
-                <label for="codigo_proveedor" class="col-sm-2 control-label">Codigo*</label>
+                <label for="codigo_conversiones" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" value="<?php echo $rowProveedor['Id_Proveedor'];?>" disabled>
+                  <input type="text" class="form-control" id="codigo_conversiones" placeholder="Codigo" value="<?php echo nuevoCodigoConversiones(obtenerUltimoCodigoConversiones());?>" readonly>
                 </div>
               </div>
               <!-- Date -->
-              <div class="form-group" id="form_estado">
-                <label for="estado" class="col-sm-2 control-label">Estado*</label>
+              <div class="form-group" id="form_tipo">
+                <label for="codigo_conversiones" class="col-sm-2 control-label">Tipo*</label>
 
                 <div class="col-sm-9">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="optionsRadios" id="estado" value="1" <?php if($rowProveedor['Estado']==1){echo 'checked';} ?>>
-                      Habilitado
+                      <input type="radio" name="optionsRadios" id="tipo" value="1" checked>
+                      Entradas a Inventario
                     </label>
                   </div>
                   <div class="radio">
                     <label>
-                      <input type="radio" name="optionsRadios" id="estado" value="0" <?php if($rowProveedor['Estado']==0){echo 'checked';} ?>>
-                      Desabilitado
+                      <input type="radio" name="optionsRadios" id="tipo" value="0">
+                      Salidas del Inventario
                     </label>
                   </div>
                 </div>
@@ -316,36 +495,70 @@
         <!-- Horizontal Form -->
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">Datos Personales</h3>
+            <h3 class="box-title">Datos de Artículo</h3>
           </div>
           <!-- /.box-header -->
           <!-- form start -->
           <form class="form-horizontal">
             <div class="box-body">
-            <div class="form-group" id="form_nombre">
-                <label for="nombre" class="col-sm-2 control-label">Nombre Proveedor*</label>
+              <div class="form-group" id="form_articulo">
+                <label for="Id_Articulo" class="col-sm-2 control-label">Código Artículo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese los nombres.." value="<?php echo $rowProveedor['Nombre_Proveedor'];?>">
+                  <select class="form-control" name="Id_Articulo" id="Id_Articulo" onchange="return buscar();">
+                    <?php
+                    if ($result1) {?>
+                   <option value="<?php echo $result1[0]['Id_Articulo'];?>">
+                   <?php echo $result1[0]['Id_Articulo'];?>
+                  </option>
+                   <?php 
+                   }?>
+                   <option value="">--Buscar Codigo--</option>
+                   <?php
+                    foreach ($result as $key => $value) {?>
+                <option value="<?php echo $value['Id_Articulo'];?>"><?php echo $value['Id_Articulo'];?></option>
+                <?php 
+              }
+              ?>
+              </select>
+              </div>
+              </div>
+              <div class="form-group" id="form_descripcion">
+              
+                <label for="descripcion" class="col-sm-2 control-label">Descripción*</label>
+                <?php
+              if (isset($result1)) {?>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="descripcion" value="<?php echo $result1[0]['Descripcion']?>" />
+                   <?php }else{?>
+                    <div class="col-sm-9">
+                   <input type="text" class="form-control" id="descripcion" value="" placeholder="Descripcion del Producto ..." />
+                   </div>
+                   <?php
+                    }
+                     ?>
                 </div>
               </div>
 
-              <div class="form-group" id="form_rtn">
-                <label for="rtn" class="col-sm-2 control-label">RTN*</label>
+              <div class="form-group" id="form_cantidadi">
+              
+                <label for="cantidad_inicial" class="col-sm-2 control-label">Cantidad Actual*</label>
+                <?php
+              if (isset($result1)) {?>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="rtn" name="rtn" data-inputmask="&quot;mask&quot;: &quot;9999-9999-999999&quot;" data-mask  placeholder="Ingrese el numero..." value="<?php echo $rowProveedor['RTN_Proveedor'];?>" disabled>
+                  <input type="text" class="form-control" id="cantidad_inicial" value="<?php echo $result1[0]['Existencias']?>" />
+                   <?php }else{?>
+                     <div class="col-sm-9">
+                   <input type="text" class="form-control"  id="cantidad_inicial" value="" placeholder="Existencia Actual ..." />
+                   </div>
+                   <?php
+                    }
+                     ?>
                 </div>
-              </div>
-              <!-- <div class="form-group" id="form_">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
                 </div>
-              </div> -->
+
+             
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
@@ -358,44 +571,30 @@
         <!-- Horizontal Form -->
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">Datos de Contacto</h3>
+            <h3 class="box-title">Datos de Conversión</h3>
           </div>
           <!-- /.box-header -->
           <!-- form start -->
           <form class="form-horizontal">
             <div class="box-body">
-              <div class="form-group" id="form_direccion">
-                <label for="direccion" class="col-sm-2 control-label">Direccion*</label>
+              <div class="form-group" id="form_cantidadf">
+                <label for="cantidad_final" class="col-sm-2 control-label">Cantidad a Convertir*</label>
 
                 <div class="col-sm-9">
-                  <textarea class="form-control" rows="3" id="direccion" name="direccion" placeholder="Ingrese la direccion ..."><?php echo $rowProveedor['Direccion'];?></textarea>
+                  <input class="form-control" rows="3" id="cantidad_final" placeholder="Ingrese la cantidad a convertir ..."></input>
                 </div>
               </div>
               
-              <div class="form-group" id="form_telefono">
-                <label for="telefono" class="col-sm-2 control-label">Telefono*</label>
+              <div class="form-group" id="form_justificacion">
+                <label for="justificacion" class="col-sm-2 control-label">Justicación*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask id="telefono" name="telefono" placeholder="Ingrese el numero.." value="<?php echo $rowProveedor['Telefono'];?>">
+                  <textarea class="form-control" rows="4" id="justificacion" placeholder="Justifique la Conversión ..."></textarea>
                 </div>
               </div>
 
-              <div class="form-group" id="form_correo">
-                <label for="correo_proveedor" class="col-sm-2 control-label">Email*</label>
-
-                <div class="col-sm-9">
-                  <input type="email" class="form-control" id="correo" name="correo" placeholder="Ingrese el email.." value="<?php echo $rowProveedor['Correo_Electronico'];?>">
-                </div>
-              </div>
-              <!-- <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
-                </div>
-              </div> -->
+           
+              
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
@@ -417,7 +616,7 @@
               <div class="col-sm-4"></div>
               <div class="col-sm-4">
                 <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
-                <button type="button" id="btnActualizar" class="btn btn-success pull-right">Actualizar</button>
+                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
               </div>
               <div class="col-sm-4"></div>
             </div>
@@ -666,10 +865,11 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
+<script src="../../dist/js/excanvas.min.js"></script>
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-proveedor').DataTable({
+    $('#lista-empleados').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -701,136 +901,136 @@
     }
 
     $("#btnCancelar").click(function(){
-      window.setTimeout('location.href="proveedores.php"', 1);
+      $(location).attr('href', 'conversiones.php');
     });
 
-    $("#btnActualizar").click(function(){
+    $("#btnRegistrar").click(function(){
       //Obtencion de valores en los inputs
-   var codigo=$('#codigo').val();
-     var estado=$('input[name="optionsRadios"]:checked').val();
-var nombre=$('#nombre').val();
-var rtn=$('#rtn').val();
-var direccion=$('#direccion').val();
-var telefono=$('#telefono').val();
-var correo=$('#correo').val();
+      var codigo_conversiones = $("#codigo_conversiones").val();
+      var tipo = $('input[name="optionsRadios"]:checked').val();
+      var Id_Articulo = $("#Id_Articulo").val();
+      var descripcion = $("#descripcion").val();
+      var cantidad_inicial = $("#cantidad_inicial").val();
+      var cantidad_final = $("#cantidad_final").val();
+      var justificacion = $("#justificacion").val();
       
       // Validaciones
-       if (codigo=='') {
-        $("#codigo").attr('required',true);
-        document.getElementById("codigo").focus();
+      if (codigo_conversiones=='') {
+        $("#codigo_conversiones").attr('required',true);
+        document.getElementById("codigo_conversiones").focus();
         $("#form_codigo").removeClass('has-success');
         $("#form_codigo").removeClass('has-error');
         $("#form_codigo").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#codigo").attr('required',false);
+        $("#codigo_conversiones").attr('required',false);
         $("#form_codigo").removeClass('has-success');
         $("#form_codigo").removeClass('has-error');
         $("#form_codigo").addClass('has-success');
       }
 
-      
-      if (estado=='') {
-        $("#estado").attr('required',true);
-        document.getElementById("estado").focus();
-        $("#form_estado").removeClass('has-success');
-        $("#form_estado").removeClass('has-error');
-        $("#form_estado").addClass('has-error');
+      if (tipo=='') {
+        $("#tipo").attr('required',true);
+        document.getElementById("tipo").focus();
+        $("#form_tipo").removeClass('has-success');
+        $("#form_tipo").removeClass('has-error');
+        $("#form_tipo").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#estado").attr('required',false);
-        $("#form_estado").removeClass('has-success');
-        $("#form_estado").removeClass('has-error');
-        $("#form_estado").addClass('has-success');
-      }
-       if (nombre=='') {
-        $("#nombre").attr('required',true);
-        document.getElementById("nombre").focus();
-        $("#form_nombre").removeClass('has-success');
-        $("#form_nombre").removeClass('has-error');
-        $("#form_nombre").addClass('has-error');
-        alertaIngresarDatos();
-        return false;
-      } else {
-        $("#nombre").attr('required',false);
-        $("#form_nombre").removeClass('has-success');
-        $("#form_nombre").removeClass('has-error');
-        $("#form_nombre").addClass('has-success');
+        $("#tipo").attr('required',false);
+        $("#form_tipo").removeClass('has-success');
+        $("#form_tipo").removeClass('has-error');
+        $("#form_tipo").addClass('has-success');
       }
 
-      if (rtn=='') {
-        $("#rtn").attr('required',true);
-        document.getElementById("rtn").focus();
-        $("#form_rtn").removeClass('has-success');
-        $("#form_rtn").removeClass('has-error');
-        $("#form_rtn").addClass('has-error');
+      if (Id_Articulo=='') {
+        $("#Id_Articulo").attr('required',true);
+        document.getElementById("Id_Articulo").focus();
+        $("#form_articulo").removeClass('has-success');
+        $("#form_articulo").removeClass('has-error');
+        $("#form_articulo").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#rtn").attr('required',false);
-        $("#form_rtn").removeClass('has-success');
-        $("#form_rtn").removeClass('has-error');
-        $("#form_rtn").addClass('has-success');
+        $("#Id_Articulo").attr('required',false);
+        $("#form_articulo").removeClass('has-success');
+        $("#form_articulo").removeClass('has-error');
+        $("#form_articulo").addClass('has-success');
       }
 
-      if (direccion=='') {
-        $("#direccion").attr('required',true);
-        document.getElementById("direccion").focus();
-        $("#form_direccion").removeClass('has-success');
-        $("#form_direccion").removeClass('has-error');
-        $("#form_direccion").addClass('has-error');
+      if (descripcion=='') {
+        $("#descripcion").attr('required',true);
+        document.getElementById("descripcion").focus();
+        $("#form_descripcion").removeClass('has-success');
+        $("#form_descripcion").removeClass('has-error');
+        $("#form_descripcion").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#direccion").attr('required',false);
-        $("#form_direccion").removeClass('has-success');
-        $("#form_direccion").removeClass('has-error');
-        $("#form_direccion").addClass('has-success');
+        $("#descripcion").attr('required',false);
+        $("#form_descripcion").removeClass('has-success');
+        $("#form_descripcion").removeClass('has-error');
+        $("#form_descripcion").addClass('has-success');
       }
 
-      if (telefono=='') {
-        $("#telefono").attr('required',true);
-        document.getElementById("telefono").focus();
-        $("#form_telefono").removeClass('has-success');
-        $("#form_telefono").removeClass('has-error');
-        $("#form_telefono").addClass('has-error');
+      if (cantidad_inicial=='') {
+        $("#cantidad_inicial").attr('required',true);
+        document.getElementById("cantidad_inicial").focus();
+        $("#form_cantidadi").removeClass('has-success');
+        $("#form_cantidadi").removeClass('has-error');
+        $("#form_cantidadi").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#telefono").attr('required',false);
-        $("#form_telefono").removeClass('has-success');
-        $("#form_telefono").removeClass('has-error');
-        $("#form_telefono").addClass('has-success');
+        $("#cantidad_inicial").attr('required',false);
+        $("#form_cantidadi").removeClass('has-success');
+        $("#form_cantidadi").removeClass('has-error');
+        $("#form_cantidadi").addClass('has-success');
       }
 
-      if (correo=='') {
-        $("#correo").attr('required',true);
-        document.getElementById("correo").focus();
-        $("#form_correo").removeClass('has-success');
-        $("#form_correo").removeClass('has-error');
-        $("#form_correo").addClass('has-error');
+      if (cantidad_final=='') {
+        $("#cantidad_final").attr('required',true);
+        document.getElementById("cantidad_final").focus();
+        $("#form_cantidadf").removeClass('has-success');
+        $("#form_cantidadf").removeClass('has-error');
+        $("#form_cantidadf").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#correo").attr('required',false);
-        $("#form_correo").removeClass('has-success');
-        $("#form_correo").removeClass('has-error');
-        $("#form_correo").addClass('has-success');
+        $("#cantidad_final").attr('required',false);
+        $("#form_cantidadf").removeClass('has-success');
+        $("#form_cantidadf").removeClass('has-error');
+        $("#form_cantidadf").addClass('has-success');
+      }
+
+      if (justificacion=='') {
+        $("#justificacion").attr('required',true);
+        document.getElementById("justificacion").focus();
+        $("#form_justificacion").removeClass('has-success');
+        $("#form_justificacion").removeClass('has-error');
+        $("#form_justificacion").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#justificacion").attr('required',false);
+        $("#form_justificacion").removeClass('has-success');
+        $("#form_justificacion").removeClass('has-error');
+        $("#form_justificacion").addClass('has-success');
       }
       //Fin validaciones
 
       // Variable con todos los valores necesarios para la consulta
-      var datos = 'codigo=' + codigo + '&estado=' + estado + '&nombre=' + nombre + '&rtn=' + rtn + '&direccion=' + direccion  + '&telefono=' + telefono + '&correo=' + correo;
+		  var datos = 'codigo_conversiones=' + codigo_conversiones + '&tipo=' + tipo + '&Id_Articulo=' + Id_Articulo + '&cantidad_inicial=' + cantidad_inicial +  '&cantidad_final=' + cantidad_final + '&justificacion=' + justificacion;
 
-       //alert(datos);
+     //alert(datos);
       $.ajax({
         //Direccion destino
-        url: "editar_Proveedor.php",
+        url: "conversiones_guardar.php",
         // Variable con los datos necesarios
         data: datos,
-        type: "POST",     
+        type: "POST",			
         dataType: "html",
         //cache: false,
         //success
@@ -839,25 +1039,12 @@ var correo=$('#correo').val();
           if (data) {
             $.notify({
               title: "Correcto : ",
-              message: "¡El empleado se actualizó exitosamente!",
+              message: "¡La Transacción se registró exitosamente!",
               icon: 'fa fa-check' 
             },{
               type: "success"
             });
-            window.setTimeout('location.href="proveedores.php"', 5);
-          }
-          if (!data) {
-            $.notify({
-              title: "Error : ",
-              message: "¡El numero de RTN ingresado NO existe!",
-              icon: 'fa fa-times' 
-            },{
-              type: "danger"
-            });
-            document.getElementById("rtn").focus();
-            $("#form_rtn").removeClass('has-success');
-            $("#form_rtn").removeClass('has-error');
-            $("#form_rtn").addClass('has-error');
+            window.setTimeout('location.href="conversiones.php"', 5);
           }
           
         },
@@ -867,13 +1054,13 @@ var correo=$('#correo').val();
         complete : function(xhr, status) {
           // alert('Petición realizada');
           // $.notify({
-          //    title: "Informacion : ",
-          //    message: "Petición realizada!",
-          //    icon: 'fa fa-check' 
-          //  },{
-          //    type: "info"
+          // 		title: "Informacion : ",
+          // 		message: "Petición realizada!",
+          // 		icon: 'fa fa-check' 
+          // 	},{
+          // 		type: "info"
           // });
-        }   
+        }		
       });
 
     });
@@ -881,9 +1068,3 @@ var correo=$('#correo').val();
 </script>
 </body>
 </html>
-<?php
-  } else {
-    header("location: ../examples/500.php");
-    exit();
-  }
-?>
