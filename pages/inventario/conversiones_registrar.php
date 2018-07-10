@@ -215,7 +215,30 @@ $result = $sth->fetchAll();
   } );
   </script> -->
 
+  <script>
+    function evaluacion(){
+var cantidad_inicial=document.getElementById('cantidad_inicial').value;
+  var cantidad=document.getElementById('cantidad').value;
+  var resultado=document.getElementById('cantidad_final').value;
+if (cantidad_inicial=='') {
+    var num1=0; 
+  }
+  if (cantidad_inicial!='') {
+    var num1=parseFloat(cantidad_inicial);
+  }
+if (cantidad=='') {
+    var num2=0; 
+  }
+  if (cantidad!='') {
+    var num2=parseFloat(cantidad);
+  }
 
+  var resultado=(num1+num2);
+     document.frmdatos.cantidad_final.value=resultado;
+}
+
+
+  </script>
 </head>
 <script type="text/javascript">
   function buscar(){
@@ -446,7 +469,7 @@ $result = $sth->fetchAll();
           </div>
           <!-- /.box-header -->
           <!-- form start -->
-           <form class="form-horizontal">
+           <form  class="form-horizontal">
             <div class="box-body">
               <div class="form-group" id="form_codigo">
                 <label for="codigo_conversiones" class="col-sm-2 control-label">Codigo*</label>
@@ -462,13 +485,13 @@ $result = $sth->fetchAll();
                 <div class="col-sm-9">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="optionsRadios" id="tipo" value="1" checked>
+                      <input type="radio" name="optionsRadios"  id="tipo"  value="1" checked  onkeyup="evaluacion()" >
                       Entradas a Inventario
                     </label>
                   </div>
                   <div class="radio">
                     <label>
-                      <input type="radio" name="optionsRadios" id="tipo" value="0">
+                      <input type="radio" name="optionsRadios" id="tipo" value="0" onkeyup="evaluacion()">
                       Salidas del Inventario
                     </label>
                   </div>
@@ -499,7 +522,7 @@ $result = $sth->fetchAll();
           </div>
           <!-- /.box-header -->
           <!-- form start -->
-          <form class="form-horizontal">
+          <form  name="frmdatos" class="form-horizontal">
             <div class="box-body">
               <div class="form-group" id="form_articulo">
                 <label for="Id_Articulo" class="col-sm-2 control-label">Código Artículo*</label>
@@ -529,10 +552,10 @@ $result = $sth->fetchAll();
                 <?php
               if (isset($result1)) {?>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="descripcion" value="<?php echo $result1[0]['Descripcion']?>" />
+                  <input type="text" class="form-control" id="descripcion" readonly value="<?php echo $result1[0]['Descripcion']?>" />
                    <?php }else{?>
                     <div class="col-sm-9">
-                   <input type="text" class="form-control" id="descripcion" value="" placeholder="Descripcion del Producto ..." />
+                   <input type="text" class="form-control" id="descripcion" readonly value="" placeholder="Descripcion del Producto ..." />
                    </div>
                    <?php
                     }
@@ -547,10 +570,10 @@ $result = $sth->fetchAll();
               if (isset($result1)) {?>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="cantidad_inicial" value="<?php echo $result1[0]['Existencias']?>" />
+                  <input type="text" class="form-control" id="cantidad_inicial" name="cantidad_inicial"  readonly value="<?php echo $result1[0]['Existencias']?>" onkeyup="evaluacion()" />
                    <?php }else{?>
                      <div class="col-sm-9">
-                   <input type="text" class="form-control"  id="cantidad_inicial" value="" placeholder="Existencia Actual ..." />
+                   <input type="text" class="form-control"  id="cantidad_inicial" readonly value="" placeholder="Existencia Actual ..." />
                    </div>
                    <?php
                     }
@@ -558,32 +581,23 @@ $result = $sth->fetchAll();
                 </div>
                 </div>
 
-             
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
-            <!-- /.box-footer -->
-          </form>
-        </div>
-        <!-- Horizontal Form -->
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Datos de Conversión</h3>
-          </div>
-          <!-- /.box-header -->
-          <!-- form start -->
-          <form class="form-horizontal">
             <div class="box-body">
-              <div class="form-group" id="form_cantidadf">
-                <label for="cantidad_final" class="col-sm-2 control-label">Cantidad a Convertir*</label>
+              <div class="form-group" id="form_cantidad">
+                <label for="cantidad" class="col-sm-2 control-label">Cantidad a Convertir*</label>
 
                 <div class="col-sm-9">
-                  <input class="form-control" rows="3" id="cantidad_final" placeholder="Ingrese la cantidad a convertir ..."></input>
+                  <input class="form-control" rows="3" id="cantidad" name="cantidad" onkeyup="evaluacion()" ></input>
                 </div>
               </div>
+
+                <div class="form-group" id="form_cantidadf">
+                <label for="cantidad_final" class="col-sm-2 control-label">Cantidad Final*</label>
+
+                <div class="col-sm-9">
+                  <input class="form-control" rows="4" name="cantidad_final" id="cantidad_final" readonly ></input>
+                </div>
+              </div>
+
               
               <div class="form-group" id="form_justificacion">
                 <label for="justificacion" class="col-sm-2 control-label">Justicación*</label>
@@ -592,18 +606,8 @@ $result = $sth->fetchAll();
                   <textarea class="form-control" rows="4" id="justificacion" placeholder="Justifique la Conversión ..."></textarea>
                 </div>
               </div>
-
-           
-              
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
-            <!-- /.box-footer -->
-          </form>
-        </div>
+</div>
+</div>
         <!-- Horizontal Form -->
         <div class="box box-info">
           <!-- <div class="box-header with-border"> -->
@@ -865,7 +869,7 @@ $result = $sth->fetchAll();
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<script src="../../dist/js/excanvas.min.js"></script>
+
 <!-- page script -->
 <script>
   $(function () {
@@ -1022,7 +1026,7 @@ $result = $sth->fetchAll();
       //Fin validaciones
 
       // Variable con todos los valores necesarios para la consulta
-		  var datos = 'codigo_conversiones=' + codigo_conversiones + '&tipo=' + tipo + '&Id_Articulo=' + Id_Articulo + '&cantidad_inicial=' + cantidad_inicial +  '&cantidad_final=' + cantidad_final + '&justificacion=' + justificacion;
+      var datos = 'codigo_conversiones=' + codigo_conversiones + '&tipo=' + tipo + '&Id_Articulo=' + Id_Articulo + '&cantidad_inicial=' + cantidad_inicial +  '&cantidad_final=' + cantidad_final + '&justificacion=' + justificacion;
 
      //alert(datos);
       $.ajax({
@@ -1030,7 +1034,7 @@ $result = $sth->fetchAll();
         url: "conversiones_guardar.php",
         // Variable con los datos necesarios
         data: datos,
-        type: "POST",			
+        type: "POST",     
         dataType: "html",
         //cache: false,
         //success
@@ -1054,13 +1058,13 @@ $result = $sth->fetchAll();
         complete : function(xhr, status) {
           // alert('Petición realizada');
           // $.notify({
-          // 		title: "Informacion : ",
-          // 		message: "Petición realizada!",
-          // 		icon: 'fa fa-check' 
-          // 	},{
-          // 		type: "info"
+          //    title: "Informacion : ",
+          //    message: "Petición realizada!",
+          //    icon: 'fa fa-check' 
+          //  },{
+          //    type: "info"
           // });
-        }		
+        }   
       });
 
     });

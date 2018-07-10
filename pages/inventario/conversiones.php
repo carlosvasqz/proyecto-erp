@@ -350,11 +350,12 @@
                     <th>Código</th>
                     <th>Código de Artículo</th>
                     <th>Cantidad Inicial</th>
+                    <th>Cantidad Convertida</th>
                     <th>Cantidad Final</th>
                     <th>Tipo de Transacción</th>
                     <th>Fecha Emisión</th>
                     <th>Justificación</th>
-                    <th>Acciones</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -385,16 +386,12 @@
                             <td>'.$rowCoversiones['Id_Articulo'].'</td>
                             <td>'.$rowCoversiones['Cantidad_Inicial'].'</td>
                              <td>'.$rowCoversiones['Cantidad_Final'].'</td>
+                             <td>'.$rowCoversiones['Cantidad'].'</td>
                             <td>'.$etiqueta.'</td>
                              <td>'.$rowCoversiones['Fecha'].'</td>
                              <td>'.$rowCoversiones['Justificacion'].'</td>
                             <td>
-                              <form action="empleados_editar.php" method="POST">
-                                <input type="hidden" name="codigo_conversion" value="'.$rowCoversiones['Id_Conversion'].'"/>
-                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
                               
-                                <button type="button" id="'.$rowCoversiones['Id_Conversion'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
-                              </form>
                             </td>
                           </form>
                         </tr>

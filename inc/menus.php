@@ -202,7 +202,7 @@
           </a>
           <ul class="treeview-menu">
             <li'.$li['registro_compras'].'><a href="'.$cd.'pages/compras/registro_compras.php"><i class="fa fa-circle-o"></i> Registro de Compras</a></li> 
-            <li'.$li['proveedores'].'><a href="'.$cd.'pages/compras/proveedores.php"><i class="fa fa-circle-o"></i> Proveedores</a></li>
+            <li'.$li['proveedores'].'><a href="'.$cd.'proyecto-erp/pages/compras/proveedores.php"><i class="fa fa-circle-o"></i> Proveedores</a></li>
             <li'.$li['cotizaciones_compra'].'><a href="'.$cd.'pages/compras/cotizaciones_compra.php"><i class="fa fa-circle-o"></i> Cotizaciones de Compra</a></li>
             <li'.$li['ordenes_compra'].'><a href="'.$cd.'pages/compras/ordenes_compra.php"><i class="fa fa-circle-o"></i> Ordenes de Compra</a></li>
             <!-- <li class="treeview">
@@ -272,7 +272,7 @@
           <ul class="treeview-menu">
             <li'.$li['categorias'].'><a href="'.$cd.'pages/inventario/categorias.php"><i class="fa fa-circle-o"></i> Categorías</a></li> 
             <li'.$li['articulos'].'><a href="'.$cd.'pages/inventario/articulos.php"><i class="fa fa-circle-o"></i> Artículos</a></li>
-            <li'.$li['conversiones'].'><a href="'.$cd.'pages/inventario/conversiones.php"><i class="fa fa-circle-o"></i> Conversiones</a></li>
+            <li'.$li['conversiones'].'><a href="'.$cd.'proyecto-erp/pages/inventario/conversiones.php"><i class="fa fa-circle-o"></i> Conversiones</a></li>
             <!-- <li class="treeview">
               <a href="#"><i class="fa fa-circle-o"></i> Nivel Uno
                 <span class="pull-right-container">
