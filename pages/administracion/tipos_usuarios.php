@@ -54,7 +54,7 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="skin-blue sidebar-mini fixed">
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -172,7 +172,7 @@
         </div>
       </div>
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <!-- <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
@@ -180,7 +180,7 @@
                 </button>
               </span>
         </div>
-      </form>
+      </form> -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
@@ -292,6 +292,7 @@
                     <th>Id Tipo de Usuario</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
@@ -319,14 +320,22 @@
                           break;
                       }
       echo '
-      <tr>
-      <td id="fil" >'.$row['Id_Tipo_Usuario'].'</td>
-      <td id="fil" >'.$row['Nombre'].'</td>
-      <td id="fil" >'.$row['Descripcion'].'</td>
-      <td>
-                              <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><a href="tipos_usuarios_editar.php"> <i class="fa fa-pencil"></i></button></a>
+                        <tr>
+                            <td>'.$rowTipo['Id_Tipo_Usuario'].'</td>
+                            <td>'.$rowTipo['Nombre'].'</td>
+                            <td>'.$rowTipo['Descripcion'].'</td>
+                            <td>'.$etiqueta.'</td>
+                            <td>
+                              <form action="tipos_usuarios_editar.php" method="POST">
+                                <input type="hidden" name="id_tipos" value="'.$rowTipo['Id_Tipo_Usuario'].'"/>
+                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+
+                                <button type="button" id="'.$rowTipo['Id_Tipo_Usuario'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
+
                               
+                              </form>
                             </td>
+                             </form>
       </tr>
 
       ';
@@ -573,6 +582,7 @@
 <script>
     $.material.init();
 </script>
+
 <!-- SlimScroll -->
 <script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- DataTables -->
