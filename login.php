@@ -1,9 +1,26 @@
 <?php
+  $uri = explode("/", $_SERVER['REQUEST_URI']);
+  $thisFileName = end($uri);
+  $thisFileName = explode(".", $thisFileName);
+  $thisFileName = $thisFileName[0];
+  $cd = null;
+  if ($thisFileName=='index'){
+    $cd = '';
+  } else {
+    $cd = '../../';
+  }
+  // $cd .= $_SERVER['SERVER_NAME'];
+  if ($_SERVER['SERVER_NAME'] = 'localhost') {
+    $cd = $_SERVER['SERVER_NAME'] . '/proyecto-erp/' . $cd;
+  }
   session_start();
-  if (isset($_SESSION['Id_Usuario'])&&isset($_SESSION['Tipo_Usuario'])&&isset($_SESSION['Codigo_Empleado'])) {  
-    header("Location: index.php");
+  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
+    header("Location: ".$cd."login.php");
     die();
-  }else{
+  } else {
+    include ($cd.'inc/constructor.php');
+    include ($cd.'inc/conexion.php');
+    include ($cd.'inc/util.php');
 ?>
 <!DOCTYPE html>
 <html>
