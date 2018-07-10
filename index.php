@@ -10,7 +10,7 @@
     $cd = '../../';
   }
   session_start();
-  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {  
+  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
     header("Location: ".$cd."login.php");
     die();
   } else {
