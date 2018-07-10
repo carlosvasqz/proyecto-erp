@@ -347,16 +347,19 @@
 
                 <div class="col-xs-3">
                   <input type="number" class="form-control" id="existencias_minimas_articulos" placeholder="Ingrese existencias minimas...">
+                  
                 </div>
               </div>
 
-              <div class="form-group" id="form_apellido">
-                <label for="apellido" class="col-sm-2 control-label">Apellido*</label>
-
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="apellido" placeholder="Ingrese el apellido..">
-                </div>
+               <div class="form-group" id="form_existencias_minimas_articulo">
+                <label for="ganancia_articulos" class="col-sm-2 control-label">Porcentaje ganancia*</label>
+                
+                <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input type="text" class="form-control">
+                <span class="input-group-addon">%</span>
               </div>
+                </div>
 
                <div class="form-group" id="form_rtn_cliente">
                 <label for="rtn_cliente" class="col-sm-2 control-label">RTN*</label>
