@@ -351,23 +351,67 @@
                 </div>
               </div>
 
-               <div class="form-group" id="form_existencias_minimas_articulo">
+               <div class="form-group" id="form_ganancia_articulo">
                 <label for="ganancia_articulos" class="col-sm-2 control-label">Porcentaje ganancia*</label>
                 
                 <div class="input-group">
                 <span class="input-group-addon"></span>
-                <input type="text" class="form-control">
+                <input type="number" class="form-control">
                 <span class="input-group-addon">%</span>
               </div>
                 </div>
 
-               <div class="form-group" id="form_rtn_cliente">
-                <label for="rtn_cliente" class="col-sm-2 control-label">RTN*</label>
+                 <div class="form-group" id="form_precio_articulo">
+                <label for="precio_articulo" class="col-sm-2 control-label">Precio final*</label>
+                
+                 <div class="col-xs-3">
+                  <input type="number" class="form-control" id="precio_articulo" placeholder="Ingrese ingrese el precio final...">
+                </div>
+                </div>
+
+                 <div class="form-group" id="form_estado">
+                <label  class="col-sm-2 control-label">Estado*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;99999999999999&quot;" data-mask id="rtn_cliente" placeholder="Ingrese el numero...">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="estado" value="1">
+                      Habilitado
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="estado" value="0">
+                      Desabilitado
+                    </label>
+                  </div>
                 </div>
               </div>
+
+              <div class="form-group" id="form_fecha_compra">
+                <label for="fecha_compra" class="col-sm-2 control-label">Ultima compra*</label>
+
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="date" class="form-control pull-right" id="fecha_compra" placeholder="Seleccione la fecha..." >
+                  </div>
+                </div>
+                <!-- /.input group -->
+              </div>
+
+               <div class="form-group" id="form_fecha_venta">
+                <label for="fecha_venta" class="col-sm-2 control-label">Ultima Venta</label>
+
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="date" class="form-control pull-right" id="fecha_venta" placeholder="Seleccione la fecha..." readonly>
+                  </div>
+                </div>
+                <!-- /.input group -->
+              </div>
+
            
               <!-- Date -->
 
@@ -382,66 +426,12 @@
               </div> -->
             </div>
             <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
+           
             <!-- /.box-footer -->
           </form>
         </div>
         <!-- Horizontal Form -->
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Datos de Contacto</h3>
-          </div>
-          <!-- /.box-header -->
-          <!-- form start -->
-          <form class="form-horizontal">
-            <div class="box-body">
-               <div class="form-group" id="form_telefono">
-                <label for="telefono" class="col-sm-2 control-label">Telefono*</label>
-
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask id="telefono" placeholder="Ingrese el numero..">
-                </div>
-              </div>
-              
-
-              <div class="form-group" id="form_direccion">
-                <label for="direccion_cliente" class="col-sm-2 control-label">Direccion*</label>
-
-                <div class="col-sm-9">
-                  <textarea class="form-control" rows="3" id="direccion_cliente" placeholder="Ingrese la direccion ..."></textarea>
-                </div>
-              </div>
-              
-             
-
-              <div class="form-group" id="form_correo">
-                <label for="correo_cliente" class="col-sm-2 control-label">Email*</label>
-
-                <div class="col-sm-9">
-                  <input type="email" class="form-control" id="correo_cliente" placeholder="Ingrese el email..">
-                </div>
-              </div>
-              <!-- <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
-                </div>
-              </div> -->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
-            <!-- /.box-footer -->
-          </form>
-        </div>
+     
         <!-- Horizontal Form -->
         <div class="box box-info">
           <!-- <div class="box-header with-border"> -->
@@ -743,140 +733,186 @@
 
     $("#btnRegistrar").click(function(){
       //Obtencion de valores en los inputs
-      var codigoCliente = $("#codigo_cliente").val();
-      var  idCliente= $("#id_cliente").val();
-      var nombreCliente= $("#nombres_cliente").val();
-      var apellido= $("#apellido").val();
-      var rtnCliente= $("#rtn_cliente").val();
-      var telefono= $("#telefono").val();
-      var direccionCliente= $("#direccion_cliente").val();
-      var correoCliente= $("#correo_cliente").val();
-
+      var codigoArticulo = $("#codigo_articulo").val();
+      var descripcionArticulo= $("#descripcion_articulo").val();
+      var existencias= $("#existencias_articulos").val();
+      var existenciasMinimas= $("#existencias_minimas_articulos").val();
+      var precioArticulo= $("#precio_articulo").val();
+      var ganancia= $("#ganancia_articulos").val();
+      var estado = $('input[name="optionsRadios"]:checked').val();
+      var proveedor= $("#proveedor_articulor").val();
+      var ultimaCompra= $("#fecha_compra").val();
+      var ultimaVenta= $("#fecha_venta").val();
+      var categoria= $("#categoria_articulo").val();
     
       
       // Validaciones
-      if (codigoCliente=='') {
-        $("#codigo_cliente").attr('required',true);
-        document.getElementById("codigo_cliente").focus();
+      if (codigoArticulo=='') {
+        $("#codigo_articulo").attr('required',true);
+        document.getElementById("codigo_articulo").focus();
         $("#form_codigo").removeClass('has-success');
         $("#form_codigo").removeClass('has-error');
         $("#form_codigo").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#codigo_cliente").attr('required',false);
+        $("#codigo_articulo").attr('required',false);
         $("#form_codigo").removeClass('has-success');
         $("#form_codigo").removeClass('has-error');
         $("#form_codigo").addClass('has-success');
       }
 
-       if (idCliente=='') {
-        $("#id_cliente").attr('required',true);
-        document.getElementById("id_cliente").focus();
-        $("#form_id_cliente").removeClass('has-success');
-        $("#form_id_cliente").removeClass('has-error');
-        $("#form_id_cliente").addClass('has-error');
+       if (descripcionArticulo=='') {
+        $("#descripcion_articulo").attr('required',true);
+        document.getElementById("descripcion_articulo").focus();
+        $("#form_descripcion_articulo").removeClass('has-success');
+        $("#form_descripcion_articulo").removeClass('has-error');
+        $("#form_descripcion_articulo").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#id_cliente").attr('required',false);
-        $("#form_id_cliente").removeClass('has-success');
-        $("#form_id_cliente").removeClass('has-error');
-        $("#form_id_cliente").addClass('has-success');
+        $("#descripcion_articulo").attr('required',false);
+        $("#form_descripcion_articulo").removeClass('has-success');
+        $("#form_descripcion_articulo").removeClass('has-error');
+        $("#form_descripcion_articulo").addClass('has-success');
       }
 
-       if (nombreCliente=='') {
-        $("#nombres_cliente").attr('required',true);
-        document.getElementById("nombres_cliente").focus();
-        $("#form_nombres").removeClass('has-success');
-        $("#form_nombres").removeClass('has-error');
-        $("#form_nombres").addClass('has-error');
+       if (proveedor=='') {
+        $("#proveedor_articulo").attr('required',true);
+        document.getElementById("proveedor_articulo").focus();
+        $("#form_proveedor_articulo").removeClass('has-success');
+        $("#form_proveedor_articulo").removeClass('has-error');
+        $("#form_proveedor_articulo").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#nombres_cliente").attr('required',false);
-        $("#form_nombres").removeClass('has-success');
-        $("#form_nombres").removeClass('has-error');
-        $("#form_nombres").addClass('has-success');
+        $("#proveedor_articulo").attr('required',false);
+        $("#form_proveedor_articulo").removeClass('has-success');
+        $("#form_proveedor_articulo").removeClass('has-error');
+        $("#form_proveedor_articulo").addClass('has-success');
       }
 
-         if (apellido=='') {
-        $("#apellido").attr('required',true);
-        document.getElementById("apellido").focus();
-        $("#form_apellido").removeClass('has-success');
-        $("#form_apellido").removeClass('has-error');
-        $("#form_apellido").addClass('has-error');
+         if (categoria=='') {
+        $("#categoria_articulo").attr('required',true);
+        document.getElementById("categoria_articulo").focus();
+        $("#form_categoria_articulo").removeClass('has-success');
+        $("#form_categoria_articulo").removeClass('has-error');
+        $("#form_categoria_articulo").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#apellido").attr('required',false);
-        $("#form_apellido").removeClass('has-success');
-        $("#form_apellido").removeClass('has-error');
-        $("#form_apellido").addClass('has-success');
+        $("#categoria_articulo").attr('required',false);
+        $("#form_categoria_articulo").removeClass('has-success');
+        $("#form_categoria_articulo").removeClass('has-error');
+        $("#form_categoria_articulo").addClass('has-success');
       }
     
-        if (rtnCliente=='') {
-        $("#rtn_cliente").attr('required',true);
-        document.getElementById("rtn_cliente").focus();
-        $("#form_rtn_cliente").removeClass('has-success');
-        $("#form_rtn_cliente").removeClass('has-error');
-        $("#form_rtn_cliente").addClass('has-error');
+        if (existencias=='') {
+        $("#existencias_articulos").attr('required',true);
+        document.getElementById("existencias_articulos").focus();
+        $("#form_existencias_articulo").removeClass('has-success');
+        $("#form_existencias_articulo").removeClass('has-error');
+        $("#form_existencias_articulo").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#rtn_cliente").attr('required',false);
-        $("#form_rtn_cliente").removeClass('has-success');
-        $("#form_rtn_cliente").removeClass('has-error');
-        $("#form_rtn_cliente").addClass('has-success');
+        $("#existencias_articulos").attr('required',false);
+        $("#form_existencias_articulo").removeClass('has-success');
+        $("#form_existencias_articulo").removeClass('has-error');
+        $("#form_existencias_articulo").addClass('has-success');
       }
 
 
-        if (telefono=='') {
-        $("#telefono").attr('required',true);
-        document.getElementById("telefono").focus();
-        $("#form_telefono").removeClass('has-success');
-        $("#form_telefono").removeClass('has-error');
-        $("#form_telefono").addClass('has-error');
+        if (existenciasMinimas=='') {
+        $("#existencias_minimas_articulos").attr('required',true);
+        document.getElementById("existencias_minimas_articulos").focus();
+        $("#form_existencias_minimas_articulo").removeClass('has-success');
+        $("#form_existencias_minimas_articulo").removeClass('has-error');
+        $("#form_existencias_minimas_articulo").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#telefono").attr('required',false);
-        $("#form_telefono").removeClass('has-success');
-        $("#form_telefono").removeClass('has-error');
-        $("#form_telefono").addClass('has-success');
+        $("#existencias_minimas_articulos").attr('required',false);
+        $("#form_existencias_minimas_articulo").removeClass('has-success');
+        $("#form_existencias_minimas_articulo").removeClass('has-error');
+        $("#form_existencias_minimas_articulo").addClass('has-success');
       }
 
-       if (direccionCliente=='') {
-        $("#direccion_cliente").attr('required',true);
-        document.getElementById("direccion_cliente").focus();
-        $("#form_direccion").removeClass('has-success');
-        $("#form_direccion").removeClass('has-error');
-        $("#form_direccion").addClass('has-error');
+       if (ganancia=='') {
+        $("#ganancia_articulos").attr('required',true);
+        document.getElementById("ganancia_articulos").focus();
+        $("#form_ganancia_articulo").removeClass('has-success');
+        $("#form_ganancia_articulo").removeClass('has-error');
+        $("#form_ganancia_articulo").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#direccion_cliente").attr('required',false);
-        $("#form_direccion").removeClass('has-success');
-        $("#form_direccion").removeClass('has-error');
-        $("#form_direccion").addClass('has-success');
+        $("#ganancia_articulos").attr('required',false);
+        $("#form_ganancia_articulo").removeClass('has-success');
+        $("#form_ganancia_articulo").removeClass('has-error');
+        $("#form_ganancia_articulo").addClass('has-success');
       }
 
-      if (correoCliente=='') {
-        $("#correo_cliente").attr('required',true);
-        document.getElementById("correo_cliente").focus();
-        $("#form_correo").removeClass('has-success');
-        $("#form_correo").removeClass('has-error');
-        $("#form_correo").addClass('has-error');
+      if (precioArticulo=='') {
+        $("#precio_articulo").attr('required',true);
+        document.getElementById("precio_articulo").focus();
+        $("#form_precio_articulo").removeClass('has-success');
+        $("#form_precio_articulo").removeClass('has-error');
+        $("#form_precio_articulo").addClass('has-error');
         alertaIngresarDatos();
         return false;
       } else {
-        $("#correo_cliente").attr('required',false);
-        $("#form_correo").removeClass('has-success');
-        $("#form_correo").removeClass('has-error');
-        $("#form_correo").addClass('has-success');
+        $("#precio_articulo").attr('required',false);
+        $("#form_precio_articulo").removeClass('has-success');
+        $("#form_precio_articulo").removeClass('has-error');
+        $("#form_precio_articulo").addClass('has-success');
       }
+
+        if (estado=='') {
+        $("#estado").attr('required',true);
+        document.getElementById("estado").focus();
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#estado").attr('required',false);
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-success');
+      }
+
    
+       if (ultimaCompra=='') {
+        $("#fecha_compra").attr('required',true);
+        document.getElementById("fecha_compra").focus();
+        $("#form_fecha_compra").removeClass('has-success');
+        $("#form_fecha_compra").removeClass('has-error');
+        $("#form_fecha_compra").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#fecha_compra").attr('required',false);
+        $("#form_fecha_compra").removeClass('has-success');
+        $("#form_fecha_compra").removeClass('has-error');
+        $("#form_fecha_compra").addClass('has-success');
+      }
 
+        if (ultimaVenta=='') {
+        $("#fecha_venta").attr('required',true);
+        document.getElementById("fecha_venta").focus();
+        $("#form_fecha_venta").removeClass('has-success');
+        $("#form_fecha_venta").removeClass('has-error');
+        $("#form_fecha_venta").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#fecha_venta").attr('required',false);
+        $("#form_fecha_venta").removeClass('has-success');
+        $("#form_fecha_venta").removeClass('has-error');
+        $("#form_fecha_venta").addClass('has-success');
+      }
 
 
       
@@ -893,12 +929,12 @@
       //Fin validaciones
 
       // Variable con todos los valores necesarios para la consulta
-      var datos = 'codigo_cliente=' + codigoCliente + '&id_cliente=' + idCliente + '&nombres_cliente=' + nombreCliente + '&apellido=' + apellido + '&rtn_cliente=' + rtnCliente + '&telefono=' + telefono +  '&direccion_cliente=' + direccionCliente + '&correo_cliente=' + correoCliente;
+      var datos = 'codigo_articulo=' + codigoArticulo + '&descripcion_articulo=' + descripcionArticulo + '&existencias_articulos=' + existencias + '&existencias_minimas_articulos=' + existenciasMinimas + '&precio_articulo=' + precioArticulo + '&ganancia_articulos=' + ganancia +  '&estado=' + estado + '&proveedor_articulo=' + proveedor + '&fecha_compra=' + ultimaCompra + '&fecha_venta=' + ultimaVenta + '&categoria_articulo=' + categoria;
 
       //alert(datos);
       $.ajax({
         //Direccion destino
-        url: "clientes_guardar.php",
+        url: "articulos_guardar.php",
         // Variable con los datos necesarios
         data: datos,
         type: "POST",     
@@ -926,10 +962,10 @@
             },{
               type: "danger"
             });
-            document.getElementById("id_cliente").focus();
-            $("#form_id_cliente").removeClass('has-success');
-            $("#form_id_cliente").removeClass('has-error');
-            $("#form_id_cliente").addClass('has-error');
+            document.getElementById("codigo_articulo").focus();
+            $("#codigo_articulo").removeClass('has-success');
+            $("#codigo_articulo").removeClass('has-error');
+            $("#codigo_articulo").addClass('has-error');
           }
           
         },
