@@ -97,6 +97,7 @@
         'usuarios' => '',
         // compras
         'cotizaciones_compra' => '',
+        'registro_compras'=>'',
         'ordenes_compra' => '',
         'proveedores' => '',
         'proveedores_registrar' => '',
