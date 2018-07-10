@@ -79,7 +79,7 @@
         // ventas
         'ventas' => ''
       );
-      return $tree;
+      return $modulos;
     }
     
     function cargarClavesLi(){
@@ -134,22 +134,22 @@
       $li = cargarClavesLi();
       $li[$fileName] = ' class = "active"';
       if (array_key_exists($fileName, $admin)) {
-        $modulos['administracion'] = "active ";
+        $tree['administracion'] = "active ";
       }
       if (array_key_exists($fileName, $compras)) {
-        $modulos['compras'] = "active ";
+        $tree['compras'] = "active ";
       }
       if (array_key_exists($fileName, $conf)) {
-        $modulos['configuraciones'] = "active ";
+        $tree['configuraciones'] = "active ";
       }
       if (array_key_exists($fileName, $cont)) {
-        $modulos['contabilidad'] = "active ";
+        $tree['contabilidad'] = "active ";
       }
       if (array_key_exists($fileName, $inv)) {
-        $modulos['inventario'] = "active ";
+        $tree['inventario'] = "active ";
       }
       if (array_key_exists($fileName, $ventas)) {
-        $modulos['ventas'] = "active ";
+        $tree['ventas'] = "active ";
       }
       echo '
       <ul class="sidebar-menu" data-widget="tree">
@@ -159,7 +159,7 @@
             <i class="fa fa-dashboard"></i> <span>Panel Principal</span>
           </a>
         </li>
-        <li class="'.$modulos['administracion'].'treeview">
+        <li class="'.$tree['administracion'].'treeview">
           <a href="#">
             <i class="fa fa-share"></i> <span>Administración</span>
             <span class="pull-right-container">
@@ -193,7 +193,7 @@
             </li> -->
           </ul>
         </li>
-        <li class="'.$modulos['compras'].'treeview">
+        <li class="'.$tree['compras'].'treeview">
           <a href="#">
             <i class="fa fa-share"></i> <span>Compras</span>
             <span class="pull-right-container">
@@ -228,7 +228,7 @@
             </li> -->
           </ul>
         </li>
-        <li class="'.$modulos['ventas'].'treeview">
+        <li class="'.$tree['ventas'].'treeview">
           <a href="#">
             <i class="fa fa-share"></i> <span>Ventas</span>
             <span class="pull-right-container">
@@ -262,7 +262,7 @@
             </li> -->
           </ul>
         </li>
-        <li class="'.$modulos['inventario'].'treeview">
+        <li class="'.$tree['inventario'].'treeview">
           <a href="#">
             <i class="fa fa-share"></i> <span>Inventario</span>
             <span class="pull-right-container">
@@ -296,7 +296,7 @@
             </li> -->
           </ul>
         </li>
-        <li class="'.$modulos['contabilidad'].'treeview">
+        <li class="'.$tree['contabilidad'].'treeview">
           <a href="#">
             <i class="fa fa-share"></i> <span> Contabilidad</span>
             <span class="pull-right-container">
@@ -329,7 +329,7 @@
             </li> -->
           </ul>
         </li>
-        <li class="'.$modulos['configuraciones'].'treeview">
+        <li class="'.$tree['configuraciones'].'treeview">
           <a href="#">
             <i class="fa fa-share"></i> <span> Configuraciones</span>
             <span class="pull-right-container">
