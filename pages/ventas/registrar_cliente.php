@@ -267,9 +267,7 @@
                 <label for="codigo_cliente" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo_cliente" placeholder="Codigo" value=" CLI.<?php $queryTotalClientes=mysqli_query($db, "SELECT COUNT(*) AS Total_Clientes FROM clientes") or die(mysqli_error());
-                  $rowClientes=mysqli_fetch_array($queryTotalClientes);
-                  echo $rowClientes['Total_Clientes']+1;?>" readonly>
+                  <input type="text" class="form-control" id="codigo_cliente" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoCliente());?>" readonly>
                 </div>
               </div>
               <!-- Date -->
