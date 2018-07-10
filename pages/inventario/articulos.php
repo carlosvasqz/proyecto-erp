@@ -284,7 +284,7 @@
               <h3 class="box-title">Lista de Articulos</h3>
               <!-- tools box -->
               <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info"><a href="registrar_articulo.php">
+                <button type="button" class="btn btn-info"><a href="registrar_articulos.php">
                   <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
               </div>
               <!-- /. tools -->

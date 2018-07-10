@@ -281,15 +281,33 @@
                 </div>
               </div>
 
-               <div class="form-group" id="form_descripcion_articulo">
-                <label for="descripcion_articulo" class="col-sm-2 control-label">Proveedor*</label>
+               <div class="form-group" id="form_proveedor_articulo">
+                <label for="proveedor_articulo" class="col-sm-2 control-label">Proveedor*</label>
 
                 <div class="col-sm-9">
-                   <select class="form-control select2" style="width: 100%;">
+                   <select class="form-control select2" id="proveedor_articulo" style="width: 100%;" p>
+                   <option value="">Seleccione un proveedor</option>
                    <?php 
                           $queryListaProv=mysqli_query($db, "SELECT * FROM proveedores") or die(mysqli_error());
                           while ($rowProv=mysqli_fetch_array($queryListaProv)) {
                             echo '<option value="'.$rowProv['Id_Proveedor'].'">'.$rowProv['Nombre_Proveedor'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
+                </div>
+              </div>
+
+               <div class="form-group" id="form_categoria_articulo">
+                <label for="categoria_articulo" class="col-sm-2 control-label">Categoria*</label>
+
+                <div class="col-sm-9">
+                   <select class="form-control select2" id="categoria_articulo"  style="width: 100%;" p>
+                   <option value="">Seleccione una categoria</option>
+                   <?php 
+                          $queryListaCat=mysqli_query($db, "SELECT * FROM categorias") or die(mysqli_error());
+                          while ($rowCat=mysqli_fetch_array($queryListaCat)) {
+                            echo '<option value="'.$rowCat['Id_Categoria'].'">'.$rowCat['Nombre'].'</option>';  
                           }
                         ?>
                   
@@ -310,27 +328,28 @@
         <!-- Horizontal Form -->
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">Datos Personales</h3>
+            <h3 class="box-title">Datos Administrativos</h3>
           </div>
           <!-- /.box-header -->
           <!-- form start -->
           <form class="form-horizontal">
             <div class="box-body">
-              <div class="form-group" id="form_id_cliente">
-                <label for="id_cliente" class="col-sm-2 control-label">Identidad*</label>
+              <div class="form-group" id="form_existencias_articulo">
+                <label for="existencias_articulos" class="col-sm-2 control-label">Existencias*</label>
 
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" data-mask id="id_cliente" placeholder="Ingrese el numero...">
+                <div class="col-xs-3">
+                  <input type="number" class="form-control" id="existencias_articulos" placeholder="Ingrese existencias disponibles...">
                 </div>
               </div>
 
-              <div class="form-group" id="form_nombres">
-                <label for="nombres_cliente" class="col-sm-2 control-label">Nombres*</label>
+               <div class="form-group" id="form_existencias_minimas_articulo">
+                <label for="existencias_articulos" class="col-sm-2 control-label">Existencias minimas*</label>
 
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="nombres_cliente" placeholder="Ingrese los nombres..">
+                <div class="col-xs-3">
+                  <input type="number" class="form-control" id="existencias_minimas_articulos" placeholder="Ingrese existencias minimas...">
                 </div>
               </div>
+
               <div class="form-group" id="form_apellido">
                 <label for="apellido" class="col-sm-2 control-label">Apellido*</label>
 
