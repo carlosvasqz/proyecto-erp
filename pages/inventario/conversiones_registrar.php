@@ -480,7 +480,7 @@ if (tipo==0) {
                 <label for="codigo_conversiones" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo_conversiones" placeholder="Codigo" value="<?php echo nuevoCodigoConversiones(obtenerUltimoCodigoConversiones());?>" readonly>
+                  <input type="text" class="form-control" id="codigo_conversiones" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoConversiones());?>" readonly>
                 </div>
               </div>
               <!-- Date -->
