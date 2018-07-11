@@ -18,6 +18,7 @@ $sth->execute();
 
 $result = $sth->fetchAll();
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
