@@ -1,35 +1,40 @@
 <?php
-  $cd = $_SERVER['HTTP_HOST'];
+  $cd = "http://" . $_SERVER['HTTP_HOST'];
   $uri = explode("/", $_SERVER['REQUEST_URI']);
   if (in_array('proyecto-erp', $uri)) {
     foreach ($uri as $key => $value) {
       if ($value == 'proyecto-erp') {
-        $cd .=  $value . '/';
-        exit();
+        $cd .= "/" . $value . '/';
+        break;
       } else {
-        $cd .= '/' . $value;
+        if(!empty($value) ){
+          $cd .= '/' . $value;
+        }
       }
     }
   } else {
-    break 1;
+    $cd .= '/';
   }
-
-  include ($cd.'inc/constructor.php');
-  include ($cd.'inc/conexion.php');
-  include ($cd.'inc/util.php');
 
   $thisFileName = end($uri);
   $thisFileName = explode(".", $thisFileName);
   $thisFileName = $thisFileName[0];
-
-  if ($thisFileName=='index'){
-    $cd = '';
+  $relative;
+  if ($thisFileName=='index'||$thisFileName=='lockscreen'||$thisFileName=='login'){
+    $relative = '';
   } else {
-    $cd = '../../';
+    $relative = '../../';
   }
+
+  include($relative.'inc/conexion.php');
+  include($relative.'inc/util.php');
+  include($relative.'inc/constructor.php');
+
+  // echo $relative.'inc/constructor.php';
+  // exit();
   session_start();
   if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
-    header("Location: ".$cd."login.php");
+    header("Location: ".$cd."login.php", true);
     die();
   } else {
 ?>
@@ -153,7 +158,7 @@
 
                 <p>
                   <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
-                  <small>Miembro desde <?php echo anioDeFecha($_SESSION['Fecha_Ingreso']);?></small>
+                  <small>Miembro desde <?php echo $_SESSION['Fecha_Ingreso'];?></small>
                 </p>
               </li>
               <!-- Menu Body -->
@@ -221,7 +226,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-        menu($_SESSION['Tipo_Usuario'], $thisFileName);
+        menu($_SESSION['Tipo_Usuario'], $thisFileName, $cd);
       ?>
     </section>
     <!-- /.sidebar -->

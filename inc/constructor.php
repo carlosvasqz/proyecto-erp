@@ -12,8 +12,8 @@
 		}
 	}
 
-	function menu($tipoUsuario, $fileName)	{
-		$cd = atras($filename);
+	function menu($tipoUsuario, $fileName, $cd)	{
+		// $cd = atras($filename);
 		switch ($tipoUsuario) {
 			case 'Superusuario':
 				menuRoot($cd, $fileName);

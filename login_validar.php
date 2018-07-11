@@ -12,7 +12,7 @@
             $_SESSION['Codigo_Empleado'] = 'root';
             $_SESSION['Nombre'] = 'root';
             $_SESSION['Apellido'] = 'root';   
-            $_SESSION['Fecha_Ingreso'] = ' el BigBang';           
+            $_SESSION['Fecha_Ingreso'] = '2018-01-01';           
             echo "1"; // Valido
             exit();
         } else {
