@@ -580,7 +580,7 @@ if (cantidad=='') {
                     }
                      ?>
                 </div>
-                </div>
+                
 
             <div class="box-body">
               <div class="form-group" id="form_cantidad">
@@ -607,7 +607,7 @@ if (cantidad=='') {
                   <textarea class="form-control" rows="4" id="justificacion" placeholder="Justifique la Conversión ..."></textarea>
                 </div>
               </div>
-</div>
+
 </div>
         <!-- Horizontal Form -->
         <div class="box box-info">
