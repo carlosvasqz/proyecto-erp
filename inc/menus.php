@@ -79,7 +79,7 @@
         // ventas
         'ventas' => ''
       );
-      return $tree;
+      return $modulos;
     }
     
     function cargarClavesLi(){
@@ -124,7 +124,7 @@
     }
 
     function menuRoot($cd, $fileName) {
-      $tree = cargarClavesTree();
+      $modulos = cargarClavesTree();
       $admin = cargarAdmin();
       $compras = cargarCompras();
       $conf = cargarConf();
