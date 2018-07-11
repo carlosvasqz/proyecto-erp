@@ -225,7 +225,7 @@
                 <label for="codigo" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" value="<?php echo nuevoCodigoProveedor(obtenerUltimoCodigoProveedor());?>" readonly>
+                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoProveedor());?>" readonly>
                 </div>
               </div>
               
