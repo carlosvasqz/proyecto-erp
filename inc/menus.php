@@ -101,6 +101,7 @@
         'proveedores' => '',
         'proveedores_registrar' => '',
         'proveedores_editar' => '',
+        'registro_compras' => '',
         // configuraciones
         'perfil' => '',
         // contabilidad
