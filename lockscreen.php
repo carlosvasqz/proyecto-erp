@@ -9,9 +9,13 @@
   } else {
     $cd = '../../';
   }
+  // $cd .= $_SERVER['SERVER_NAME'];
+  if ($_SERVER['SERVER_NAME'] = 'localhost') {
+    $cd = $_SERVER['SERVER_NAME'] . '/proyecto-erp/' . $cd;
+  }
   session_start();
-  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {  
-    header("Location: ".$cd."403.php");
+  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
+    header("Location: ".$cd."login.php");
     die();
   } else {
     include ($cd.'inc/constructor.php');
