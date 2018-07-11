@@ -350,8 +350,8 @@
                     <th>Código</th>
                     <th>Código de Artículo</th>
                     <th>Cantidad Inicial</th>
+                     <th>Cantidad Final</th>
                     <th>Cantidad Convertida</th>
-                    <th>Cantidad Final</th>
                     <th>Tipo de Transacción</th>
                     <th>Fecha Emisión</th>
                     <th>Justificación</th>
