@@ -5,11 +5,16 @@
 
 	function atras($fileName){
 		// if(in_array($fileName, $principales)){}
+			$cd = null;
 		if ($fileName=='index'){
-			return '';
+			$cd = '';
 		} else {
-			return '../../';
+			$cd = '../../';
 		}
+		if ($_SERVER['SERVER_NAME'] = 'localhost') {
+			$cd = $_SERVER['SERVER_NAME'] . '/proyecto-erp/' . $cd;
+		}
+		return $cd;
 	}
 
 	function menu($tipoUsuario, $fileName)	{
