@@ -6,13 +6,14 @@ $codigo_conversiones=$_POST['codigo_conversiones'];
 $tipo=$_POST['tipo'];
 $Id_Articulo=$_POST['Id_Articulo'];
 $cantidad_inicial=$_POST['cantidad_inicial'];
+$cantidad=$_POST['cantidad'];
 $cantidad_final=$_POST['cantidad_final'];
 $justificacion=$_POST['justificacion'];
 $Fecha = date('Y/m/d H:i'); 
 
 //echo $identidad.' - '.$nombre.' - '.$direccion.' - '.$telefono;
 //echo "// INSERT INTO proveedores (Id_Proveedor, Nombre_Proveedor, RTN_Proveedor, Direccion, Telefono, Correo_Electronico, Estado) VALUES ('$codigo','$nombre','$rtn','$direccion','$telefono','$correo', $estado); //";
-$sql=mysqli_query($db,"INSERT INTO `conversiones`(`Id_Conversion`, `Id_Articulo`, `Cantidad_Inicial`, `Cantidad_Final`, `Tipo`, `Justificacion`, `Fecha`)VALUES ('$codigo_conversiones','$Id_Articulo',$cantidad_inicial, $cantidad_final, $tipo,'$justificacion','$Fecha')") or die(mysqli_error());
+$sql=mysqli_query($db,"INSERT INTO `conversiones`(`Id_Conversion`, `Id_Articulo`, `Cantidad_Inicial`,`Cantidad`,  `Cantidad_Final`, `Tipo`, `Justificacion`, `Fecha`)VALUES ('$codigo_conversiones','$Id_Articulo',$cantidad_inicial, $cantidad, $cantidad_final, $tipo,'$justificacion','$Fecha')") or die(mysqli_error());
 
 
 $queryVerificar = mysqli_query($db, "SELECT Tipo FROM conversiones WHERE Id_Conversion = '$codigo_conversiones'") or die (mysqli_error());
