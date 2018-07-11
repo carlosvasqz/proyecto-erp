@@ -1,9 +1,27 @@
 <?php
+  $cd = $_SERVER['HTTP_HOST'];
   $uri = explode("/", $_SERVER['REQUEST_URI']);
+  if (in_array('proyecto-erp', $uri)) {
+    foreach ($uri as $key => $value) {
+      if ($value == 'proyecto-erp') {
+        $cd .=  $value . '/';
+        exit();
+      } else {
+        $cd .= '/' . $value;
+      }
+    }
+  } else {
+    break 1;
+  }
+
+  include ($cd.'inc/constructor.php');
+  include ($cd.'inc/conexion.php');
+  include ($cd.'inc/util.php');
+
   $thisFileName = end($uri);
   $thisFileName = explode(".", $thisFileName);
   $thisFileName = $thisFileName[0];
-  $cd = null;
+
   if ($thisFileName=='index'){
     $cd = '';
   } else {
@@ -14,9 +32,6 @@
     header("Location: ".$cd."login.php");
     die();
   } else {
-    include ($cd.'inc/constructor.php');
-    include ($cd.'inc/conexion.php');
-    include ($cd.'inc/util.php');
 ?>
 <!DOCTYPE html>
 <html>
