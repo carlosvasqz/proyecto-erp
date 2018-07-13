@@ -237,6 +237,7 @@
           <div class="info-box">
             <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
 
+
             <div class="info-box-content">
               <span class="info-box-text"><h4>Totales</h4></span>
               <span class="info-box-number">
@@ -245,6 +246,28 @@
                   $rowClientes=mysqli_fetch_array($queryTotalClientes);
                   echo $rowClientes['Total_Clientes'];
                   // mysqli_close($queryTotalEmpleados);
+                ?>
+              </span>
+            </div>
+
+            
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+         <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Deshabilitados</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $queryClientesDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Clientes_Desabilitados FROM clientes WHERE Estado = 0") or die(mysqli_error());
+                  $rowClientesDesabilitados=mysqli_fetch_array($queryClientesDesabilitados);
+                  echo $rowClientesDesabilitados['Clientes_Desabilitados'];
+                  //mysqli_close($queryEmpleadosDesabilitados);
                 ?>
               </span>
             </div>
@@ -618,7 +641,7 @@
 
   
     
-    alert(accion[4]);
+    //alert(accion[4]);
     swal({
         title: "¿Esta seguro?",
         text: "Esta accion " + accion[4] + "á el elemento seleccionado",
