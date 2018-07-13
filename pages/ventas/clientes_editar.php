@@ -886,8 +886,5 @@
 </body>
 </html>
 <?php
-  } else {
-    header("location: ../examples/500.php");
-    exit();
-  }
+ }
 ?>
