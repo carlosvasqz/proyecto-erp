@@ -125,6 +125,18 @@
         }
     }
 
+      function obtenerUltimoCodigoArticulo(){
+        include ("conexion.php");
+        $query = "SELECT MAX(Id_Articulo) AS Ultimo_Codigo FROM articulos;";
+        $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
+        $rowCodigo=mysqli_fetch_array($sqlcon);
+        if(is_null($rowCodigo['Ultimo_Codigo'])){
+            return "Art.0";
+        }else{
+            return $rowCodigo['Ultimo_Codigo'];
+        }
+    }
+
     function nuevoCodigo($codigo){
         $codigo = explode('.', $codigo);
         $nuevo = $codigo[1]+1;
