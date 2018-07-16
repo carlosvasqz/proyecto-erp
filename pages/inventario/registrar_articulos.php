@@ -1,33 +1,68 @@
 <?php
-  include ('../../inc/constructor.php');
-  include ('../../inc/conexion.php');
-  include ('../../inc/util.php');
+  $cd = "http://" . $_SERVER['HTTP_HOST'];
+  $uri = explode("/", $_SERVER['REQUEST_URI']);
+  if (in_array('proyecto-erp', $uri)) {
+    foreach ($uri as $key => $value) {
+      if ($value == 'proyecto-erp') {
+        $cd .= "/" . $value . '/';
+        break;
+      } else {
+        if(!empty($value) ){
+          $cd .= '/' . $value;
+        }
+      }
+    }
+  } else {
+    $cd .= '/';
+  }
+
+  $thisFileName = end($uri);
+  $thisFileName = explode(".", $thisFileName);
+  $thisFileName = $thisFileName[0];
+  $relative;
+  if ($thisFileName=='index'||$thisFileName=='lockscreen'||$thisFileName=='login'){
+    $relative = '';
+  } else {
+    $relative = '../../';
+  }
+
+  include($relative.'inc/conexion.php');
+  include($relative.'inc/util.php');
+  include($relative.'inc/constructor.php');
+
+  // echo $relative.'inc/constructor.php';
+  // exit();
+  session_start();
+  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
+    header("Location: ".$cd."login.php", true);
+    die();
+  } else {
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Registrar Articulo</title>
+  <title>MaterialAdminLTE 2 | Empleados</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Sweet Alert CSS -->
+  <link rel="stylesheet" href="<?php echo $cd;?>plugins/sweet-alert/sweetalert.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
-  <!-- bootstrap datepicker -->
-  <link rel="stylesheet" href="../../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>dist/css/AdminLTE.min.css">
   <!-- Material Design -->
-  <link rel="stylesheet" href="../../dist/css/bootstrap-material-design.min.css">
-  <link rel="stylesheet" href="../../dist/css/ripples.min.css">
-  <link rel="stylesheet" href="../../dist/css/MaterialAdminLTE.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>dist/css/bootstrap-material-design.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>dist/css/ripples.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>dist/css/MaterialAdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="../../dist/css/skins/all-md-skins.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>dist/css/skins/all-md-skins.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -45,7 +80,7 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index.php" class="logo">
+    <a href="<?php echo $cd;?>index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">M<b>A</b>L</span>
       <!-- logo for regular state and mobile devices -->
@@ -64,34 +99,6 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-envelope-o"></i>
-              <span class="label label-success">4</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li><!-- start message -->
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="../../dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Support Team
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <!-- end message -->
-                </ul>
-              </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
-            </ul>
-          </li>
           <!-- Notifications: style can be found in dropdown.less -->
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -114,78 +121,49 @@
             </ul>
           </li>
           <!-- Tasks: style can be found in dropdown.less -->
-          <li class="dropdown tasks-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-flag-o"></i>
-              <span class="label label-danger">9</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 9 tasks</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li><!-- Task item -->
-                    <a href="#">
-                      <h3>
-                        Design some buttons
-                        <small class="pull-right">20%</small>
-                      </h3>
-                      <div class="progress xs">
-                        <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar"
-                             aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                          <span class="sr-only">20% Complete</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <!-- end task item -->
-                </ul>
-              </li>
-              <li class="footer">
-                <a href="#">View all tasks</a>
-              </li>
-            </ul>
-          </li>
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="../../dist/img/user-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Thanh Nguyen</span>
+              <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs"><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="../../dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Thanh Nguyen - Web Developer
-                  <small>Member since Nov. 2012</small>
+                <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
+                  <small>Miembro desde <?php echo anioDeFecha($_SESSION['Fecha_Ingreso']);?></small>
                 </p>
               </li>
               <!-- Menu Body -->
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
+                    <a href="<?php echo $cd;?>pages/configuraciones/perfil.php">Perfil</a>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
+                    <a href="<?php echo $cd;?>lockscreen.php">Bloquear</a>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
+                    <a href="<?php echo $cd;?>logout.php">Salir</a>
                   </div>
                 </div>
                 <!-- /.row -->
               </li>
               <!-- Menu Footer-->
-              <li class="user-footer">
+              <!-- <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="#" class="btn btn-default btn-flat"><i class="fa fa-user"></a>
+                </div>
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat"><i class="fa fa-lock"></i></a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?php //echo $cd;?>logout.php" class="btn btn-default btn-flat"><i class="fa fa-sign-out"></a>
                 </div>
-              </li>
+              </li> -->
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
@@ -206,11 +184,11 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="../../dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Thanh Nguyen</p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        <p><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></p>
+          <a href="#"><i class="fa fa-user"></i> <?php echo $_SESSION['Codigo_Empleado'];?></a>          
         </div>
       </div>
       <!-- search form -->
@@ -226,12 +204,11 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-        menu();
+        menu($_SESSION['Tipo_Usuario'], $thisFileName, $cd);
       ?>
     </section>
     <!-- /.sidebar -->
   </aside>
-
   <!-- =============================================== -->
 
   <!-- Content Wrapper. Contains page content -->
@@ -675,24 +652,24 @@
     $.material.init();
 </script>
 <!-- DataTables -->
-<script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- bootstrap datepicker -->
-<script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- bootstrap notify -->
-<script src="../../plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="<?php echo $cd;?>plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
 <!-- SlimScroll -->
-<script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
-<script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
 <!-- InputMask -->
-<script src="../../plugins/input-mask/jquery.inputmask.js"></script>
-<script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="../../plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.js"></script>
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- AdminLTE App -->
-<script src="../../dist/js/adminlte.min.js"></script>
+<script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
+<script src="<?php echo $cd;?>dist/js/demo.js"></script>
 <!-- page script -->
 <script>
   $(function () {
@@ -989,3 +966,6 @@
 </script>
 </body>
 </html>
+<?php
+}
+?>
