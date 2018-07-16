@@ -620,7 +620,7 @@
 
   
     
-    alert(accion[4]);
+    //alert(accion[4]);
     swal({
         title: "¿Esta seguro?",
         text: "Esta accion " + accion[4] + "á el elemento seleccionado",
