@@ -43,7 +43,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Empleados</title>
+  <title>MaterialAdminLTE 2 | Articulos</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -642,12 +642,12 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
-<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+<script src<?php echo $cd;?>bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src<?php echo $cd;?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- Material Design -->
-<script src="../../dist/js/material.min.js"></script>
-<script src="../../dist/js/ripples.min.js"></script>
+<script src<?php echo $cd;?>dist/js/material.min.js"></script>
+<script src<?php echo $cd;?>dist/js/ripples.min.js"></script>
 <script>
     $.material.init();
 </script>
@@ -673,7 +673,7 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-empleados').DataTable({
+    $('#lista-Articulos').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -692,7 +692,7 @@
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     $('[data-mask]').inputmask()
-    // $('#lista-empleados').DataTable();
+    // $('#lista-Articulos').DataTable();
 
     function alertaIngresarDatos(){
       $.notify({
