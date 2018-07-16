@@ -273,7 +273,7 @@
           <ul class="treeview-menu">
             <li'.$li['categorias'].'><a href="'.$cd.'pages/inventario/categorias.php"><i class="fa fa-circle-o"></i> Categorías</a></li> 
             <li'.$li['articulos'].'><a href="'.$cd.'pages/inventario/articulos.php"><i class="fa fa-circle-o"></i> Artículos</a></li>
-            <li'.$li['conversiones'].'><a href="'.$cd.'proyecto-erp/pages/inventario/conversiones.php"><i class="fa fa-circle-o"></i> Conversiones</a></li>
+            <li'.$li['conversiones'].'><a href="'.$cd.'/pages/inventario/conversiones.php"><i class="fa fa-circle-o"></i> Conversiones</a></li>
             <!-- <li class="treeview">
               <a href="#"><i class="fa fa-circle-o"></i> Nivel Uno
                 <span class="pull-right-container">
