@@ -8,11 +8,11 @@
 
 		 $codigoArticulo = $_POST['codigo_articulo'];
 		 $descripcionArticulo = $_POST['descripcion_articulo'];
-		 $existencias = $_POST['estado'];
+		 $existencias = $_POST['existencias_articulos'];
 		 $existenciasMinimas = $_POST['existencias_minimas_articulos'];
 		 $precioArticulo = $_POST['precio_articulo'];
 		 $ganancia = $_POST['ganancia_articulos'];
-		 $estado = $_POST['input[name="optionsRadios"]:checked'];
+		 $estado = $_POST['estado'];
      $proveedor = $_POST['proveedor_articulo'];
      $ultimaCompra = fechaIngABD($_POST['fecha_compra']);
      $ultimaVenta = fechaIngABD($_POST['fecha_venta']);
