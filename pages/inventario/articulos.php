@@ -631,7 +631,7 @@
     }, function () {
         $.ajax({
           //Direccion destino
-          url: "Articulos_cambiar_estado.php",
+          url: "articulos_cambiar_estado.php",
           // Variable con los datos necesarios
           data: "codigo_articulo=" + codigoArticulo + "&estado=" +  Estado,
           type: "POST",     
