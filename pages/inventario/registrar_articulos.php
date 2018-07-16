@@ -371,7 +371,7 @@
                 <div class="col-sm-9">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="date" class="form-control pull-right" id="fecha_compra" placeholder="Seleccione la fecha..." >
+                    <input type="text" class="form-control pull-right" id="fecha_compra" placeholder="Seleccione la fecha..." >
                   </div>
                 </div>
                 <!-- /.input group -->
@@ -383,7 +383,7 @@
                 <div class="col-sm-9">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="date" class="form-control pull-right" id="fecha_venta" placeholder="Seleccione la fecha..." readonly>
+                    <input type="text" class="form-control pull-right" id="fecha_venta" placeholder="Seleccione la fecha..." readonly>
                   </div>
                 </div>
                 <!-- /.input group -->
@@ -682,10 +682,10 @@
       'autoWidth'   : false
     });
     //Date picker
-    $('#fecha_nacimiento').datepicker({
+    $('#fecha_compra').datepicker({
       autoclose: true
     });
-    $('#fecha_ingreso').datepicker({
+    $('#fecha_venta').datepicker({
       autoclose: true
     });
   })
@@ -717,7 +717,7 @@
       var precioArticulo= $("#precio_articulo").val();
       var ganancia= $("#ganancia_articulos").val();
       var estado = $('input[name="optionsRadios"]:checked').val();
-      var proveedor= $("#proveedor_articulor").val();
+      var proveedor= $("#proveedor_articulo").val();
       var ultimaCompra= $("#fecha_compra").val();
       var ultimaVenta= $("#fecha_venta").val();
       var categoria= $("#categoria_articulo").val();
