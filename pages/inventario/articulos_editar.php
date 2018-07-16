@@ -43,7 +43,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Empleados</title>
+  <title>MaterialAdminLTE 2 | Articulos</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -209,7 +209,6 @@
     </section>
     <!-- /.sidebar -->
   </aside>
-============================================ -->
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -253,145 +252,158 @@
                 </div>
               </div>
              
-            </div>
+            
 
-               <div class="form-group" id="form_estado">
-                <label for="codigo_empleado" class="col-sm-2 control-label">Estado*</label>
+            <div class="form-group" id="form_descripcion_articulo">
+                <label for="descripcion_articulo" class="col-sm-2 control-label">Descripcion*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="descripcion_articulo" placeholder="Ingrese una descripcion para el articulo..." value="<?php echo $rowArticulo['Descripcion'];?>">
+                </div>
+              </div>
+
+                <div class="form-group" id="form_proveedor_articulo">
+                <label for="proveedor_articulo" class="col-sm-2 control-label">Proveedor*</label>
+
+                <div class="col-sm-9">
+                   <select class="form-control select2" id="proveedor_articulo" style="width: 100%;" p>
+    
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM proveedores") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Proveedor'].'">'.$rowProv['Nombre_Proveedor'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
+                </div>
+              </div>
+
+               <div class="form-group" id="form_categoria_articulo">
+                <label for="categoria_articulo" class="col-sm-2 control-label">Categoria*</label>
+
+                <div class="col-sm-9">
+                   <select class="form-control select2" id="categoria_articulo"  style="width: 100%;" p>
+      
+                   <?php 
+                          $queryListaCat=mysqli_query($db, "SELECT * FROM categorias") or die(mysqli_error());
+                          while ($rowCat=mysqli_fetch_array($queryListaCat)) {
+                            echo '<option value="'.$rowCat['Id_Categoria'].'">'.$rowCat['Nombre'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Administrativos</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+             <div class="form-group" id="form_existencias_articulo">
+                <label for="existencias_articulos" class="col-sm-2 control-label">Existencias*</label>
+
+                <div class="col-xs-3">
+                  <input type="number" class="form-control" id="existencias_articulos" placeholder="Ingrese existencias disponibles..." value="<?php echo $rowArticulo['Existencias'];?>" >
+                </div>
+              </div>
+
+               <div class="form-group" id="form_existencias_minimas_articulo">
+                <label for="existencias_articulos" class="col-sm-2 control-label">Existencias minimas*</label>
+
+                <div class="col-xs-3">
+                  <input type="number" class="form-control" id="existencias_minimas_articulos" placeholder="Ingrese existencias minimas..." value="<?php echo $rowArticulo['Existencias_Minimas'];?>">
+                  
+                </div>
+              </div>
+
+              <div class="form-group" id="form_ganancia_articulo">
+                <label for="ganancia_articulos" class="col-sm-2 control-label">Porcentaje ganancia*</label>
+                
+                <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input type="number" id="ganancia_articulos" class="form-control" value="<?php echo $rowArticulo['Porcentaje_Ganancia'];?>">
+                <span class="input-group-addon">%</span>
+              </div>
+                </div>
+
+                <div class="form-group" id="form_precio_articulo">
+                <label for="precio_articulo" class="col-sm-2 control-label">Precio final*</label>
+                
+                 <div class="col-xs-3">
+                  <input type="number" class="form-control" id="precio_articulo" placeholder="Ingrese ingrese el precio final..." value="<?php echo $rowArticulo['Precio_Final'];?>">
+                </div>
+                </div>
+
+                 <div class="form-group" id="form_estado">
+                <label for="optionsRadios" class="col-sm-2 control-label">Estado*</label>
 
                 <div class="col-sm-9">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="optionsRadios" id="estado" value="1" <?php if($rowCliente['Estado']==1){echo 'checked';} ?>>
+                      <input type="radio" name="optionsRadios" id="estado" value="1" <?php if($rowArticulo['Estado']==1){echo 'checked';} ?>>
                       Habilitado
                     </label>
                   </div>
                   <div class="radio">
                     <label>
-                      <input type="radio" name="optionsRadios" id="estado" value="0" <?php if($rowCliente['Estado']==0){echo 'checked';} ?>>
+                      <input type="radio" name="optionsRadios" id="estado" value="0" <?php if($rowArticulo['Estado']==0){echo 'checked';} ?>>
                       Desabilitado
                     </label>
                   </div>
                 </div>
               </div>
-              <!-- Date -->
 
-              <!-- <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
-                </div>
-              </div> -->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
-            <!-- /.box-footer -->
-          </form>
-        </div>
-        <!-- Horizontal Form -->
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Datos Personales</h3>
-          </div>
-          <!-- /.box-header -->
-          <!-- form start -->
-          <form class="form-horizontal">
-            <div class="box-body">
-              <div class="form-group" id="form_id_cliente">
-                <label for="id_cliente" class="col-sm-2 control-label">Identidad*</label>
+               <div class="form-group" id="form_fecha_compra">
+                <label for="fecha_compra" class="col-sm-2 control-label">Ultima compra*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;9999-9999-99999&quot;" data-mask id="id_cliente" placeholder="Ingrese el numero..." value="<?php echo $rowCliente['Numero_Identidad'];?>" disabled>
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" class="form-control pull-right" id="fecha_compra" placeholder="Seleccione la fecha..." value="<?php echo $rowArticulo['Fecha_Ultima_Compra'];?>" >
+                  </div>
                 </div>
+                <!-- /.input group -->
               </div>
+
+               <div class="form-group" id="form_fecha_venta">
+                <label for="fecha_venta" class="col-sm-2 control-label">Ultima Venta</label>
+
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" class="form-control pull-right" id="fecha_venta" placeholder="Seleccione la fecha..." value="<?php echo $rowArticulo['Fecha_Ultima_Venta'];?>"readonly>
+                  </div>
+                </div>
+                <!-- /.input group -->
+              </div>
+
+
               <!--_______________________________________________________________________________________________________________________-->
-              <div class="form-group" id="form_nombres">
-                <label for="nombres_cliente" class="col-sm-2 control-label">Nombres*</label>
+               
 
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="nombres_cliente" placeholder="Ingrese los nombres.." value="<?php echo $rowCliente['Nombres'];?>">
-                </div>
-              </div>
-              <div class="form-group" id="form_apellido">
-                <label for="apellido" class="col-sm-2 control-label">Apellido*</label>
-
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="apellido" placeholder="Ingrese el apellido.." value="<?php echo $rowCliente['Apellido'];?>">
-                </div>
-              </div>
-
-             <div class="form-group" id="form_rtn_cliente">
-                <label for="rtn_cliente" class="col-sm-2 control-label">RTN*</label>
-
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;99999999999999&quot;" data-mask id="rtn_cliente" placeholder="Ingrese el numero..." value="<?php echo $rowCliente['RTN'];?>">
-                </div>
-              </div>
-    
+             
             </div>
             <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
+           
             <!-- /.box-footer -->
           </form>
         </div>
         <!-- Horizontal Form -->
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Datos de Contacto</h3>
-          </div>
-          <!-- /.box-header -->
-          <!-- form start -->
-          <form class="form-horizontal">
-            <div class="box-body">
-               <div class="form-group" id="form_telefono">
-                <label for="telefono" class="col-sm-2 control-label">Telefono*</label>
-
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" data-inputmask="&quot;mask&quot;: &quot;(999) 9999-9999&quot;" data-mask id="telefono" placeholder="Ingrese el numero..." value="<?php echo $rowCliente['Telefono'];?>">
-                </div>
-              </div>
-              
-              <div class="form-group" id="form_direccion">
-                <label for="direccion_cliente" class="col-sm-2 control-label">Direccion*</label>
-
-                <div class="col-sm-9">
-                  <textarea class="form-control" rows="3" id="direccion_cliente" placeholder="Ingrese la direccion ..." ><?php echo $rowCliente['Direccion'];?></textarea>
-                </div>
-              </div>
-              
-              <div class="form-group" id="form_correo">
-                <label for="correo_cliente" class="col-sm-2 control-label">Email*</label>
-
-                <div class="col-sm-9">
-                  <input type="email" class="form-control" id="correo_cliente" placeholder="Ingrese el email.." value="<?php echo $rowCliente['Correo_Electronico'];?>">
-                </div>
-              </div>
-              <!-- <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
-                </div>
-              </div> -->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
-            <!-- /.box-footer -->
-          </form>
-        </div>
+   
         <!-- Horizontal Form -->
         <div class="box box-info">
           <!-- <div class="box-header with-border"> -->
@@ -665,10 +677,10 @@
       'autoWidth'   : false
     });
     //Date picker
-    $('#fecha_nacimiento').datepicker({
+    $('#fecha_compra').datepicker({
       autoclose: true
     });
-    $('#fecha_ingreso').datepicker({
+    $('#fecha_venta').datepicker({
       autoclose: true
     });
   })
