@@ -254,7 +254,7 @@
                 <label for="descripcion_articulo" class="col-sm-2 control-label">Descripcion*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control"  placeholder="Ingrese una descripcion para el articulo...">
+                  <input type="text" class="form-control" id="descripcion_articulo" placeholder="Ingrese una descripcion para el articulo...">
                 </div>
               </div>
 
@@ -333,7 +333,7 @@
                 
                 <div class="input-group">
                 <span class="input-group-addon"></span>
-                <input type="number" class="form-control">
+                <input type="number" id="ganancia_articulos" class="form-control">
                 <span class="input-group-addon">%</span>
               </div>
                 </div>
@@ -908,7 +908,7 @@
       // Variable con todos los valores necesarios para la consulta
       var datos = 'codigo_articulo=' + codigoArticulo + '&descripcion_articulo=' + descripcionArticulo + '&existencias_articulos=' + existencias + '&existencias_minimas_articulos=' + existenciasMinimas + '&precio_articulo=' + precioArticulo + '&ganancia_articulos=' + ganancia +  '&estado=' + estado + '&proveedor_articulo=' + proveedor + '&fecha_compra=' + ultimaCompra + '&fecha_venta=' + ultimaVenta + '&categoria_articulo=' + categoria;
 
-      //alert(datos);
+      alert(datos);
       $.ajax({
         //Direccion destino
         url: "articulos_guardar.php",
@@ -928,7 +928,7 @@
             },{
               type: "success"
             });
-            window.setTimeout('location.href="clientes.php"', 1000);
+            window.setTimeout('location.href="articulos.php"', 1000);
           }
          
            if (!data) {
