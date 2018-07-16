@@ -244,7 +244,7 @@
                 <label for="codigo_articulo" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo_articulo" placeholder="Codigo">
+                  <input type="text" class="form-control" id="codigo_articulo" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoArticulo());?>" readonly>
                 </div>
               </div>
              
@@ -705,7 +705,7 @@
     }
 
     $("#btnCancelar").click(function(){
-      $(location).attr('href', 'clientes.php');
+      $(location).attr('href', 'articulos.php');
     });
 
     $("#btnRegistrar").click(function(){
