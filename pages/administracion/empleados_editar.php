@@ -41,9 +41,6 @@
       header("Location: ".$cd."500.php");
       die();
     } else {
-      include ($cd.'inc/constructor.php');
-      include ($cd.'inc/conexion.php');
-      include ($cd.'inc/util.php');
 ?>
 <!DOCTYPE html>
 <html>
