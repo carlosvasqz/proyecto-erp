@@ -286,7 +286,7 @@
               <h3 class="box-title">Lista de Clientes</h3>
               <!-- tools box -->
               <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info"><a href="registrar_cliente.php">
+                <button type="button" class="btn btn-info" id="btnRegistrarNuevo" >
                   <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button></a>
               </div>
               <!-- /. tools -->
@@ -622,12 +622,16 @@
       'autoWidth'   : false
     });
   })
+ 
 
 
   $(document).ready(function () {
     $('.sidebar-menu').tree();
 
-    
+   $("#btnRegistrarNuevo").click(function(){
+      $(location).attr('href', 'registrar_cliente.php');
+    });
+
     $('.sweetalert').click(function(){
      var codigoCliente = $(this).attr('id');
     var accion = $(this).attr('class');
