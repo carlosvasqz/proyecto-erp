@@ -125,13 +125,25 @@
         }
     }
 
+     function obtenerUltimoCodigoCategoria(){
+        include ("conexion.php");
+        $query = "SELECT MAX(Id_Categoria) AS Ultimo_Codigo FROM categorias;";
+        $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
+        $rowCodigo=mysqli_fetch_array($sqlcon);
+        if(is_null($rowCodigo['Ultimo_Codigo'])){
+            return "CAT.0";
+        }else{
+            return $rowCodigo['Ultimo_Codigo'];
+        }
+    }
+
       function obtenerUltimoCodigoArticulo(){
         include ("conexion.php");
         $query = "SELECT MAX(Id_Articulo) AS Ultimo_Codigo FROM articulos;";
         $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
         $rowCodigo=mysqli_fetch_array($sqlcon);
         if(is_null($rowCodigo['Ultimo_Codigo'])){
-            return "Art.0";
+            return "ART.0";
         }else{
             return $rowCodigo['Ultimo_Codigo'];
         }
