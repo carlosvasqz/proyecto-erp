@@ -285,6 +285,7 @@
                     <th>Ultima Compra</th>
                     <th>Ultima Venta</th>
                     <th>Categor&iacute;a</th>
+                    <th>Estado</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -318,12 +319,13 @@
                             <td>'.$rowArticulo['Existencias'].'</td>
                             <td>'.$rowArticulo['Existencias_Minimas'].'</td>
                             <td>'.$rowArticulo['Precio_Final'].'</td>
-                            <td>'.$rowArticulo['Porcentaje_Ganancia'].'</td>
+                            <td>'.$rowArticulo['Porcentaje_Ganancia'].'%</td>
                             <td>'.$etiqueta.'</td>
                             <td>'.$rowArticulo['Id_Proveedor'].'</td>
                             <td>'.$rowArticulo['Fecha_Ultima_Compra'].'</td>
                             <td>'.$rowArticulo['Fecha_Ultima_Venta'].'</td>
                             <td>'.$rowArticulo['Id_Categoria'].'</td>
+
                             <td>
                               <form action="articulos_editar.php" method="POST">
                              <input type="hidden" name="codigo_articulo" value="'.$rowArticulo['Id_Articulo'].'"/>
