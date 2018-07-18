@@ -43,19 +43,19 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Articulos</title>
+  <title>MaterialAdminLTE 2 | Registrar Articulo</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Sweet Alert CSS -->
-  <link rel="stylesheet" href="<?php echo $cd;?>plugins/sweet-alert/sweetalert.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/AdminLTE.min.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="<?php echo $cd;?>bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/ripples.min.css">
@@ -133,7 +133,7 @@
                 <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
+                  <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
                   <small>Miembro desde <?php echo anioDeFecha($_SESSION['Fecha_Ingreso']);?></small>
                 </p>
               </li>
@@ -187,8 +187,8 @@
           <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-        <p><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></p>
-          <a href="#"><i class="fa fa-user"></i> <?php echo $_SESSION['Codigo_Empleado'];?></a>          
+          <p><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></p>
+          <a href="#"><i class="fa fa-user"></i> <?php echo $_SESSION['Codigo_Empleado'];?></a>
         </div>
       </div>
       <!-- search form -->
@@ -681,6 +681,7 @@
       'info'        : true,
       'autoWidth'   : false
     });
+
     //Date picker
     $('#fecha_compra').datepicker({
       autoclose: true
@@ -689,6 +690,8 @@
       autoclose: true
     });
   })
+
+
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     $('[data-mask]').inputmask()
