@@ -20,7 +20,7 @@
   $thisFileName = explode(".", $thisFileName);
   $thisFileName = $thisFileName[0];
   $relative;
-  if ($thisFileName=='index'||$thisFileName=='lockscreen'||$thisFileName=='login'){
+  if ($thisFileName=='index'||$thisFileName=='lockscreen'||$thisFileName=='login'||$thisFileName==''){
     $relative = '';
   } else {
     $relative = '../../';

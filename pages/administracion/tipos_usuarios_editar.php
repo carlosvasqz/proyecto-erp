@@ -37,9 +37,6 @@
     header("Location: ".$cd."login.php", true);
     die();
   } else {
-    include ($cd.'inc/constructor.php');
-    include ($cd.'inc/conexion.php');
-    include ($cd.'inc/util.php');
 ?>
 <!DOCTYPE html>
 <html>

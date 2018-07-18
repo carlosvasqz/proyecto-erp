@@ -318,7 +318,6 @@
                 </thead>
                 <tbody>
                   <?php
-                    include("<?php echo $cd;?>inc/conexion.php");
                       $queryTipos=mysqli_query($db,"SELECT * FROM tipos_usuarios") or die(mysqli_error());
                       while($rowTipo=mysqli_fetch_array($queryTipos)) {
                       $etiqueta = null;
