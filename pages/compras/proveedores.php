@@ -1,29 +1,49 @@
 <?php
+  $cd = "http://" . $_SERVER['HTTP_HOST'];
   $uri = explode("/", $_SERVER['REQUEST_URI']);
+  if (in_array('proyecto-erp', $uri)) {
+    foreach ($uri as $key => $value) {
+      if ($value == 'proyecto-erp') {
+        $cd .= "/" . $value . '/';
+        break;
+      } else {
+        if(!empty($value) ){
+          $cd .= '/' . $value;
+        }
+      }
+    }
+  } else {
+    $cd .= '/';
+  }
+
   $thisFileName = end($uri);
   $thisFileName = explode(".", $thisFileName);
   $thisFileName = $thisFileName[0];
-  $cd = null;
-  if ($thisFileName=='index'){
-    $cd = '';
+  $relative;
+  if ($thisFileName=='index'||$thisFileName=='lockscreen'||$thisFileName=='login'){
+    $relative = '';
   } else {
-    $cd = '../../';
+    $relative = '../../';
   }
+
+  include($relative.'inc/conexion.php');
+  include($relative.'inc/util.php');
+  include($relative.'inc/constructor.php');
+
+  // echo $relative.'inc/constructor.php';
+  // exit();
   session_start();
-  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {  
-    header("Location: ".$cd."403.php");
+  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
+    header("Location: ".$cd."login.php", true);
     die();
   } else {
-    include ($cd.'inc/constructor.php');
-    include ($cd.'inc/conexion.php');
-    include ($cd.'inc/util.php');
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Proveedores</title>
+  <title>MaterialAdminLTE 2 | Empleados</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -113,7 +133,7 @@
                 <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
+                <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
                   <small>Miembro desde <?php echo anioDeFecha($_SESSION['Fecha_Ingreso']);?></small>
                 </p>
               </li>
@@ -167,7 +187,7 @@
           <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></p>
+        <p><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></p>
           <a href="#"><i class="fa fa-user"></i> <?php echo $_SESSION['Codigo_Empleado'];?></a>          
         </div>
       </div>
@@ -184,7 +204,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-        menu($_SESSION['Tipo_Usuario'], $thisFileName);
+        menu($_SESSION['Tipo_Usuario'], $thisFileName, $cd);
       ?>
     </section>
     <!-- /.sidebar -->
