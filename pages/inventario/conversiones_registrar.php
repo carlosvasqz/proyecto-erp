@@ -230,34 +230,6 @@ $result = $sth->fetchAll();
   } );
   </script> -->
 
-  <script>
-    function evaluacion(){
-var cantidad_inicial=document.getElementById('cantidad_inicial').value;
-  var cantidad=document.getElementById('cantidad').value;
-  var resultado=document.getElementById('cantidad_final').value;
- var tipo = $('input[name="optionsRadios"]:checked').val();
-if (cantidad_inicial=='') {
-    var num1=0; 
-  }
-  if (cantidad_inicial!='') {
-    var num1=parseFloat(cantidad_inicial);
-  }
-if (cantidad=='') {
-    var num2=0; 
-  }
-  if (cantidad!='') {
-    var num2=parseFloat(cantidad);
-  }
-if (tipo==1) {
-  var resultado=(num1+num2);
-     document.frmdatos.cantidad_final.value=resultado;
-}
-if (tipo==0) {
-  var resultado=(num1-num2);
-     document.frmdatos.cantidad_final.value=resultado;
-}
-}
-  </script>
 </head>
 <script type="text/javascript">
   function buscar(){
@@ -401,6 +373,36 @@ if (tipo==0) {
     </section>
     <!-- /.sidebar -->
   </aside>
+
+  
+  <script>
+    function evaluacion(){
+var cantidad_inicial=document.getElementById('cantidad_inicial').value;
+  var cantidad=document.getElementById('cantidad').value;
+  var resultado=document.getElementById('cantidad_final').value;
+ var tipo = $('input[name="optionsRadios"]:checked').val();
+if (cantidad_inicial=='') {
+    var num1=0; 
+  }
+  if (cantidad_inicial!='') {
+    var num1=parseFloat(cantidad_inicial);
+  }
+if (cantidad=='') {
+    var num2=0; 
+  }
+  if (cantidad!='') {
+    var num2=parseFloat(cantidad);
+  }
+if (tipo==1) {
+  var resultado=(num1+num2);
+     document.frmdatos.cantidad_final.value=resultado;
+}
+if (tipo==0) {
+  var resultado=(num1-num2);
+     document.frmdatos.cantidad_final.value=resultado;
+}
+}
+  </script>
 
   
   <!-- =============================================== -->
