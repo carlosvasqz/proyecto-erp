@@ -203,7 +203,7 @@
           </a>
           <ul class="treeview-menu">
             <li'.$li['registro_compras'].'><a href="'.$cd.'pages/compras/registro_compras.php"><i class="fa fa-circle-o"></i> Registro de Compras</a></li> 
-            <li'.$li['proveedores'].'><a href="'.$cd.'proyecto-erp/pages/compras/proveedores.php"><i class="fa fa-circle-o"></i> Proveedores</a></li>
+            <li'.$li['proveedores'].'><a href="'.$cd.'pages/compras/proveedores.php"><i class="fa fa-circle-o"></i> Proveedores</a></li>
             <li'.$li['cotizaciones_compra'].'><a href="'.$cd.'pages/compras/cotizaciones_compra.php"><i class="fa fa-circle-o"></i> Cotizaciones de Compra</a></li>
             <li'.$li['ordenes_compra'].'><a href="'.$cd.'pages/compras/ordenes_compra.php"><i class="fa fa-circle-o"></i> Ordenes de Compra</a></li>
             <!-- <li class="treeview">
