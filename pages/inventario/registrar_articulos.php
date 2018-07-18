@@ -640,14 +640,12 @@
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-
-<!-- jQuery 3 -->
-<script src<?php echo $cd;?>bower_components/jquery/dist/jquery.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src<?php echo $cd;?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- Material Design -->
-<script src<?php echo $cd;?>dist/js/material.min.js"></script>
-<script src<?php echo $cd;?>dist/js/ripples.min.js"></script>
+<script src="<?php echo $cd;?>dist/js/material.min.js"></script>
+<script src="<?php echo $cd;?>dist/js/ripples.min.js"></script>
 <script>
     $.material.init();
 </script>
