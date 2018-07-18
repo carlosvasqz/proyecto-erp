@@ -1,29 +1,68 @@
 <?php
-  include ('../../inc/constructor.php');
+  $cd = "http://" . $_SERVER['HTTP_HOST'];
+  $uri = explode("/", $_SERVER['REQUEST_URI']);
+  if (in_array('proyecto-erp', $uri)) {
+    foreach ($uri as $key => $value) {
+      if ($value == 'proyecto-erp') {
+        $cd .= "/" . $value . '/';
+        break;
+      } else {
+        if(!empty($value) ){
+          $cd .= '/' . $value;
+        }
+      }
+    }
+  } else {
+    $cd .= '/';
+  }
+
+  $thisFileName = end($uri);
+  $thisFileName = explode(".", $thisFileName);
+  $thisFileName = $thisFileName[0];
+  $relative;
+  if ($thisFileName=='index'||$thisFileName=='lockscreen'||$thisFileName=='login'){
+    $relative = '';
+  } else {
+    $relative = '../../';
+  }
+
+  include($relative.'inc/conexion.php');
+  include($relative.'inc/util.php');
+  include($relative.'inc/constructor.php');
+
+  // echo $relative.'inc/constructor.php';
+  // exit();
+  session_start();
+  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
+    header("Location: ".$cd."login.php", true);
+    die();
+  } else {
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Blank Page</title>
+  <title>MaterialAdminLTE 2 | Empleados</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Sweet Alert CSS -->
+  <link rel="stylesheet" href="<?php echo $cd;?>plugins/sweet-alert/sweetalert.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>dist/css/AdminLTE.min.css">
   <!-- Material Design -->
-  <link rel="stylesheet" href="../../dist/css/bootstrap-material-design.min.css">
-  <link rel="stylesheet" href="../../dist/css/ripples.min.css">
-  <link rel="stylesheet" href="../../dist/css/MaterialAdminLTE.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>dist/css/bootstrap-material-design.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>dist/css/ripples.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>dist/css/MaterialAdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="../../dist/css/skins/all-md-skins.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>dist/css/skins/all-md-skins.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,13 +74,13 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="skin-blue sidebar-mini fixed">
 <!-- Site wrapper -->
 <div class="wrapper">
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index2.php" class="logo">
+    <a href="<?php echo $cd;?>index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">M<b>A</b>L</span>
       <!-- logo for regular state and mobile devices -->
@@ -60,34 +99,6 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-envelope-o"></i>
-              <span class="label label-success">4</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li><!-- start message -->
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="../../dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Support Team
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <!-- end message -->
-                </ul>
-              </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
-            </ul>
-          </li>
           <!-- Notifications: style can be found in dropdown.less -->
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -110,78 +121,49 @@
             </ul>
           </li>
           <!-- Tasks: style can be found in dropdown.less -->
-          <li class="dropdown tasks-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-flag-o"></i>
-              <span class="label label-danger">9</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 9 tasks</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li><!-- Task item -->
-                    <a href="#">
-                      <h3>
-                        Design some buttons
-                        <small class="pull-right">20%</small>
-                      </h3>
-                      <div class="progress xs">
-                        <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar"
-                             aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                          <span class="sr-only">20% Complete</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <!-- end task item -->
-                </ul>
-              </li>
-              <li class="footer">
-                <a href="#">View all tasks</a>
-              </li>
-            </ul>
-          </li>
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="../../dist/img/user-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Thanh Nguyen</span>
+              <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs"><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="../../dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Thanh Nguyen - Web Developer
-                  <small>Member since Nov. 2012</small>
+                <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
+                  <small>Miembro desde <?php echo anioDeFecha($_SESSION['Fecha_Ingreso']);?></small>
                 </p>
               </li>
               <!-- Menu Body -->
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
+                    <a href="<?php echo $cd;?>pages/configuraciones/perfil.php">Perfil</a>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
+                    <a href="<?php echo $cd;?>lockscreen.php">Bloquear</a>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
+                    <a href="<?php echo $cd;?>logout.php">Salir</a>
                   </div>
                 </div>
                 <!-- /.row -->
               </li>
               <!-- Menu Footer-->
-              <li class="user-footer">
+              <!-- <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="#" class="btn btn-default btn-flat"><i class="fa fa-user"></a>
+                </div>
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat"><i class="fa fa-lock"></i></a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="<?php //echo $cd;?>logout.php" class="btn btn-default btn-flat"><i class="fa fa-sign-out"></a>
                 </div>
-              </li>
+              </li> -->
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
@@ -202,15 +184,15 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="../../dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Thanh Nguyen</p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        <p><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></p>
+          <a href="#"><i class="fa fa-user"></i> <?php echo $_SESSION['Codigo_Empleado'];?></a>          
         </div>
       </div>
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <!-- <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
@@ -218,184 +200,15 @@
                 </button>
               </span>
         </div>
-      </form>
+      </form> -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../../index.php"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="../../index2.php"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-files-o"></i>
-            <span>Layout Options</span>
-            <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../layout/top-nav.php"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-            <li><a href="../layout/boxed.php"><i class="fa fa-circle-o"></i> Boxed</a></li>
-            <li><a href="../layout/fixed.php"><i class="fa fa-circle-o"></i> Fixed</a></li>
-            <li><a href="../layout/collapsed-sidebar.php"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="../widgets.php">
-            <i class="fa fa-th"></i> <span>Widgets</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">Hot</small>
-            </span>
-          </a>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>Charts</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../charts/chartjs.php"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-            <li><a href="../charts/morris.php"><i class="fa fa-circle-o"></i> Morris</a></li>
-            <li><a href="../charts/flot.php"><i class="fa fa-circle-o"></i> Flot</a></li>
-            <li><a href="../charts/inline.php"><i class="fa fa-circle-o"></i> Inline charts</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-laptop"></i>
-            <span>UI Elements</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../UI/general.php"><i class="fa fa-circle-o"></i> General</a></li>
-            <li><a href="../UI/icons.php"><i class="fa fa-circle-o"></i> Icons</a></li>
-            <li><a href="../UI/buttons.php"><i class="fa fa-circle-o"></i> Buttons</a></li>
-            <li><a href="../UI/sliders.php"><i class="fa fa-circle-o"></i> Sliders</a></li>
-            <li><a href="../UI/timeline.php"><i class="fa fa-circle-o"></i> Timeline</a></li>
-            <li><a href="../UI/modals.php"><i class="fa fa-circle-o"></i> Modals</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-edit"></i> <span>Forms</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../forms/general.php"><i class="fa fa-circle-o"></i> General Elements</a></li>
-            <li><a href="../forms/advanced.php"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
-            <li><a href="../forms/editors.php"><i class="fa fa-circle-o"></i> Editors</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-table"></i> <span>Tables</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../tables/simple.php"><i class="fa fa-circle-o"></i> Simple tables</a></li>
-            <li><a href="../tables/data.php"><i class="fa fa-circle-o"></i> Data tables</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="../calendar.php">
-            <i class="fa fa-calendar"></i> <span>Calendar</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-red">3</small>
-              <small class="label pull-right bg-blue">17</small>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="../mailbox/mailbox.php">
-            <i class="fa fa-envelope"></i> <span>Mailbox</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-yellow">12</small>
-              <small class="label pull-right bg-green">16</small>
-              <small class="label pull-right bg-red">5</small>
-            </span>
-          </a>
-        </li>
-        <li class="treeview active">
-          <a href="#">
-            <i class="fa fa-folder"></i> <span>Examples</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="invoice.php"><i class="fa fa-circle-o"></i> Invoice</a></li>
-            <li><a href="profile.php"><i class="fa fa-circle-o"></i> Profile</a></li>
-            <li><a href="login.php"><i class="fa fa-circle-o"></i> Login</a></li>
-            <li><a href="register.php"><i class="fa fa-circle-o"></i> Register</a></li>
-            <li><a href="lockscreen.php"><i class="fa fa-circle-o"></i> Lockscreen</a></li>
-            <li><a href="404.php"><i class="fa fa-circle-o"></i> 404 Error</a></li>
-            <li><a href="500.php"><i class="fa fa-circle-o"></i> 500 Error</a></li>
-            <li class="active"><a href="blank.php"><i class="fa fa-circle-o"></i> Blank Page</a></li>
-            <li><a href="pace.php"><i class="fa fa-circle-o"></i> Pace Page</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-share"></i> <span>Multilevel</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Level One
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                <li class="treeview">
-                  <a href="#"><i class="fa fa-circle-o"></i> Level Two
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                  </a>
-                  <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-          </ul>
-        </li>
-        <li><a href="https://adminlte.io/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
-        <li class="header">LABELS</li>
-        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
-      </ul>
+      <?php
+        menu($_SESSION['Tipo_Usuario'], $thisFileName, $cd);
+      ?>
     </section>
     <!-- /.sidebar -->
   </aside>
-
   <!-- =============================================== -->
 
   <!-- Content Wrapper. Contains page content -->
@@ -403,47 +216,146 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Blank page
-        <small>it all starts here</small>
+        Categorias
+        <small>Inventario</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Blank page</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li><a href="#">Inventario</a></li>
+        <li class="active">Categorias</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
 
-      <!-- Default box -->
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Title</h3>
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-user-plus"></i></span>
 
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                    title="Collapse">
-              <i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Nuevos</h4></span>
+              <span class="info-box-number">
+               
+              </span>
+            </div>
+            <!-- /.info-box-content -->
           </div>
+          <!-- /.info-box -->
         </div>
-        <div class="box-body">
-          Start creating your amazing application!
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Totales</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $queryTotalCategorias=mysqli_query($db, "SELECT COUNT(*) AS Total_Categorias FROM categorias") or die(mysqli_error());
+                  $rowCategorias=mysqli_fetch_array($queryTotalCategorias);
+                  echo $rowCategorias['Total_Categorias'];
+                  // mysqli_close($queryTotalEmpleados);
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
         </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-          Footer
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Desabilitadas</h4></span>
+              <span class="info-box-number">
+               
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
         </div>
-        <!-- /.box-footer-->
+        <!-- /.col -->
       </div>
-      <!-- /.box -->
+      <!-- /.row -->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Lista de Categorias</h3>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
+                  <i class="fa fa-plus"></i> <b>Registrar Categoria</b></button></a>
+              </div>
+              <!-- /. tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="lista-Categorias" class="table table-bordered table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Registro de Categorias</th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                   
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $queryCategorias=mysqli_query($db, "SELECT * FROM categorias") or die(mysqli_error());
+                    while ($rowCategorias=mysqli_fetch_array($queryCategorias)) {
+                      $estado = null;
+                      echo '
+                        <tr>
+                            <td>'.$rowCategorias['Id_Categoria'].'</td>
+                            <td>'.$rowCategorias['Nombre'].'</td>
+                            <td>'.$rowCategorias['Descripcion'].'</td>
+                          
+                           
+                            <td>
+                             <form action="categorias_editar.php" method="POST">
+                                <input type="hidden" name="id_categoria" value="'.$rowCategorias['Id_Categoria'].'"/>
+                              <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+
+                              
+
+                              
+                            </td>
+                          </form>
+                        </tr>
+                      ';
+                    }
+                  ?>
+                </tbody>
+                <!-- <tfoot>
+                  <tr>
+                    <th>Rendering engine</th>
+                    <th>Browser</th>
+                    <th>Platform(s)</th>
+                    <th>Engine version</th>
+                    <th>CSS grade</th>
+                  </tr>
+                </tfoot> -->
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
 
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
+  <!-- /.content-wrapper -->  
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -651,27 +563,49 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
-<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- Material Design -->
-<script src="../../dist/js/material.min.js"></script>
-<script src="../../dist/js/ripples.min.js"></script>
+<script src="<?php echo $cd;?>dist/js/material.min.js"></script>
+<script src="<?php echo $cd;?>dist/js/ripples.min.js"></script>
 <script>
     $.material.init();
 </script>
+<!-- DataTables -->
+<script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
-<script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
-<script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
-<script src="../../dist/js/adminlte.min.js"></script>
+<script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
+<script src="<?php echo $cd;?>dist/js/demo.js"></script>
+<!-- page script -->
 <script>
+  $(function () {
+    $('#lista-categorias').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    });
+  })
   $(document).ready(function () {
-    $('.sidebar-menu').tree()
+    $('.sidebar-menu').tree();
+    // $('#lista-empleados').DataTable();
+
+     $("#btnRegistrarNuevo").click(function(){
+      $(location).attr('href', 'categorias_registrar.php');
+    });
   })
 </script>
 </body>
 </html>
+<?php
+}
+?>
