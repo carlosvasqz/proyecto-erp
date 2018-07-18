@@ -245,7 +245,7 @@
                 <label for="codigo_categoria" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo_categoria" placeholder="Codigo" value="<?php echo nuevoCodigoCliente(obtenerUltimoCodigoCategoria());?>" readonly>
+                  <input type="text" class="form-control" id="codigo_categoria" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoCategoria());?>" readonly>
                 </div>
               </div>
               <!-- Date -->
@@ -637,7 +637,7 @@
       // Variable con todos los valores necesarios para la consulta
       var datos = 'codigo_categoria=' + codigoCategoria + '&nombre_categoria=' + nombreCategoria + '&descripcion_categoria=' + descripcionCategoria;
 
-      alert(datos);
+     //alert(datos);
       $.ajax({
         //Direccion destino
         url: "guardar_categoria.php",
