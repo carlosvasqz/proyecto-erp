@@ -217,42 +217,111 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Blank page
-        <small>it all starts here</small>
+        Cotizaciones de compra
+        <small>Compras</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Blank page</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li><a href="#">Compras</a></li>
+        <li class="active">Cotizaciones de compra</li>
       </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content">
+      <section class="content">
 
-      <!-- Default box -->
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Title</h3>
+      <div class="row">
+      
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
 
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                    title="Collapse">
-              <i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Totales</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $queryTotalCotizaciones=mysqli_query($db, "SELECT COUNT(*) AS Total_Cotizaciones FROM cotizaciones_compra") or die(mysqli_error());
+                  $rowCotizaciones=mysqli_fetch_array($queryTotalCotizaciones);
+                  echo $rowCotizaciones['Total_Cotizaciones'];
+                  // mysqli_close($queryTotalEmpleados);
+                ?>
+              </span>
+            </div>
+
+            
+            <!-- /.info-box-content -->
           </div>
+          <!-- /.info-box -->
         </div>
-        <div class="box-body">
-          Start creating your amazing application!
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-          Footer
-        </div>
-        <!-- /.box-footer-->
+      
+        <!-- /.col -->
       </div>
-      <!-- /.box -->
+      <!-- /.row -->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Lista de Cotizaciones</h3>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info" id="btnRegistrarNuevo" >
+                  <i class="fa fa-plus"></i> <b>Realizar nueva</b></button></a>
+              </div>
+              <!-- /. tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="lista-cotizaciones" class="table table-bordered table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>ID Cotizacion</th>
+                    <th>Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 <?php
+                    $queryCotizaciones=mysqli_query($db, "SELECT * FROM cotizaciones_compra") or die(mysqli_error());
+                   while ($rowCotizacion=mysqli_fetch_array($queryCotizaciones)){
+                   
+                    
+                      echo '
+                        <tr>
+                            <td>'.$rowCotizacion['Id_Cotizacion_compra'].'</td>
+                            <td>'.$rowCotizacion['Fecha_Emision'].'</td>
+                                               
+                            <td>
+                              <form action="clientes_editar.php" method="POST">
+                             <input type="hidden" name="codigo_cliente" value="'.$rowCotizacion['Id_Cotizacion_Compra'].'"/>
+                              <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+
+                        
+                            </td>
+                          </form>
+                        </tr>
+                      ';
+                    }
+                  ?>
+                </tbody>
+                <!-- <tfoot>
+                  <tr>
+                    <th>Rendering engine</th>
+                    <th>Browser</th>
+                    <th>Platform(s)</th>
+                    <th>Engine version</th>
+                    <th>CSS grade</th>
+                  </tr>
+                </tfoot> -->
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
 
     </section>
     <!-- /.content -->
@@ -474,16 +543,31 @@
 <script>
     $.material.init();
 </script>
+<!-- DataTables -->
+<script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
+<!-- Sweet Alert -->
+<script src="<?php echo $cd;?>plugins/sweet-alert/sweetalert.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo $cd;?>dist/js/demo.js"></script>
 <script>
   $(document).ready(function () {
+      $(function () {
+    $('#lista-cotizaciones').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    });
+  })
     $('.sidebar-menu').tree()
   })
 </script>
@@ -492,3 +576,4 @@
 <?php
   }
 ?>
+
