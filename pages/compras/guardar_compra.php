@@ -378,7 +378,7 @@ var preciof=((num1*num2)/100)+num1;
 
 <div class="col-md-4" style="margin-left: 40px;">
   <div class="form-group">Producto:
-       <select class="form-control select2" id="proveedor_articulo" style="width: 100%;" p>
+       <select class="form-control select2" id="cbo_producto" name="cbo_producto" style="width: 100%;" p>
                    <option value="">Seleccione Producto</option>
                    <?php 
                           $queryListaProv=mysqli_query($db, "SELECT * FROM articulos") or die(mysqli_error());
@@ -442,8 +442,8 @@ var preciof=((num1*num2)/100)+num1;
                       <th>Descripci&oacute;n</th>
                       <th>Cantidad</th>
                       <th>Existencia Minima</th>
+                       <th>Porcentaje</th>
                       <th>Precio</th>
-                      <th>Porcentaje</th>
                       <th></th>
                   </tr>
               </thead>
@@ -452,11 +452,13 @@ var preciof=((num1*num2)/100)+num1;
                 foreach($_SESSION['detalle_compra'] as $k => $detalle_compra){ 
                 ?>
                   <tr>
-                    <td><?php echo $detalle_compra['producto'];?></td>
-                      <td><?php echo $detalle_compra['cantidad'];?></td>
-                      <td><?php echo $detalle_compra['precio'];?></td>
-                      <td><?php echo $$detalle_compra['subtotal'];?></td>
-                      <td><button type="button" class="btn btn-sm btn-danger eliminar-producto" id="<?php echo $detalle_compra['id'];?>">Eliminar</button></td>
+                  <td><?php echo $detalle_compra['Id_Articulo'];?></td>
+                  <td><?php echo $detalle_compra['Descripcion'];?></td>
+                    <td><?php echo $detalle_compra['Existencias'];?></td>
+                    <td><?php echo $detalle_compra['Existencias_Minimas'];?></td>
+                      <td><?php echo $detalle_compra['Porcentaje_Ganancia'];?></td>
+                      <td><?php echo $$detalle_compra['Precio_Final'];?></td>
+                      <td><button type="button" class="btn btn-sm btn-danger eliminar-producto" id="<?php echo $detalle_compra['Id_Articulo'];?>">Eliminar</button></td>
                   </tr>
                   <?php }?>
               </tbody>
