@@ -350,7 +350,9 @@ var preciof=((num1*num2)/100)+num1;
                   
                 </select>
                 </div>
+                </div>
               </div>
+              
             <!-- /.box-body -->
             <div class="box-footer">
               <!-- <button type="submit" class="btn btn-default">Cancel</button>
@@ -359,6 +361,7 @@ var preciof=((num1*num2)/100)+num1;
             <!-- /.box-footer -->
           </form>
         </div>
+
         <!-- Horizontal Form -->
 
 
@@ -373,7 +376,7 @@ var preciof=((num1*num2)/100)+num1;
 
 
 
-<div class="col-md-2">
+<div class="col-md-4" style="margin-left: 40px;">
   <div class="form-group">Producto:
        <select class="form-control select2" id="proveedor_articulo" style="width: 100%;" p>
                    <option value="">Seleccione Producto</option>
@@ -390,6 +393,11 @@ var preciof=((num1*num2)/100)+num1;
       <div class="col-md-2" style="margin-left: 40px;">
         <div class="form-group">Cantidad:
           <input id="txt_cantidad"  style="width: 200px;  "  name="txt_cantidad" type="text" class="col-md-2 form-control" placeholder="Ingrese cantidad" autocomplete="off" onkeypress="return numeros(event)" />
+        </div>
+      </div>
+       <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group" >Existencia Minima:
+          <input id="txt_costo"   style="width: 200px;" name="txt_costo" type="text" class="col-md-2 form-control" placeholder="Ingrese costo" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
         </div>
       </div>
       <div class="col-md-2" style="margin-left: 40px;">
@@ -413,28 +421,13 @@ var preciof=((num1*num2)/100)+num1;
         </div>
       </div>
       </div>
+
   
-    
-
-
-
-
-
            </div>
               </div>
-             
+            
             </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
-            <!-- /.box-footer -->
           </form>
-        </div>
-
-
-
   <br>
     <div class="panel panel-info">
        <div class="panel-heading">
@@ -445,10 +438,12 @@ var preciof=((num1*num2)/100)+num1;
           <table class="table">
               <thead>
                   <tr>
+                      <th>Código Artículo</th>
                       <th>Descripci&oacute;n</th>
                       <th>Cantidad</th>
+                      <th>Existencia Minima</th>
                       <th>Precio</th>
-                      <th>Subtotal</th>
+                      <th>Porcentaje</th>
                       <th></th>
                   </tr>
               </thead>
