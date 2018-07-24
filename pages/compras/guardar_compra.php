@@ -70,6 +70,52 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/skins/all-md-skins.min.css">
   <script type="text/javascript" src="libs/ajax_compras.js"></script>
+ <script>
+  function evaluacion(){
+ var txt_costo =document.getElementById('txt_costo').value;
+  var txt_porcentaje=document.getElementById('txt_porcentaje').value;
+  var preci01;
+   var preciof=document.getElementById('txt_precio').value;
+if (txt_costo=='') {
+    var num1=0; 
+  }
+  if (txt_costo!='') {
+    var num1=parseFloat(txt_costo);
+  }
+if (txt_porcentaje=='') {
+    var num2=0; 
+  }
+  if (txt_porcentaje!='') {
+    var num2=parseFloat(txt_porcentaje);
+  }
+
+var preciof=((num1*num2)/100)+num1;
+     document.frmdatos.txt_precio.value=preciof;
+}
+  </script>
+<script>
+  function numeros(e){
+    key = e.keyCode || e.which;
+    tecla = String.fromCharCode(key).toLowerCase();
+    letras = " 0123456789";
+    especiales = [8,37,39,46];
+ 
+    tecla_especial = false
+    for(var i in especiales){
+ if(key == especiales[i]){
+     tecla_especial = true;
+     break;
+        } 
+    }
+ 
+    if(letras.indexOf(tecla)==-1 && !tecla_especial)
+        return false;
+}
+
+</script>
+
+
+
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -198,18 +244,7 @@
           <a href="#"><i class="fa fa-user"></i> <?php echo $_SESSION['Codigo_Empleado'];?></a>          
         </div>
       </div>
-      <!-- search form -->
-      <!-- <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form> -->
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
+     
       <?php
         menu($_SESSION['Tipo_Usuario'], $thisFileName, $cd);
       ?>
@@ -256,28 +291,66 @@
                   <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoRegistro_Compra());?>" readonly>
                 </div>
               </div>
-              <div class="form-group" id="form_codigo">
-                <label for="codigo" class="col-sm-2 control-label">Codigo Proveedor*</label>
+
+
+
+
+              <div class="form-group" id="form_proveedor">
+                <label for="proveedor_articulo" class="col-sm-2 control-label">Proveedor*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo Proveedor" value="" readonly>
+                   <select class="form-control select2" id="proveedor_articulo" style="width: 100%;" p>
+                   <option value="">Seleccione un proveedor</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM proveedores") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Proveedor'].'">'.$rowProv['Nombre_Proveedor'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
                 </div>
               </div>
-           <div class="form-group" id="form_codigo">
-                <label for="codigo" class="col-sm-2 control-label">Codigo de Factura*</label>
+
+
+
+            <div class="form-group" id="form_codigo_factura">
+                <label for="proveedor_articulo" class="col-sm-2 control-label">Codigo Factura*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo Factura" value="" readonly>
+                   <select class="form-control select2" id="proveedor_articulo" style="width: 100%;" p>
+                   <option value="">Seleccione Codigo Factura</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM facturas_compra") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Factura'].'">'.$rowProv['Id_Factura'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
                 </div>
               </div>
-              <div class="form-group" id="form_codigo">
-                <label for="codigo" class="col-sm-2 control-label">Codigo de Orden de Compra*</label>
+
+
+
+
+
+             <div class="form-group" id="form_codigo_factura">
+                <label for="proveedor_articulo" class="col-sm-2 control-label">Codigo Orden Compra*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo Orden" value="" readonly>
+                   <select class="form-control select2" id="proveedor_articulo" style="width: 100%;" p>
+                   <option value="">Seleccione Orden Compra</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM ordenes_compra") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Orden_Compra'].'">'.$rowProv['Id_Orden_Compra'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
                 </div>
               </div>
-            </div>
             <!-- /.box-body -->
             <div class="box-footer">
               <!-- <button type="submit" class="btn btn-default">Cancel</button>
@@ -295,19 +368,23 @@
           </div>
           <!-- /.box-header -->
           <!-- form start -->
-          <form class="form-horizontal">
+          <form  name="frmdatos" class="form-horizontal">
             <div class="box-body">
 
 
 
 <div class="col-md-2">
   <div class="form-group">Producto:
-        <select name="txt_producto"  style="width: 200px;" id="txt_producto" class="col-md-2 form-control">
-          <option value="0">Seleccione un producto</option>
-          <?php foreach($resultado_producto as $producto):?>
-            <option value="<?php echo $producto['id']?>"><?php echo $producto['descripcion']?></option>
-          <?php endforeach;?>
-        </select>
+       <select class="form-control select2" id="proveedor_articulo" style="width: 100%;" p>
+                   <option value="">Seleccione Producto</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM articulos") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Articulo'].'">'.$rowProv['Descripcion'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
         </div>
       </div>
       <div class="col-md-2" style="margin-left: 40px;">
@@ -335,6 +412,7 @@
         <button type="button" class="btn btn-success btn-agregar-producto">Agregar</button>
         </div>
       </div>
+      </div>
   
     
 
@@ -354,6 +432,7 @@
             <!-- /.box-footer -->
           </form>
         </div>
+
 
 
   <br>
