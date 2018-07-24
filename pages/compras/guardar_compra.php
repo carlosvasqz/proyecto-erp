@@ -26,6 +26,8 @@
     $relative = '../../';
   }
 
+ 
+
   include($relative.'inc/conexion.php');
   include($relative.'inc/util.php');
   include($relative.'inc/constructor.php');
@@ -33,8 +35,11 @@
   // echo $relative.'inc/constructor.php';
   // exit();
   session_start();
+  
   if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
+     
     header("Location: ".$cd."login.php", true);
+    $_SESSION['detalle_compra'] = array();
     die();
   } else {
 ?>
@@ -60,9 +65,11 @@
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/ripples.min.css">
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/MaterialAdminLTE.min.css">
+
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/skins/all-md-skins.min.css">
+  <script type="text/javascript" src="libs/ajax_compras.js"></script>
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -210,6 +217,7 @@
     <!-- /.sidebar -->
   </aside>
 
+
   <!-- =============================================== -->
 
   <!-- Content Wrapper. Contains page content -->
@@ -217,122 +225,197 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Regístro Compras
+        Registrar Compras
         <small>Compras</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Compras</a></li>
-        <li class="active">Registro Compras</li>
+        <li class="active">Registrar Compras</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
-      <div class="row">
-       
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Totales</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryTotalRegistro_Compras=mysqli_query($db, "SELECT COUNT(*) AS Total_Registro_Compras FROM compras") or die(mysqli_error());
-                  $rowRegistro_Compras=mysqli_fetch_array($queryTotalRegistro_Compras);
-                  echo $rowRegistro_Compras['Total_Registro_Compras'];
-                  // mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
+    <div class="row">
+      <!-- columna izq -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Administrativos</h3>
           </div>
-          <!-- /.info-box -->
-        </div>
-       
-      <!-- /.row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Lista de Regístro de Compras</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
             <div class="box-body">
-              <table id="lista-proveedores" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>Código Compra</th>
-                    <th>Código Proveedor</th>
-                    <th>Código Factura</th>
-                    <th>Fecha Compra</th>
-                    <th>Código Usuario</th>
-                    <th>Código Orden</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $queryRegistro_Compras=mysqli_query($db, "SELECT * FROM compras") or die(mysqli_error());
-                   while ($rowRegistro_Compras=mysqli_fetch_array($queryRegistro_Compras)) {
-                      $etiqueta = null;
-                      $tootip = null;
-                      $icono = null;
-                      $color = null;
-                      switch ($rowProveedores["Estado"]) {
-                        case 1:
-                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
-                          $tootip = "Deshabilitar";
-                          $icono = "fa fa-times-circle";
-                          $color = "danger";
-                          break;
-                        case 0:
-                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
-                          $tootip = "Habilitar";
-                          $icono = "fa fa-check-circle";
-                          $color = "info";
-                          break;
-                      }
-                      echo '
-                        <tr>
-                            <td>'.$rowRegistro_Compras['Id_Compra'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Proveedor'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Factura'].'</td>
-                            <td>'.$rowRegistro_Compras['Fecha_Compra'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Usuario'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Orden'].'</td>
-                        </tr>
-                      ';
-                    }
-                  ?>
-                </tbody>
-                <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                </tfoot> -->
-              </table>
+              <div class="form-group" id="form_codigo">
+                <label for="codigo" class="col-sm-2 control-label">Codigo*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoRegistro_Compra());?>" readonly>
+                </div>
+              </div>
+              <div class="form-group" id="form_codigo">
+                <label for="codigo" class="col-sm-2 control-label">Codigo Proveedor*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo Proveedor" value="" readonly>
+                </div>
+              </div>
+           <div class="form-group" id="form_codigo">
+                <label for="codigo" class="col-sm-2 control-label">Codigo de Factura*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo Factura" value="" readonly>
+                </div>
+              </div>
+              <div class="form-group" id="form_codigo">
+                <label for="codigo" class="col-sm-2 control-label">Codigo de Orden de Compra*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo Orden" value="" readonly>
+                </div>
+              </div>
             </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+        <!-- Horizontal Form -->
 
+
+           <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos de Producto</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+
+
+
+<div class="col-md-2">
+  <div class="form-group">Producto:
+        <select name="txt_producto"  style="width: 200px;" id="txt_producto" class="col-md-2 form-control">
+          <option value="0">Seleccione un producto</option>
+          <?php foreach($resultado_producto as $producto):?>
+            <option value="<?php echo $producto['id']?>"><?php echo $producto['descripcion']?></option>
+          <?php endforeach;?>
+        </select>
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Cantidad:
+          <input id="txt_cantidad"  style="width: 200px;  "  name="txt_cantidad" type="text" class="col-md-2 form-control" placeholder="Ingrese cantidad" autocomplete="off" onkeypress="return numeros(event)" />
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group" >Costo:
+          <input id="txt_costo"   style="width: 200px;" name="txt_costo" type="text" class="col-md-2 form-control" placeholder="Ingrese costo" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Porcentaje:
+          <input id="txt_porcentaje"   style="width: 200px;" name="txt_porcentaje" type="text" class="col-md-2 form-control" placeholder="Ingrese porcentaje" autocomplete="off" onkeypress="return numeros(event)" onkeyup="evaluacion()"/>
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Precio Final:
+          <input id="txt_precio"   style="width: 200px;"  name="txt_precio" type="text" class="col-md-2 form-control" readonly="" />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div style="margin-top: 19px;">
+        <button type="button" class="btn btn-success btn-agregar-producto">Agregar</button>
+        </div>
+      </div>
+  
+    
+
+
+
+
+
+           </div>
+              </div>
+             
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+
+
+  <br>
+    <div class="panel panel-info">
+       <div class="panel-heading">
+            <h3 class="panel-title">Productos</h3>
+          </div>
+      <div class="panel-body detalle-producto">
+        <?php if(count($_SESSION['detalle_compra'])>0){?>
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th>Descripci&oacute;n</th>
+                      <th>Cantidad</th>
+                      <th>Precio</th>
+                      <th>Subtotal</th>
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                <?php 
+                foreach($_SESSION['detalle_compra'] as $k => $detalle_compra){ 
+                ?>
+                  <tr>
+                    <td><?php echo $detalle_compra['producto'];?></td>
+                      <td><?php echo $detalle_compra['cantidad'];?></td>
+                      <td><?php echo $detalle_compra['precio'];?></td>
+                      <td><?php echo $$detalle_compra['subtotal'];?></td>
+                      <td><button type="button" class="btn btn-sm btn-danger eliminar-producto" id="<?php echo $detalle_compra['id'];?>">Eliminar</button></td>
+                  </tr>
+                  <?php }?>
+              </tbody>
+          </table>
+        <?php }else{?>
+        <div class="panel-body"> No hay productos agregados</div>
+        <?php }?>
+      </div>
+
+  
+  </form>
+  </div>
+        <div class="box box-info">
+          <!-- <div class="box-header with-border"> -->
+            <!-- <h3 class="box-title">Acciones</h3> -->
+          <!-- </div> -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
+                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
+              </div>
+              <div class="col-sm-4"></div>
+            </div>
+            <!-- /.box-body -->
+          </form>
+        </div>
+      </div>
+      <!--/.col (izq) -->
+    </div>
     </section>
     <!-- /.content -->
   </div>
@@ -556,12 +639,18 @@
 <!-- DataTables -->
 <script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="<?php echo $cd;?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap notify -->
+<script src="<?php echo $cd;?>plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
-<script src="<?php echo $cd;?>plugins/sweet-alert/sweetalert.min.js"></script>
-
+<!-- InputMask -->
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.js"></script>
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -569,7 +658,7 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-proveedores').DataTable({
+    $('#lista-empleados').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -577,87 +666,201 @@
       'info'        : true,
       'autoWidth'   : false
     });
+    //Date picker
+  
   })
   $(document).ready(function () {
     $('.sidebar-menu').tree();
+    $('[data-mask]').inputmask()
     // $('#lista-empleados').DataTable();
 
-    $("#btnRegistrarNuevo").click(function(){
-      $(location).attr('href', 'guardar_compra.php');
+    function alertaIngresarDatos(){
+      $.notify({
+        title: "Error : ",
+        message: "Por favor, complete los campos obligatorios",
+        icon: 'fa fa-times' 
+      },{
+        type: "danger"
+      });
+    }
+
+    $("#btnCancelar").click(function(){
+      $(location).attr('href', 'proveedores.php');
     });
 
-  $('.sweetalert').click(function(){
-    var codigoProveedor = $(this).attr('id');
-    var accion = $(this).attr('class');
-    accion = accion.split(" ");
-    var nuevoEstado;
-    if (accion[4]=='Habilitar') {
-      nuevoEstado = 1;
-    } else {
-      nuevoEstado = 0;
-    }
-    // alert(accion[4] + " - " + nuevoEstado);
-    swal({
-        title: "¿Esta seguro?",
-        text: "Esta accion " + accion[4] + "á el elemento seleccionado",
-        type: "warning",
-        showCancelButton: true,
-        closeOnConfirm: false,
-        showLoaderOnConfirm: true,
-    }, function () {
-        $.ajax({
-          //Direccion destino
-          url: "proveedor_cambiar_estado.php",
-          // Variable con los datos necesarios
-          data: "codigo_proveedor=" + codigoProveedor + "&estado=" + nuevoEstado,
-          type: "POST",     
-          dataType: "html",
-          //cache: false,
-          //success
-          success: function (data) {
-            // alert(data);
-            setTimeout(function () {
-              if (data) {
-                swal({
-                  title: "¡Realizado!",
-                  text: "La acción se ha completado con éxito.",
-                  type: "success",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: false
-                }, function(isConfirm) {
-                  if (isConfirm) {
-                    window.setTimeout('location.href="proveedores.php"', 3);
-                  }
-                });
-              }
-              if (!data) {
-                swal({
-                  title: "¡Error!",
-                  text: "Ha ocurrido un problema, inténtelo más tarde.",
-                  type: "error",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: true
-                });
-              }
-            }, 2000);
-          },
-          error : function(xhr, status) {
-            //  alert('Disculpe, existió un problema');
-          },
-          complete : function(xhr, status) {
-            // alert('Petición realizada');
-            // $.notify({
-            //    title: "Informacion : ",
-            //    message: "Petición realizada!",
-            //    icon: 'fa fa-check' 
-            //  },{
-            //    type: "info"
-            // });
-          }   
-        });
-    });
+    $("#btnRegistrar").click(function(){
+      //Obtencion de valores en los inputs
+     var codigo=$('#codigo').val();
+     var estado=$('input[name="optionsRadios"]:checked').val();
+var nombre=$('#nombre').val();
+var rtn=$('#rtn').val();
+var direccion=$('#direccion').val();
+var telefono=$('#telefono').val();
+var correo=$('#correo').val();
+
+      
+      // Validaciones
+      if (codigo=='') {
+        $("#codigo").attr('required',true);
+        document.getElementById("codigo").focus();
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#codigo").attr('required',false);
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-success');
+      }
+
+      
+      if (estado=='') {
+        $("#estado").attr('required',true);
+        document.getElementById("estado").focus();
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#estado").attr('required',false);
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-success');
+      }
+       if (nombre=='') {
+        $("#nombre").attr('required',true);
+        document.getElementById("nombre").focus();
+        $("#form_nombre").removeClass('has-success');
+        $("#form_nombre").removeClass('has-error');
+        $("#form_nombre").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#nombre").attr('required',false);
+        $("#form_nombre").removeClass('has-success');
+        $("#form_nombre").removeClass('has-error');
+        $("#form_nombre").addClass('has-success');
+      }
+
+      if (rtn=='') {
+        $("#rtn").attr('required',true);
+        document.getElementById("rtn").focus();
+        $("#form_rtn").removeClass('has-success');
+        $("#form_rtn").removeClass('has-error');
+        $("#form_rtn").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#rtn").attr('required',false);
+        $("#form_rtn").removeClass('has-success');
+        $("#form_rtn").removeClass('has-error');
+        $("#form_rtn").addClass('has-success');
+      }
+
+      if (direccion=='') {
+        $("#direccion").attr('required',true);
+        document.getElementById("direccion").focus();
+        $("#form_direccion").removeClass('has-success');
+        $("#form_direccion").removeClass('has-error');
+        $("#form_direccion").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#direccion").attr('required',false);
+        $("#form_direccion").removeClass('has-success');
+        $("#form_direccion").removeClass('has-error');
+        $("#form_direccion").addClass('has-success');
+      }
+
+      if (telefono=='') {
+        $("#telefono").attr('required',true);
+        document.getElementById("telefono").focus();
+        $("#form_telefono").removeClass('has-success');
+        $("#form_telefono").removeClass('has-error');
+        $("#form_telefono").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#telefono").attr('required',false);
+        $("#form_telefono").removeClass('has-success');
+        $("#form_telefono").removeClass('has-error');
+        $("#form_telefono").addClass('has-success');
+      }
+
+      if (correo=='') {
+        $("#correo").attr('required',true);
+        document.getElementById("correo").focus();
+        $("#form_correo").removeClass('has-success');
+        $("#form_correo").removeClass('has-error');
+        $("#form_correo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#correo").attr('required',false);
+        $("#form_correo").removeClass('has-success');
+        $("#form_correo").removeClass('has-error');
+        $("#form_correo").addClass('has-success');
+      }
+      //Fin validaciones
+
+      // Variable con todos los valores necesarios para la consulta
+      var datos = 'codigo=' + codigo + '&estado=' + estado + '&nombre=' + nombre + '&rtn=' + rtn + '&direccion=' + direccion  + '&telefono=' + telefono + '&correo=' + correo;
+
+      // alert(datos);
+      $.ajax({
+        //Direccion destino
+        url: "guardar_proveedor.php",
+        // Variable con los datos necesarios
+        data: datos,
+        type: "POST",     
+        dataType: "html",
+        //cache: false,
+        //success
+        success: function (data) {
+          // alert(data);
+          if (data) {
+            $.notify({
+              title: "Correcto : ",
+              message: "¡El proveedor se registró exitosamente!",
+              icon: 'fa fa-check' 
+            },{
+              type: "success"
+            });
+            window.setTimeout('location.href="proveedores.php"', 5);
+          }
+          if (!data) {
+            $.notify({
+              title: "Error : ",
+              message: "¡El numero de RTN ingresado ya existe!",
+              icon: 'fa fa-times' 
+            },{
+              type: "danger"
+            });
+            document.getElementById("rtn").focus();
+            $("#form_rtn").removeClass('has-success');
+            $("#form_rtn").removeClass('has-error');
+            $("#form_rtn").addClass('has-error');
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          //    title: "Informacion : ",
+          //    message: "Petición realizada!",
+          //    icon: 'fa fa-check' 
+          //  },{
+          //    type: "info"
+          // });
+        }   
+      });
+
     });
   })
 </script>

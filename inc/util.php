@@ -218,4 +218,24 @@
         $nuevo = $codigo[1]+1;
         return $codigo[0] . "." . $nuevo;
     }
+
+ function obtenerUltimoCodigoRegistro_Compra(){
+        include ("conexion.php");
+        $query = "SELECT MAX(Id_Compra) AS Ultimo_Codigo FROM compras;";
+        $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
+        $rowCodigo=mysqli_fetch_array($sqlcon);
+        if(is_null($rowCodigo['Ultimo_Codigo'])){
+            return "REGC.0";
+        }else{
+            return $rowCodigo['Ultimo_Codigo'];
+        }
+    }
+
+     function nuevoCodigoRegistro_Compra($codigo){
+        $codigo = explode('.', $codigo);
+        $nuevo = $codigo[1]+1;
+        return $codigo[0] . "." . $nuevo;
+    }
+
+
 ?>

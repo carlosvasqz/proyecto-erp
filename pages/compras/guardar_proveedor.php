@@ -11,8 +11,7 @@ $telefono=$_POST['telefono'];
 $correo=$_POST['correo'];
 $estado=$_POST['estado'];
 
-//echo $identidad.' - '.$nombre.' - '.$direccion.' - '.$telefono;
-//echo "// INSERT INTO proveedores (Id_Proveedor, Nombre_Proveedor, RTN_Proveedor, Direccion, Telefono, Correo_Electronico, Estado) VALUES ('$codigo','$nombre','$rtn','$direccion','$telefono','$correo', $estado); //";
+
 $queryVerificar = mysqli_query($db,"SELECT COUNT(*) as Existe FROM proveedores WHERE RTN_Proveedor = '$rtn'") or die(mysqli_error());
 
 $rowExiste=mysqli_fetch_array($queryVerificar);
