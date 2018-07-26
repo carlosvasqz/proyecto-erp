@@ -235,7 +235,7 @@
         <!-- Horizontal Form -->
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">Datos de Registro</h3>
+            <h3 class="box-title">Encabezado de Cotizacion</h3>
           </div>
           <!-- /.box-header -->
           <!-- form start -->
@@ -258,20 +258,16 @@
           <!-- form start -->
           <form class="form-horizontal">
             <div class="box-body">
-              <div class="form-group" id="form_nombre_categoria">
-                <label for="nombre_categoria" class="col-sm-2 control-label">Fecha*</label>
+              <div class="form-group" id="form_fecha_emision">
+                <label for="fecha_emision" class="col-sm-2 control-label">Fecha*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="nombre_categoria"placeholder="Ingrese el numero...">
+                  <input type="text" class="form-control" id="fecha_emision" value="<?php  $fechaActual = date('d-m-Y H:i:s');
+   
+  echo $fechaActual;?>" readonly>
                 </div>
               </div>
-              <div class="form-group" id="form_descripcion_categoria">
-                <label for="descripcion_categoria" class="col-sm-2 control-label">Descripcion*</label>
-
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="descripcion_categoria" placeholder="Ingrese la descripcion de categoria..">
-                </div>
-              </div>
+              
              
               <!-- Date -->
               
