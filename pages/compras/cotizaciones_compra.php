@@ -217,87 +217,159 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Registrar Cotizacion Compra
-        <small>Inventario</small>
+        Cotizaciones Compra
+        <small>Compras</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Administracion</a></li>
-        <li class="active">Registrar Cotizacion</li>
+        <li><a href="#">Compras</a></li>
+        <li class="active">Cotizaciones Compra</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-    <div class="row">
-      <!-- columna izq -->
-      <div class="col-md-12">
-        <!-- Horizontal Form -->
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Encabezado de Cotizacion</h3>
+
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-file-text"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Cotizaciones Hoy</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $hoy = getdate();
+                  $anio= $hoy["year"];
+                  $mes= $hoy["mon"];
+                  $dia= $hoy["mday"];
+
+                  $fechaInicioAnioDB = $anio."-".$mes."-".$dia;
+                  $queryCotizacionesNuevas=mysqli_query($db, "SELECT COUNT(*) AS Cotizaciones_Nuevas FROM cotizaciones_compra WHERE Fecha_Emision = '$fechaInicioAnioDB';") or die(mysqli_error());
+                  $rowCotizacionesNuevas=mysqli_fetch_array($queryCotizacionesNuevas);
+                  echo $rowCotizacionesNuevas['Cotizaciones_Nuevas'];
+                  
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
           </div>
-          <!-- /.box-header -->
-          <!-- form start -->
-          <form class="form-horizontal">
-            <div class="box-body">
-              <div class="form-group" id="form_codigo">
-                <label for="codigo_categoria" class="col-sm-2 control-label">Codigo*</label>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
 
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo_cc" placeholder="Codigo" value="<?php echo obtenerUltimoCodigoCotizacion_Compra();?>" readonly>
-                </div>
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Totales</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $queryCotizacionesTotales=mysqli_query($db, "SELECT COUNT(*) AS Total_Cotizaciones FROM cotizaciones_compras") or die(mysqli_error());
+                  $rowCotizacionesTotales=mysqli_fetch_array($queryCotizacionesTotales);
+                  echo $rowCotizacionesTotales['Total_Cotizaciones'];
+                  // mysqli_close($queryTotalEmpleados);
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+        
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Lista de Empleados</h3>
+              <!-- tools box -->
+             <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
+                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
               </div>
-              <!-- Date -->
-              
-              
-            <!-- /.box-body -->
-           
-          
-          <!-- /.box-header -->
-          <!-- form start -->
-          <form class="form-horizontal">
+              <!-- /. tools -->
+            </div>
+            <!-- /.box-header -->
             <div class="box-body">
-              <div class="form-group" id="form_fecha_emision">
-                <label for="fecha_emision" class="col-sm-2 control-label">Fecha*</label>
-
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="fecha_emision" value="<?php  $fechaActual = date('d-m-Y H:i:s');
-   
-  echo $fechaActual;?>" readonly>
-                </div>
-              </div>
-              
-             
-              <!-- Date -->
-              
-              <!-- <div class="form-group" id="form_">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
-                </div>
-              </div> -->
-
-     
-          <!-- form start -->
-          <form class="form-horizontal">
-            <div class="box-body">
-              <div class="col-sm-4"></div>
-              <div class="col-sm-4">
-                <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
-                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
-              </div>
-              <div class="col-sm-4"></div>
+              <table id="lista" class="table table-bordered table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Codigo</th>
+                    <th>Nombres</th>
+                    <th>Apellido</th>
+                    <th>Estado</th>
+                    <th>Fecha de Ingreso</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                    $queryEmpleados=mysqli_query($db, "SELECT * FROM empleados") or die(mysqli_error());
+                    while ($rowEmpleado=mysqli_fetch_array($queryEmpleados)) {
+                      $etiqueta = null;
+                      $tootip = null;
+                      $icono = null;
+                      $color = null;
+                      switch ($rowEmpleado["Estado"]) {
+                        case 1:
+                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
+                          $tootip = "Deshabilitar";
+                          $icono = "fa fa-times-circle";
+                          $color = "danger";
+                          break;
+                        case 0:
+                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
+                          $tootip = "Habilitar";
+                          $icono = "fa fa-check-circle";
+                          $color = "info";
+                          break;
+                      }
+                      echo '
+                        <tr>
+                            <td>'.$rowEmpleado['Codigo_Empleado'].'</td>
+                            <td>'.$rowEmpleado['Nombres'].'</td>
+                            <td>'.$rowEmpleado['Apellido_1'].'</td>
+                            <td>'.$etiqueta.'</td>
+                            <td>'.fechaFormato(fechaIngAEsp($rowEmpleado['Fecha_Ingreso'])).'</td>
+                            <td>
+                              <form action="empleados_editar.php" method="POST">
+                                <input type="hidden" name="codigo_empleado" value="'.$rowEmpleado['Codigo_Empleado'].'"/>
+                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+                              
+                                <button type="button" id="'.$rowEmpleado['Codigo_Empleado'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
+                              </form>
+                            </td>
+                        </tr>
+                      ';
+                    }
+                  ?>
+                </tbody>
+                <!-- <tfoot>
+                  <tr>
+                    <th>Rendering engine</th>
+                    <th>Browser</th>
+                    <th>Platform(s)</th>
+                    <th>Engine version</th>
+                    <th>CSS grade</th>
+                  </tr>
+                </tfoot> -->
+              </table>
             </div>
             <!-- /.box-body -->
-          </form>
+          </div>
+          <!-- /.box -->
         </div>
+        <!-- /.col -->
       </div>
-      <!--/.col (izq) -->
-    </div>
+      <!-- /.row -->
+
     </section>
     <!-- /.content -->
   </div>
@@ -519,20 +591,16 @@
     $.material.init();
 </script>
 <!-- DataTables -->
-<script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<!-- bootstrap datepicker -->
-<script src="<?php echo $cd;?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-<!-- bootstrap notify -->
-<script src="<?php echo $cd;?>plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
+<!-- <script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script> -->
+<!-- <script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
+<script src="<?php echo $cd;?>plugins/dataTables/jquery.dataTables.min.js"></script>
+<script src="<?php echo $cd;?>plugins/dataTables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
-<!-- InputMask -->
-<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.js"></script>
-<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- Sweet Alert -->
+<script src="<?php echo $cd;?>plugins/sweet-alert/sweetalert.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -540,156 +608,101 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-empleados').DataTable({
+    $('#lista').DataTable({
       'paging'      : true,
-      'lengthChange': false,
+      'lengthChange': true,
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : false
+      'autoWidth'   : true
     });
-    //Date picker
-    $('#fecha_nacimiento').datepicker({
-      autoclose: true
-    });
-    $('#fecha_ingreso').datepicker({
-      autoclose: true
-    });
-  })
+  });
+
   $(document).ready(function () {
     $('.sidebar-menu').tree();
-    $('[data-mask]').inputmask()
     // $('#lista-empleados').DataTable();
 
-    function alertaIngresarDatos(){
-      $.notify({
-        title: "Error : ",
-        message: "Por favor, complete los campos obligatorios",
-        icon: 'fa fa-times' 
-      },{
-        type: "danger"
-      });
-    }
-
-    $("#btnCancelar").click(function(){
-      $(location).attr('href', 'empleados.php');
+    $("#btnRegistrarNuevo").click(function(){
+      $(location).attr('href', 'empleados_registrar.php');
     });
 
-    $("#btnRegistrar").click(function(){
-      //Obtencion de valores en los inputs
-      var codigoCategoria = $("#codigo_categoria").val();
-      var nombreCategoria = $("#nombre_categoria").val();
-      var descripcionCategoria = $('#descripcion_categoria').val();
-      
-      
-      // Validaciones
-      if (codigoCategoria=='') {
-        $("#codigo_categoria").attr('required',true);
-        document.getElementById("codigo_categoria").focus();
-        $("#form_codigo").removeClass('has-success');
-        $("#form_codigo").removeClass('has-error');
-        $("#form_codigo").addClass('has-error');
-        alertaIngresarDatos();
-        return false;
-      } else {
-        $("#codigo_categoria").attr('required',false);
-        $("#form_codigo").removeClass('has-success');
-        $("#form_codigo").removeClass('has-error');
-        $("#form_codigo").addClass('has-success');
-      }
-
-      if (nombre_categoria=='') {
-        $("#nombre_categoria").attr('required',true);
-        document.getElementById("nombre_categoria").focus();
-        $("#form_nombre_categoria").removeClass('has-success');
-        $("#form_nombre_categoria").removeClass('has-error');
-        $("#form_nombre_categoria").addClass('has-error');
-        alertaIngresarDatos();
-        return false;
-      } else {
-        $("#fecha_ingreso").attr('required',false);
-        $("#form_nombre_categoria").removeClass('has-success');
-        $("#form_nombre_categoria").removeClass('has-error');
-        $("#form_nombre_categoria").addClass('has-success');
-      }
-
-      if (descripcionCategoria=='') {
-        $("#descripcion_categoria").attr('required',true);
-        document.getElementById("descripcion_categoria").focus();
-        $("#form_descripcion_categoria").removeClass('has-success');
-        $("#form_descripcion_categoria").removeClass('has-error');
-        $("#form_descripcion_categoria").addClass('has-error');
-        alertaIngresarDatos();
-        return false;
-      } else {
-        $("#descripcion_categoria").attr('required',false);
-        $("#form_descripcion_categoria").removeClass('has-success');
-        $("#form_descripcion_categoria").removeClass('has-error');
-        $("#form_descripcion_categoria").addClass('has-success');
-      }
-
-      //Fin validaciones
-
-      // Variable con todos los valores necesarios para la consulta
-      var datos = 'codigo_categoria=' + codigoCategoria + '&nombre_categoria=' + nombreCategoria + '&descripcion_categoria=' + descripcionCategoria;
-
-     //alert(datos);
-      $.ajax({
-        //Direccion destino
-        url: "guardar_categoria.php",
-        // Variable con los datos necesarios
-        data: datos,
-        type: "POST",     
-        dataType: "html",
-        //cache: false,
-        //success
-        success: function (data) {
-          // alert(data);
-          if (data) {
-            $.notify({
-              title: "Correcto : ",
-              message: "¡El empleado se registró exitosamente!",
-              icon: 'fa fa-check' 
-            },{
-              type: "success"
-            });
-            window.setTimeout('location.href="categorias.php"', 5);
-          }
-          if (!data) {
-            $.notify({
-              title: "Error : ",
-              message: "¡El numero de Identidad ingresado ya existe!",
-              icon: 'fa fa-times' 
-            },{
-              type: "danger"
-            });
-            document.getElementById("codigo_categoria").focus();
-            $("#form_codigo").removeClass('has-success');
-            $("#form_codigo").removeClass('has-error');
-            $("#form_codigo").addClass('has-error');
-          }
-          
-        },
-        error : function(xhr, status) {
-          //  alert('Disculpe, existió un problema');
-        },
-        complete : function(xhr, status) {
-          // alert('Petición realizada');
-          // $.notify({
-          //    title: "Informacion : ",
-          //    message: "Petición realizada!",
-          //    icon: 'fa fa-check' 
-          //  },{
-          //    type: "info"
-          // });
-        }   
-      });
-
+  $('.sweetalert').click(function(){
+    var codigoEmpleado = $(this).attr('id');
+    var accion = $(this).attr('class');
+    accion = accion.split(" ");
+    var nuevoEstado;
+    if (accion[4]=='Habilitar') {
+      nuevoEstado = 1;
+    } else {
+      nuevoEstado = 0;
+    }
+    // alert(accion[4] + " - " + nuevoEstado);
+    swal({
+        title: "¿Esta seguro?",
+        text: "Esta accion " + accion[4] + "á el elemento seleccionado",
+        type: "warning",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+    }, function () {
+        $.ajax({
+          //Direccion destino
+          url: "empleados_cambiar_estado.php",
+          // Variable con los datos necesarios
+          data: "codigo_empleado=" + codigoEmpleado + "&estado=" + nuevoEstado,
+          type: "POST",     
+          dataType: "html",
+          //cache: false,
+          //success
+          success: function (data) {
+            // alert(data);
+            setTimeout(function () {
+              if (data) {
+                swal({
+                  title: "¡Realizado!",
+                  text: "La acción se ha completado con éxito.",
+                  type: "success",
+                  showCancelButton: false,
+                  confirmButtonText: "Aceptar",
+                  closeOnConfirm: false
+                }, function(isConfirm) {
+                  if (isConfirm) {
+                    window.setTimeout('location.href="empleados.php"', 3);
+                  }
+                });
+              }
+              if (!data) {
+                swal({
+                  title: "¡Error!",
+                  text: "Ha ocurrido un problema, inténtelo más tarde.",
+                  type: "error",
+                  showCancelButton: false,
+                  confirmButtonText: "Aceptar",
+                  closeOnConfirm: true
+                });
+              }
+            }, 2000);
+          },
+          error : function(xhr, status) {
+            //  alert('Disculpe, existió un problema');
+          },
+          complete : function(xhr, status) {
+            // alert('Petición realizada');
+            // $.notify({
+            //    title: "Informacion : ",
+            //    message: "Petición realizada!",
+            //    icon: 'fa fa-check' 
+            //  },{
+            //    type: "info"
+            // });
+          }   
+        });
+    });
     });
   })
 </script>
 </body>
 </html>
 <?php
-}
+  }
 ?>
