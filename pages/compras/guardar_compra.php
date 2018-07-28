@@ -37,11 +37,11 @@
   // echo $relative.'inc/constructor.php';
   // exit();
   session_start();
- 
-  
+  $_SESSION['detalle'] = array();
   if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
-     $_SESSION['detalle'] = array();
+    
     header("Location: ".$cd."login.php", true);
+    
      
     die();
   } else {

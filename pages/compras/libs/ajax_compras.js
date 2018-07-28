@@ -1,4 +1,5 @@
-$(document).ready(function () {
+$(function(){
+	var ENV_WEBROOT = "../";
 
 	$(".btn-agregar-producto").off("click");
 	$(".btn-agregar-producto").on("click", function(e) {
