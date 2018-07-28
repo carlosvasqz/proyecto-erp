@@ -265,7 +265,7 @@
               <span class="info-box-text"><h4>Totales</h4></span>
               <span class="info-box-number">
                 <?php 
-                  $queryCotizacionesTotales=mysqli_query($db, "SELECT COUNT(*) AS Total_Cotizaciones FROM cotizaciones_compras") or die(mysqli_error());
+                  $queryCotizacionesTotales=mysqli_query($db, "SELECT COUNT(*) AS Total_Cotizaciones FROM cotizaciones_compra") or die(mysqli_error());
                   $rowCotizacionesTotales=mysqli_fetch_array($queryCotizacionesTotales);
                   echo $rowCotizacionesTotales['Total_Cotizaciones'];
                   // mysqli_close($queryTotalEmpleados);
@@ -288,62 +288,37 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Lista de Empleados</h3>
+              <h3 class="box-title">Lista de Cotizaciones</h3>
               <!-- tools box -->
              <div class="pull-right box-tools">
                 <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
+                  <i class="fa fa-plus"></i> <b>Registrar Nueva</b></button>
               </div>
               <!-- /. tools -->
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="lista" class="table table-bordered table-striped table-hover">
+              <table id="lista-cotizaciones" class="table table-bordered table-striped table-hover">
                 <thead>
                   <tr>
                     <th>Codigo</th>
-                    <th>Nombres</th>
-                    <th>Apellido</th>
-                    <th>Estado</th>
-                    <th>Fecha de Ingreso</th>
-                    <th>Acciones</th>
+                    <th>Fecha Emision</th>
+                    <th>Ver PDF</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
-                    $queryEmpleados=mysqli_query($db, "SELECT * FROM empleados") or die(mysqli_error());
-                    while ($rowEmpleado=mysqli_fetch_array($queryEmpleados)) {
-                      $etiqueta = null;
-                      $tootip = null;
-                      $icono = null;
-                      $color = null;
-                      switch ($rowEmpleado["Estado"]) {
-                        case 1:
-                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
-                          $tootip = "Deshabilitar";
-                          $icono = "fa fa-times-circle";
-                          $color = "danger";
-                          break;
-                        case 0:
-                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
-                          $tootip = "Habilitar";
-                          $icono = "fa fa-check-circle";
-                          $color = "info";
-                          break;
-                      }
+                    $queryCotizaciones=mysqli_query($db, "SELECT * FROM cotizaciones_compra") or die(mysqli_error());
+                    while ($rowCotizaciones=mysqli_fetch_array($queryCotizaciones)) {
                       echo '
                         <tr>
-                            <td>'.$rowEmpleado['Codigo_Empleado'].'</td>
-                            <td>'.$rowEmpleado['Nombres'].'</td>
-                            <td>'.$rowEmpleado['Apellido_1'].'</td>
-                            <td>'.$etiqueta.'</td>
-                            <td>'.fechaFormato(fechaIngAEsp($rowEmpleado['Fecha_Ingreso'])).'</td>
+                            <td>'.$rowCotizaciones['Id_Cotizacion_Compra'].'</td>
+                            <td>'.fechaFormato(fechaIngAEsp($rowCotizaciones['Fecha_Emision'])).'</td>
                             <td>
                               <form action="empleados_editar.php" method="POST">
-                                <input type="hidden" name="codigo_empleado" value="'.$rowEmpleado['Codigo_Empleado'].'"/>
-                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+                                <input type="hidden" name="codigo_cotizacion" value="'.$rowCotizaciones['Id_Cotizacion_Compra'].'"/>
+                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Ver PDF"><i class="fa fa-file-text"></i></button>
                               
-                                <button type="button" id="'.$rowEmpleado['Codigo_Empleado'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
                               </form>
                             </td>
                         </tr>
@@ -608,7 +583,7 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista').DataTable({
+    $('#lista-cotizaciones').DataTable({
       'paging'      : true,
       'lengthChange': true,
       'searching'   : true,
@@ -623,7 +598,7 @@
     // $('#lista-empleados').DataTable();
 
     $("#btnRegistrarNuevo").click(function(){
-      $(location).attr('href', 'empleados_registrar.php');
+      $(location).attr('href', 'cotizacion_compra_registrar.php');
     });
 
   $('.sweetalert').click(function(){
