@@ -300,9 +300,139 @@
           </form>
         </div>
 
+          <div class="box box-info">
+          <div class="box-header with-border" id="divInsertarArticulos">
+            <h3 class="box-title">Lista de Articulos</h3>
+          </div>
+          
+          <form class="form-horizontal">
+            <div class="box-body">
+            
+             
+          <form class="form-horizontal">
+            <div class="box-body">
+             
+              
+             
+              <form class="form-horizontal">
+            
+             
+           
+            <!-- /.box-body -->
+          </form>
+       
+        </div>
+        </form>
+
+
+        </div>
+         <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+
+        <!--Insertar articulo flotante -->
+ <div class="box box-info">
+          <div class="box-header with-border" id="InsertarArticulos">
+            <h3 class="box-title">Agregar Articulos</h3>
+          </div>
+          
+          <form class="form-horizontal">
+            <div class="box-body">
+
+             <div class="form-group" id="filtro">
+                <label for="filtro" class="col-sm-2 control-label">Buscar*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="filtro" placeholder="">
+                </div>
+              </div>
+
+              <div class="box-body">
+              <table id="lista-articulos" class="table table-bordered table-striped table-hover">
+                <thead>
+                  <tr>
+              
+                    <th>Codigo</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>Precio</th>
+                    <th>Accion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 <?php
+                 $queryHayDisponibles=mysqli_query($db, "SELECT COUNT(*) AS Disponible FROM articulos WHERE Estado=1") or die(mysqli_error());
+                  $rowHayDisponibles=mysqli_fetch_array($queryHayDisponibles);
+                   if ($rowHayDisponibles['Disponible']>0){
+                    $queryArticulos=mysqli_query($db, "SELECT * FROM articulos where Estado=1") or die(mysqli_error());
+                   while ($rowArticulo=mysqli_fetch_array($queryArticulos)){
+                 
+                    
+                      echo '
+                        <tr>
+                            <td>'.$rowArticulo['Id_Articulo'].'</td>
+                            <td>'.$rowArticulo['Descripcion'].'</td>
+                            <td>'.$rowArticulo['Precio_Final'].'</td>
+                            
+                            <td>
+                              <form action="articulos_editar.php" method="POST">
+                             <input type="hidden" name="codigo_articulo" value="'.$rowArticulo['Id_Articulo'].'"/>
+                              <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Agregar"><i class="fa fa-plus"></i></button>
+
+                             
+                            </td>
+                          </form>
+                        </tr>
+                      ';
+                    }
+                    }
+                    
+                  ?>
+                </tbody>
+                <!-- <tfoot>
+                  <tr>
+                    <th>Rendering engine</th>
+                    <th>Browser</th>
+                    <th>Platform(s)</th>
+                    <th>Engine version</th>
+                    <th>CSS grade</th>
+                  </tr>
+                </tfoot> -->
+              </table>
+            </div>
+            
+             
+          <form class="form-horizontal">
+            <div class="box-body">
+             
+              
+             
+              <form class="form-horizontal">
+            
+             
+           
+            <!-- /.box-body -->
+          </form>
+       
+        </div>
+        </form>
+
+
+        </div>
+         <div class="box-footer">
+              
+            </div>
+            
+          </form>
+        </div>
+        <!--Fin de insertar articulo flotante -->
+
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">Agregar Articulos</h3>
+            <h3 class="box-title">Lista de Articulos</h3>
           </div>
           
           <form class="form-horizontal">
@@ -319,7 +449,6 @@
               <div class="trans">
               <div class="col-sm-4"></div>
               <div class="col-sm-4">
-                  <button type="button" class="btn bg-olive btn-flat margin" css="">Agregar Aticulo<div class="ripple-container"></div></button>
               </div>
               <div class="col-sm-4"></div>
             </div>
