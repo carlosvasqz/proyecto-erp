@@ -1,4 +1,6 @@
 <?php
+
+
   $cd = "http://" . $_SERVER['HTTP_HOST'];
   $uri = explode("/", $_SERVER['REQUEST_URI']);
   if (in_array('proyecto-erp', $uri)) {
@@ -35,11 +37,12 @@
   // echo $relative.'inc/constructor.php';
   // exit();
   session_start();
+ 
   
   if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
-     
+     $_SESSION['detalle'] = array();
     header("Location: ".$cd."login.php", true);
-    $_SESSION['detalle_compra'] = array();
+     
     die();
   } else {
 ?>
@@ -49,6 +52,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>MaterialAdminLTE 2 | Empleados</title>
+ 
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -59,6 +63,7 @@
   <link rel="stylesheet" href="<?php echo $cd;?>plugins/sweet-alert/sweetalert.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/Ionicons/css/ionicons.min.css">
+
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/AdminLTE.min.css">
   <!-- Material Design -->
@@ -69,7 +74,7 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/skins/all-md-skins.min.css">
-  <script type="text/javascript" src="libs/ajax_compras.js"></script>
+ 
  <script>
   function evaluacion(){
  var txt_costo =document.getElementById('txt_costo').value;
@@ -113,7 +118,15 @@ var preciof=((num1*num2)/100)+num1;
 }
 
 </script>
-
+  
+    
+  
+   <!-- Alertity -->
+    <link rel="stylesheet" href="libs/js/alertify/themes/alertify.core.css" />
+  <link rel="stylesheet" href="libs/js/alertify/themes/alertify.bootstrap.css" id="toggleCSS" />
+    <script src="libs/js/alertify/lib/alertify.min.js"></script>
+   <script src="<?php echo $cd;?>bower_components/jquery/dist/jquery.js"></script>
+  <script type="text/javascript" src="libs/ajax_compras.js"></script>
 
 
 
@@ -378,7 +391,7 @@ var preciof=((num1*num2)/100)+num1;
 
 <div class="col-md-4" style="margin-left: 40px;">
   <div class="form-group">Producto:
-       <select class="form-control select2" id="cbo_producto" name="cbo_producto" style="width: 100%;" p>
+       <select class="form-control select2" id="txt_producto" name="txt_producto" style="width: 100%;" p>
                    <option value="">Seleccione Producto</option>
                    <?php 
                           $queryListaProv=mysqli_query($db, "SELECT * FROM articulos") or die(mysqli_error());
@@ -397,7 +410,7 @@ var preciof=((num1*num2)/100)+num1;
       </div>
        <div class="col-md-2" style="margin-left: 40px;">
         <div class="form-group" >Existencia Minima:
-          <input id="txt_costo"   style="width: 200px;" name="txt_costo" type="text" class="col-md-2 form-control" placeholder="Ingrese costo" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
+          <input id="txt_existencia"   style="width: 200px;" name="txt_existencia" type="text" class="col-md-2 form-control" placeholder="Ingrese Existencia" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
         </div>
       </div>
       <div class="col-md-2" style="margin-left: 40px;">
@@ -430,35 +443,40 @@ var preciof=((num1*num2)/100)+num1;
           </form>
   <br>
     <div class="panel panel-info">
-       <div class="panel-heading">
-            <h3 class="panel-title">Productos</h3>
-          </div>
-      <div class="panel-body detalle-producto">
-        <?php if(count($_SESSION['detalle_compra'])>0){?>
+ <div class="panel-heading">
+  <h3 class="panel-title">Productos</h3>
+   </div>
+   <div class="panel-body detalle-producto">
+        <?php if(count($_SESSION['detalle'])>0){?>
           <table class="table">
               <thead>
                   <tr>
-                      <th>Código Artículo</th>
-                      <th>Descripci&oacute;n</th>
+                    
+                     <th>Descripcion</th>
                       <th>Cantidad</th>
-                      <th>Existencia Minima</th>
-                       <th>Porcentaje</th>
-                      <th>Precio</th>
+                       <th>Existencia</th>
+                       <th>Costo</th>
+                        <th>Porcentaje</th>
+                        <th>Precio Final</th>
+                     
                       <th></th>
                   </tr>
               </thead>
               <tbody>
                 <?php 
-                foreach($_SESSION['detalle_compra'] as $k => $detalle_compra){ 
+                foreach($_SESSION['detalle'] as $k => $detalle){ 
                 ?>
                   <tr>
-                  <td><?php echo $detalle_compra['Id_Articulo'];?></td>
-                  <td><?php echo $detalle_compra['Descripcion'];?></td>
-                    <td><?php echo $detalle_compra['Existencias'];?></td>
-                    <td><?php echo $detalle_compra['Existencias_Minimas'];?></td>
-                      <td><?php echo $detalle_compra['Porcentaje_Ganancia'];?></td>
-                      <td><?php echo $$detalle_compra['Precio_Final'];?></td>
-                      <td><button type="button" class="btn btn-sm btn-danger eliminar-producto" id="<?php echo $detalle_compra['Id_Articulo'];?>">Eliminar</button></td>
+                  
+                  <td><?php echo $detalle['descripcion'];?></td>
+                  <td><?php echo $detalle['cantidad'];?></td>
+                   <td><?php echo $detalle['existencia'];?></td>
+                   <td><?php echo $detalle['costo'];?></td>
+                   <td><?php echo $detalle['porcentaje'];?></td>
+                   <td><?php echo $detalle['precio'];?></td>
+
+                   
+                      <td><button type="button" class="btn btn-sm btn-danger eliminar-producto" id="<?php echo $detalle['id'];?>">Eliminar</button></td>
                   </tr>
                   <?php }?>
               </tbody>
@@ -467,6 +485,7 @@ var preciof=((num1*num2)/100)+num1;
         <div class="panel-body"> No hay productos agregados</div>
         <?php }?>
       </div>
+    
 
   
   </form>
@@ -703,6 +722,7 @@ var preciof=((num1*num2)/100)+num1;
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
+
 <script src="<?php echo $cd;?>bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="<?php echo $cd;?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
