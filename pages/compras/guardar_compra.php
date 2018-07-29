@@ -781,7 +781,7 @@ var preciof=((num1*num2)/100)+num1;
     }
 
     $("#btnCancelar").click(function(){
-      $(location).attr('href', 'proveedores.php');
+      $(location).attr('href', 'registro_compras.php');
     });
 
     $("#btnRegistrar").click(function(){
@@ -908,7 +908,7 @@ var correo=$('#correo').val();
       // alert(datos);
       $.ajax({
         //Direccion destino
-        url: "guardar_proveedor.php",
+        url: "registrar_compras.php",
         // Variable con los datos necesarios
         data: datos,
         type: "POST",     
@@ -920,12 +920,12 @@ var correo=$('#correo').val();
           if (data) {
             $.notify({
               title: "Correcto : ",
-              message: "¡El proveedor se registró exitosamente!",
+              message: "¡La Compra se registró exitosamente!",
               icon: 'fa fa-check' 
             },{
               type: "success"
             });
-            window.setTimeout('location.href="proveedores.php"', 5);
+            window.setTimeout('location.href="registro_compras.php"', 5);
           }
           if (!data) {
             $.notify({
