@@ -368,7 +368,7 @@ $result = $sth->fetchAll();
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-        menu($_SESSION['Tipo_Usuario'], $thisFileName);
+        menu($_SESSION['Tipo_Usuario'], $thisFileName, $cd);
       ?>
     </section>
     <!-- /.sidebar -->

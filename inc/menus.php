@@ -113,6 +113,7 @@
         'categorias_registrar' => '',
         'categorias_editar' => '',
         'conversiones' => '',
+        'conversiones_registrar' => '',
         // ventas
         'clientes' => '',
         'clientes_registrar' => '',
