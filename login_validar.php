@@ -4,7 +4,7 @@
     $pass =  $_POST['pass'];
     // echo $usuario . " " . $pass;
     // exit();
-        if ($usuario=='root'&&$pass=='root') {
+        if ($usuario=='ROOT'&&$pass=='root') {
             session_start();
             $_SESSION['Id_Usuario'] = "root";            
             $_SESSION['Tipo_Usuario'] = 'Superusuario';
