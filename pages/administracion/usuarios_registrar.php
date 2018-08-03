@@ -43,19 +43,21 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Usuarios</title>
+  <title>MaterialAdminLTE 2 | Registrar Usuario</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Sweet Alert CSS -->
-  <link rel="stylesheet" href="<?php echo $cd;?>plugins/sweet-alert/sweetalert.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/AdminLTE.min.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="<?php echo $cd;?>bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="<?php echo $cd;?>bower_components/select2/dist/css/select2.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/ripples.min.css">
@@ -188,7 +190,7 @@
         </div>
         <div class="pull-left info">
           <p><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></p>
-          <a href="#"><i class="fa fa-user"></i> <?php echo $_SESSION['Codigo_Empleado'];?></a>          
+          <a href="#"><i class="fa fa-user"></i> <?php echo $_SESSION['Codigo_Empleado'];?></a>
         </div>
       </div>
       <!-- search form -->
@@ -217,177 +219,140 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Usuarios
+        Registrar Usuario
         <small>Administracion</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Administracion</a></li>
-        <li class="active">Usuarios</li>
+        <li class="active">Registrar Usuario</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
-      <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-user-plus"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Superusuarios</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $querySuperUsuarios=mysqli_query($db, "SELECT COUNT(usuarios.Id_Usuario) AS Usuarios_Admin FROM usuarios INNER JOIN tipos_usuarios ON usuarios.Id_Tipo_Usuario = tipos_usuarios.Id_Tipo_Usuario WHERE tipos_usuarios.Nombre = 'SuperUsuario';") or die(mysqli_error());
-                  $rowSuperUsuarios=mysqli_fetch_array($querySuperUsuarios);
-                  echo $rowSuperUsuarios['Usuarios_Admin'];
-                  // mysqli_close($queryEmpleadosNuevos);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
+    <div class="row">
+      <!-- columna izq -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Administrativos</h3>
           </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Totales</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryTotalUsuarios=mysqli_query($db, "SELECT COUNT(*) AS Total_Usuarios FROM usuarios") or die(mysqli_error());
-                  $rowUsuarios=mysqli_fetch_array($queryTotalUsuarios);
-                  echo $rowUsuarios['Total_Usuarios'];
-                  // mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Deshabilitados</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryUsuariosDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Usuarios_Desabilitados FROM usuarios WHERE Estado = 0") or die(mysqli_error());
-                  $rowUsuariosDesabilitados=mysqli_fetch_array($queryUsuariosDesabilitados);
-                  echo $rowUsuariosDesabilitados['Usuarios_Desabilitados'];
-                  //mysqli_close($queryEmpleadosDesabilitados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Lista de Usuarios</h3>
-              <!-- tools box -->
-             <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
             <div class="box-body">
-              <table id="lista" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <!-- <th></th> -->
-                    <th>Codigo</th>
-                    <th>Tipo de usuario</th>
-                    <th>Estado</th>
-                    <th>Codigo Empleado</th>
-                    <th>Empleado</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $queryUsuarios=mysqli_query($db, "SELECT * FROM usuarios") or die(mysqli_error());
-                    while ($rowUsuario=mysqli_fetch_array($queryUsuarios)) {
-                      $etiqueta = null;
-                      $tootip = null;
-                      $icono = null;
-                      $color = null;
-                      switch ($rowUsuario["Estado"]) {
-                        case 1:
-                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
-                          $tootip = "Deshabilitar";
-                          $icono = "fa fa-times-circle";
-                          $color = "danger";
-                          break;
-                        case 0:
-                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
-                          $tootip = "Habilitar";
-                          $icono = "fa fa-check-circle";
-                          $color = "info";
-                          break;
+              <div class="form-group" id="form_codigo">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Codigo*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo_usuario" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoUsuario());?>" readonly>
+                </div>
+              </div>
+
+              <div class="form-group" id="form_pass">
+                <label for="user_pass" class="col-sm-2 control-label">Contraseña*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="pass" placeholder="Ingrese la contraseña...">
+                </div>
+              </div>
+              <!-- Date -->
+              <!-- <div class="form-group" id="form_fecha_ingreso">
+                <label for="fecha_ingreso" class="col-sm-2 control-label">Fecha de Ingreso*</label>
+
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="text" class="form-control pull-right" id="fecha_ingreso" placeholder="Seleccione la fecha..." readonly>
+                  </div>
+                </div> -->
+                <!-- /.input group -->
+              <!-- </div> -->
+              <div class="form-group" id="form_estado">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Estado*</label>
+
+                <div class="col-sm-9">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="estado" value="1" checked>
+                      Habilitado
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="estado" value="0">
+                      Desabilitado
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" id="form_id_empleado">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Empleado*</label>
+
+                <div class="col-sm-9">
+                  <select class="form-control select2" id="id_empleado" style="width: 100%;">
+                    <?php
+                      $queryEmpelado=mysqli_query($db, "SELECT * FROM empleados;") or die(mysqli_error());
+                      while($rowEmpleado=mysqli_fetch_array($queryEmpelado)){
+                        echo '<option>'.$rowEmpleado['Codigo_Empleado'].' | '.$rowEmpleado['ID'].' | '.$rowEmpleado['Nombres'].' '.$rowEmpleado['Apellido_1'].'</option>';
                       }
-                      $queryTipoUsuario=mysqli_query($db, "SELECT * FROM tipos_usuarios WHERE Id_Tipo_Usuario = '".$rowUsuario['Id_Tipo_Usuario']."';") or die(mysqli_error());
-                      $rowTipoUsuario=mysqli_fetch_array($queryTipoUsuario);
-                      $queryEmpelado=mysqli_query($db, "SELECT * FROM empleados WHERE Codigo_Empleado = '".$rowUsuario['Codigo_Empleado']."';") or die(mysqli_error());
-                      $rowEmpleado=mysqli_fetch_array($queryEmpelado);
-                      echo '
-                        <tr>
-                            <td>'.$rowUsuario['Id_Usuario'].'</td>
-                            <td>'.$rowTipoUsuario['Nombre'].'</td>
-                            <td>'.$etiqueta.'</td>
-                            <td>'.$rowUsuario['Codigo_Empleado'].'</td>
-                            <td>'.$rowEmpleado['Nombres']. ' ' .$rowEmpleado['Apellido_1'].'</td>
-                            <td>
-                              <form action="usuarios_editar.php" method="POST">
-                                <input type="hidden" name="codigo_usuario" value="'.$rowUsuario['Id_Usuario'].'"/>
-                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
-                                <button type="button" id="resetPass" class="btn btn-warning btn-sm resetPass '.$rowUsuario['Id_Usuario'].'" data-toggle="tooltip" title="Cambiar contraseña"><i class="fa fa-refresh"></i></button>
-                                <button type="button" id="'.$rowUsuario['Id_Usuario'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
-                              </form>
-                            </td>
-                        </tr>
-                      ';
-                    }
-                  ?>
-                </tbody>
-                <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                </tfoot> -->
-              </table>
+                    ?>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" id="form_tipo_usuario">
+                <label for="codigo_empleado" class="col-sm-2 control-label">Tipo de usuario*</label>
+
+                <div class="col-sm-9">
+                  <select class="form-control select2" id="tipo_usuario" style="width: 100%;">
+                    <?php
+                      $queryTipoUsuario=mysqli_query($db, "SELECT * FROM tipos_usuarios;") or die(mysqli_error());
+                      while($rowTipoUsuario=mysqli_fetch_array($queryTipoUsuario)){
+                        echo '<option>'.$rowTipoUsuario['Id_Tipo_Usuario'].' | '.$rowTipoUsuario['Nombre'].'</option>';
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
             </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
         </div>
-        <!-- /.col -->
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <!-- <div class="box-header with-border"> -->
+            <!-- <h3 class="box-title">Acciones</h3> -->
+          <!-- </div> -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
+                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
+              </div>
+              <div class="col-sm-4"></div>
+            </div>
+            <!-- /.box-body -->
+          </form>
+        </div>
       </div>
-      <!-- /.row -->
-
+      <!--/.col (izq) -->
+    </div>
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
+  <!-- /.content-wrapper -->  
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -604,17 +569,23 @@
 <script>
     $.material.init();
 </script>
+<!-- Select2 -->
+<script src="<?php echo $cd;?>bower_components/select2/dist/js/select2.full.min.js"></script>
 <!-- DataTables -->
-<!-- <script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script> -->
-<!-- <script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
-<script src="<?php echo $cd;?>plugins/dataTables/jquery.dataTables.min.js"></script>
-<script src="<?php echo $cd;?>plugins/dataTables/dataTables.bootstrap.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="<?php echo $cd;?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap notify -->
+<script src="<?php echo $cd;?>plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
-<!-- Sweet Alert -->
-<script src="<?php echo $cd;?>plugins/sweet-alert/sweetalert.min.js"></script>
+<!-- InputMask -->
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.js"></script>
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -622,183 +593,184 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista').DataTable({
+    $('#lista-empleados').DataTable({
       'paging'      : true,
-      'lengthChange': true,
+      'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : true
+      'autoWidth'   : false
     });
-  });
-
+    $('.select2').select2();
+    //Date picker
+    $('#fecha_nacimiento').datepicker({
+      autoclose: true
+    });
+    $('#fecha_ingreso').datepicker({
+      autoclose: true
+    });
+  })
   $(document).ready(function () {
     $('.sidebar-menu').tree();
+    // $('[data-mask]').inputmask()
     // $('#lista-empleados').DataTable();
 
-    $("#btnRegistrarNuevo").click(function(){
-      $(location).attr('href', 'usuarios_registrar.php');
+    function alertaIngresarDatos(){
+      $.notify({
+        title: "Error : ",
+        message: "Por favor, complete los campos obligatorios",
+        icon: 'fa fa-times' 
+      },{
+        type: "danger"
+      });
+    }
+
+    $("#btnCancelar").click(function(){
+      $(location).attr('href', 'usuarios.php');
     });
 
-    $('.sweetalert').click(function(){
-      var codigoUsuario = $(this).attr('id');
-      var accion = $(this).attr('class');
-      accion = accion.split(" ");
-      var nuevoEstado;
-      if (accion[4]=='Habilitar') {
-        nuevoEstado = 1;
+    $("#btnRegistrar").click(function(){
+      //Obtencion de valores en los inputs
+      var codigoUsuario = $("#codigo_usuario").val();
+      var pass = $("#pass").val();
+      var estado = $('input[name="optionsRadios"]:checked').val();
+      var idEmpleado = $("#id_empleado").val();
+      var tipoUsuario = $("#tipo_usuario").val();
+      
+      // Validaciones
+      if (codigoUsuario=='') {
+        $("#codigo_usuario").attr('required',true);
+        document.getElementById("codigo_usuario").focus();
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
       } else {
-        nuevoEstado = 0;
+        $("#codigo_usuario").attr('required',false);
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-success');
       }
-      // alert(accion[4] + " - " + nuevoEstado);
-      swal({
-          title: "¿Esta seguro?",
-          text: "Esta accion " + accion[4] + "á el elemento seleccionado",
-          type: "warning",
-          showCancelButton: true,
-          closeOnConfirm: false,
-          showLoaderOnConfirm: true,
-      }, function () {
-          $.ajax({
-            //Direccion destino
-            url: "usuarios_cambiar_estado.php",
-            // Variable con los datos necesarios
-            data: "codigo_usuario=" + codigoUsuario + "&estado=" + nuevoEstado,
-            type: "POST",			
-            dataType: "html",
-            //cache: false,
-            //success
-            success: function (data) {
-              // alert(data);
-              setTimeout(function () {
-                if (data) {
-                  swal({
-                    title: "¡Realizado!",
-                    text: "La acción se ha completado con éxito.",
-                    type: "success",
-                    showCancelButton: false,
-                    confirmButtonText: "Aceptar",
-                    closeOnConfirm: false
-                  }, function(isConfirm) {
-                    if (isConfirm) {
-                      window.setTimeout('location.href="usuarios.php"', 3);
-                    }
-                  });
-                }
-                if (!data) {
-                  swal({
-                    title: "¡Error!",
-                    text: "Ha ocurrido un problema, inténtelo más tarde.",
-                    type: "error",
-                    showCancelButton: false,
-                    confirmButtonText: "Aceptar",
-                    closeOnConfirm: true
-                  });
-                }
-              }, 2000);
-            },
-            error : function(xhr, status) {
-              //  alert('Disculpe, existió un problema');
-            },
-            complete : function(xhr, status) {
-              // alert('Petición realizada');
-              // $.notify({
-              // 		title: "Informacion : ",
-              // 		message: "Petición realizada!",
-              // 		icon: 'fa fa-check' 
-              // 	},{
-              // 		type: "info"
-              // });
-            }		
-          });
-      });
-    });
 
-    $('.resetPass').click(function(){
-      var codigoUsuario = $(this).attr('class');
-      codigoUsuario = codigoUsuario.split(" ");
-      codigoUsuario = codigoUsuario[4];
-      // alert(codigoUsuario[4] + " - " + nuevoEstado);
+      if (estado=='') {
+        $("#estado").attr('required',true);
+        document.getElementById("estado").focus();
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#estado").attr('required',false);
+        $("#form_estado").removeClass('has-success');
+        $("#form_estado").removeClass('has-error');
+        $("#form_estado").addClass('has-success');
+      }
 
-      swal({
-          title: "¿Esta seguro?",
-          text: "Esta opción cambiará la contraseña del usuario seleccionado",
-          type: "warning",
-          showCancelButton: true,
-          closeOnConfirm: false
-      }, function () {
-          swal({
-            title: "Cambio de contraseña",
-            text: "Ingrese la contraseña temporal para el usuario:",
-            type: "input",
-            showCancelButton: true,
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true,
-            // animation: "slide-from-top",
-            inputPlaceholder: "Contraseña temporal"
-          }, function (inputValue) {
-              if (inputValue === false) return false;
-              if (inputValue === "") {
-                  swal.showInputError("Error, debe escribir una contraseña."); return false
-              }
-              // swal("Nice!", "You wrote: " + inputValue, "success");
-              $.ajax({
-                //Direccion destino
-                url: "usuarios_cambiar_contraseña.php",
-                // Variable con los datos necesarios
-                data: "codigo_usuario=" + codigoUsuario + "&new_pass=" + inputValue,
-                type: "POST",			
-                dataType: "html",
-                //cache: false,
-                //success
-                success: function (data) {
-                  // alert(data);
-                  setTimeout(function () {
-                    if (data) {
-                      swal({
-                        title: "¡Realizado!",
-                        text: "La acción se ha completado con éxito.",
-                        type: "success",
-                        showCancelButton: false,
-                        confirmButtonText: "Aceptar",
-                        closeOnConfirm: false
-                      }, function(isConfirm) {
-                        if (isConfirm) {
-                          window.setTimeout('location.href="usuarios.php"', 3);
-                        }
-                      });
-                    }
-                    if (!data) {
-                      swal({
-                        title: "¡Error!",
-                        text: "Ha ocurrido un problema, inténtelo más tarde.",
-                        type: "error",
-                        showCancelButton: false,
-                        confirmButtonText: "Aceptar",
-                        closeOnConfirm: true
-                      });
-                    }
-                  }, 2000);
-                },
-                error : function(xhr, status) {
-                  //  alert('Disculpe, existió un problema');
-                },
-                complete : function(xhr, status) {
-                  // alert('Petición realizada');
-                  // $.notify({
-                  // 		title: "Informacion : ",
-                  // 		message: "Petición realizada!",
-                  // 		icon: 'fa fa-check' 
-                  // 	},{
-                  // 		type: "info"
-                  // });
-                }		
-              });
-          });
+      if (pass=='') {
+        $("#pass").attr('required',true);
+        document.getElementById("pass").focus();
+        $("#form_pass").removeClass('has-success');
+        $("#form_pass").removeClass('has-error');
+        $("#form_pass").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#pass").attr('required',false);
+        $("#form_pass").removeClass('has-success');
+        $("#form_pass").removeClass('has-error');
+        $("#form_pass").addClass('has-success');
+      }
+
+      if (idEmpleado=='') {
+        $("#id_empleado").attr('required',true);
+        document.getElementById("id_empleado").focus();
+        $("#form_id_empleado").removeClass('has-success');
+        $("#form_id_empleado").removeClass('has-error');
+        $("#form_id_empleado").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#id_empleado").attr('required',false);
+        $("#form_id_empleado").removeClass('has-success');
+        $("#form_id_empleado").removeClass('has-error');
+        $("#form_id_empleado").addClass('has-success');
+      }
+
+      if (tipoUsuario=='') {
+        $("#tipo_usuario").attr('required',true);
+        document.getElementById("tipo_usuario").focus();
+        $("#form_tipo_usuario").removeClass('has-success');
+        $("#form_tipo_usuario").removeClass('has-error');
+        $("#form_tipo_usuario").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#tipo_usuario").attr('required',false);
+        $("#form_tipo_usuario").removeClass('has-success');
+        $("#form_tipo_usuario").removeClass('has-error');
+        $("#form_tipo_usuario").addClass('has-success');
+      }
+      //Fin validaciones
+
+      // Variable con todos los valores necesarios para la consulta
+		  var datos = 'codigo_usuario=' +codigoUsuario + '&pass=' +pass + '&estado=' + estado + '&id_empleado=' + idEmpleado + '&tipo_usuario=' + tipoUsuario;
+
+      // alert(datos);
+      $.ajax({
+        //Direccion destino
+        url: "usuarios_guardar.php",
+        // Variable con los datos necesarios
+        data: datos,
+        type: "POST",			
+        dataType: "html",
+        //cache: false,
+        //success
+        success: function (data) {
+          alert(data);
+          if (data) {
+            $.notify({
+              title: "Correcto : ",
+              message: "¡El empleado se registró exitosamente!",
+              icon: 'fa fa-check' 
+            },{
+              type: "success"
+            });
+            window.setTimeout('location.href="usuarios.php"', 5);
+          }
+          if (!data) {
+            $.notify({
+              title: "Error : ",
+              message: "¡El empleado ya posee una cuenta de usuario!",
+              icon: 'fa fa-times' 
+            },{
+              type: "danger"
+            });
+            document.getElementById("id_empleado").focus();
+            $("#form_id_empleado").removeClass('has-success');
+            $("#form_id_empleado").removeClass('has-error');
+            $("#form_id_empleado").addClass('has-error');
+          }
           
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          // 		title: "Informacion : ",
+          // 		message: "Petición realizada!",
+          // 		icon: 'fa fa-check' 
+          // 	},{
+          // 		type: "info"
+          // });
+        }		
       });
+
     });
-  });
+  })
 </script>
 </body>
 </html>
