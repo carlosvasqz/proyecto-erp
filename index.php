@@ -158,7 +158,15 @@
 
                 <p>
                   <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
-                  <small>Miembro desde <?php echo $_SESSION['Fecha_Ingreso'];?></small>
+                  <small>
+                    Miembro desde 
+                    <?php 
+                      $foo = $_SESSION['Fecha_Ingreso'];
+                      $foo = fechaBDAEsp($foo);
+                      $foo = fechaFormato($foo);
+                      echo $foo;
+                    ?>
+                  </small>
                 </p>
               </li>
               <!-- Menu Body -->

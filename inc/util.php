@@ -83,16 +83,21 @@
         return $fecha[1] . "/" . $fecha[2] . "/" . $fecha[0];
     }
 
+    function fechaBDAEsp($fecha){
+        $fecha = explode('-', $fecha);
+        return $fecha[2] . "/" . $fecha[1] . "/" . $fecha[0];
+    }
+
     function fechaFormato($fecha){
         $fecha = explode('/', $fecha);
-        $diaMes = mktime(0,0,0,$fecha[1],$fecha[0],$fecha[2]);
+        $diaMes = mktime(0,0,0,rtrim($fecha[1]),trim($fecha[0]),ltrim($fecha[2]));
         $diaFormat = date("j", $diaMes) . " / " . monthToMes(date("F", $diaMes)) . " / " . date("Y", $diaMes) ;
         return $diaFormat;
     }
 
     function fechaFullFormato($fecha){
         $fecha = explode('/', $fecha);
-        $diaMes = mktime(0,0,0,$fecha[1],$fecha[0],$fecha[2]);
+        $diaMes = mktime(0,0,0,rtrim($fecha[1]),trim($fecha[0]),ltrim($fecha[2]));
         $diaFullFormat = dayToDia(date("l", $diaMes)) . " " . date("j", $diaMes) . ", " . monthToMes(date("F", $diaMes)) . " de " . date("Y", $diaMes) ;
         return $diaFullFormat;
     }
