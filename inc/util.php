@@ -113,6 +113,19 @@
             return $rowCodigo['Ultimo_Codigo'];
         }
     }
+
+    function obtenerUltimoCodigoUsuario(){
+        include ("conexion.php");
+        $query = "SELECT MAX(Id_Usuario) AS Ultimo_Codigo FROM usuarios;";
+        $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
+        $rowCodigo=mysqli_fetch_array($sqlcon);
+        if(is_null($rowCodigo['Ultimo_Codigo'])){
+            return "USU.0";
+        }else{
+            return $rowCodigo['Ultimo_Codigo'];
+        }
+    }
+
     function obtenerUltimoCodigoCliente(){
         include ("conexion.php");
         $query = "SELECT MAX(Id_Cliente) AS Ultimo_Codigo FROM clientes;";
