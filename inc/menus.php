@@ -9,7 +9,9 @@
         'tipos_usuarios' => '',
         'tipos_usuarios_registrar' => '',
         'tipos_usuarios_editar' => '',
-        'usuarios' => ''
+        'usuarios' => '',
+        'usuarios_registrar' => '',
+        'usuarios_editar' => ''
       );
       return $admin;
     }
