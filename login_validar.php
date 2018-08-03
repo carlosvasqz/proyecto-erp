@@ -1,6 +1,6 @@
 <?php
     include ('inc/conexion.php');
-    $usuario =  $_POST['usuario'];
+    $usuario =  strtoupper($_POST['usuario']);
     $pass =  $_POST['pass'];
     // echo $usuario . " " . $pass;
     // exit();
