@@ -17,6 +17,7 @@
 	}
 	if ($rowExiste['Existe']==1) {
 			$queryActualizar = mysqli_query($db, "UPDATE empleados SET Estado=$estado WHERE Codigo_Empleado='$codigoEmpleado'") or die(mysqli_error());
+			$queryActualizarUsuario = mysqli_query($db, "UPDATE usuarios SET Estado=$estado WHERE Codigo_Empleado='$codigoEmpleado'") or die(mysqli_error());
 			echo 'Actualizado';
     }
             

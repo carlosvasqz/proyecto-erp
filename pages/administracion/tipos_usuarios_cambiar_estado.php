@@ -17,6 +17,7 @@
 	}
 	if ($rowExiste['Existe']==1) {
 			$queryActualizar = mysqli_query($db, "UPDATE tipos_usuarios SET Estado=$estado WHERE Id_Tipo_Usuario='$tipos'") or die(mysqli_error());
+			$queryActualizarUsuarios = mysqli_query($db, "UPDATE usuarios SET Estado=$estado WHERE Id_Tipo_Usuario='$tipos'") or die(mysqli_error());
 			echo 'Actualizado';
     }
             
