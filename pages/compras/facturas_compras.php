@@ -217,13 +217,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Regístro Compras
+        Proveedores
         <small>Compras</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Compras</a></li>
-        <li class="active">Registro Compras</li>
+        <li class="active">Proveedor</li>
       </ol>
     </section>
 
@@ -241,9 +241,9 @@
               <span class="info-box-text"><h4>Totales</h4></span>
               <span class="info-box-number">
                 <?php 
-                  $queryTotalRegistro_Compras=mysqli_query($db, "SELECT COUNT(*) AS Total_Registro_Compras FROM compras") or die(mysqli_error());
-                  $rowRegistro_Compras=mysqli_fetch_array($queryTotalRegistro_Compras);
-                  echo $rowRegistro_Compras['Total_Registro_Compras'];
+                  $queryTotalProveedores=mysqli_query($db, "SELECT COUNT(*) AS Total_Proveedores FROM proveedores") or die(mysqli_error());
+                  $rowProveedores=mysqli_fetch_array($queryTotalProveedores);
+                  echo $rowProveedores['Total_Proveedores'];
                   // mysqli_close($queryTotalEmpleados);
                 ?>
               </span>
@@ -252,13 +252,53 @@
           </div>
           <!-- /.info-box -->
         </div>
-       
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-user-plus"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Habilitados</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $queryProveedoresDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Proveedores_Desabilitados FROM proveedores WHERE Estado = 1") or die(mysqli_error());
+                  $rowProveedoresDesabilitados=mysqli_fetch_array($queryProveedoresDesabilitados);
+                  echo $rowProveedoresDesabilitados['Proveedores_Desabilitados'];
+                  // mysqli_close($queryEmpleadosDesabilitados);
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Deshabilitados</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $queryProveedoresDesabilitados=mysqli_query($db, "SELECT COUNT(*) AS Proveedores_Desabilitados FROM proveedores WHERE Estado = 0") or die(mysqli_error());
+                  $rowProveedoresDesabilitados=mysqli_fetch_array($queryProveedoresDesabilitados);
+                  echo $rowProveedoresDesabilitados['Proveedores_Desabilitados'];
+                  // mysqli_close($queryEmpleadosDesabilitados);
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
       <!-- /.row -->
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Lista de Regístro de Compras</h3>
+              <h3 class="box-title">Lista de Proveedores</h3>
               <!-- tools box -->
               <div class="pull-right box-tools">
                 <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
@@ -271,24 +311,25 @@
               <table id="lista-proveedores" class="table table-bordered table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>Código Compra</th>
-                    <th>Código Proveedor</th>
-                    <th>Código Factura</th>
-                    <th>Fecha Compra</th>
-                    <th>Código Usuario</th>
-                    <th>Código Orden</th>
-                     <th></th>
+                    <th>Codigo</th>
+                    <th>Nombres</th>
+                    <th>RTN Proveedor</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
-                    $queryRegistro_Compras=mysqli_query($db, "SELECT * FROM compras") or die(mysqli_error());
-                   while ($rowRegistro_Compras=mysqli_fetch_array($queryRegistro_Compras)) {
+                    $queryProveedores=mysqli_query($db, "SELECT * FROM proveedores") or die(mysqli_error());
+                   while ($rowProveedores=mysqli_fetch_array($queryProveedores)) {
                       $etiqueta = null;
                       $tootip = null;
                       $icono = null;
                       $color = null;
-                      switch ($rowRegistro_Compras["Id_Usuario"]) {
+                      switch ($rowProveedores["Estado"]) {
                         case 1:
                           $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
                           $tootip = "Deshabilitar";
@@ -304,16 +345,19 @@
                       }
                       echo '
                         <tr>
-                            <td>'.$rowRegistro_Compras['Id_Compra'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Proveedor'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Factura'].'</td>
-                            <td>'.$rowRegistro_Compras['Fecha_Compra'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Usuario'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Orden'].'</td>
+                            <td>'.$rowProveedores['Id_Proveedor'].'</td>
+                            <td>'.$rowProveedores['Nombre_Proveedor'].'</td>
+                            <td>'.$rowProveedores['RTN_Proveedor'].'</td>
+                            <td>'.$rowProveedores['Direccion'].'</td>
+                            <td>'.$rowProveedores['Telefono'].'</td>
+                            <td>'.$rowProveedores['Correo_Electronico'].'</td>
+                            <td>'.$etiqueta.'</td>
                             <td>
-                            
+                            <form action="proveedores_editar.php" method="POST">
+                                <input type="hidden" name="codigo_proveedor" value="'.$rowProveedores['Id_Proveedor'].'"/>
+                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
 
-                             
+                                <button type="button" id="'.$rowProveedores['Id_Proveedor'].'" class="btn btn-'.$color.' btn-sm sweetalert '.$tootip.'" data-toggle="tooltip" title="'.$tootip.'"><i class="'.$icono.'"></i></button>
                             </td>
                           </form>
                         </tr>
@@ -590,7 +634,7 @@
     // $('#lista-empleados').DataTable();
 
     $("#btnRegistrarNuevo").click(function(){
-      $(location).attr('href', 'guardar_compra.php');
+      $(location).attr('href', 'proveedores_registrar.php');
     });
 
   $('.sweetalert').click(function(){

@@ -210,6 +210,7 @@
     <!-- /.sidebar -->
   </aside>
 
+
   <!-- =============================================== -->
 
   <!-- Content Wrapper. Contains page content -->
@@ -217,129 +218,136 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Regístro Compras
-        <small>Compras</small>
+        Editar Compra
+        <small>Registro Compras</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Compras</a></li>
-        <li class="active">Registro Compras</li>
+        <li><a href="#">Registro Compras</a></li>
+        <li class="active">Editar Compras</li>
       </ol>
     </section>
+ <?php
+      $querycompras=mysqli_query($db, "SELECT * FROM compras WHERE Id_Compra = '".$_POST['codigo_compra']."'") or die(mysqli_error());
+      $rowcompras=mysqli_fetch_array($querycompras);
+    ?>
+
+
 
     <!-- Main content -->
-    <section class="content">
-
-      <div class="row">
-       
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Totales</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryTotalRegistro_Compras=mysqli_query($db, "SELECT COUNT(*) AS Total_Registro_Compras FROM compras") or die(mysqli_error());
-                  $rowRegistro_Compras=mysqli_fetch_array($queryTotalRegistro_Compras);
-                  echo $rowRegistro_Compras['Total_Registro_Compras'];
-                  // mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
+      <section class="content">
+    <div class="row">
+      <!-- columna izq -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Administrativos</h3>
           </div>
-          <!-- /.info-box -->
-        </div>
-       
-      <!-- /.row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Lista de Regístro de Compras</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
             <div class="box-body">
-              <table id="lista-proveedores" class="table table-bordered table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>Código Compra</th>
-                    <th>Código Proveedor</th>
-                    <th>Código Factura</th>
-                    <th>Fecha Compra</th>
-                    <th>Código Usuario</th>
-                    <th>Código Orden</th>
-                     <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $queryRegistro_Compras=mysqli_query($db, "SELECT * FROM compras") or die(mysqli_error());
-                   while ($rowRegistro_Compras=mysqli_fetch_array($queryRegistro_Compras)) {
-                      $etiqueta = null;
-                      $tootip = null;
-                      $icono = null;
-                      $color = null;
-                      switch ($rowRegistro_Compras["Id_Usuario"]) {
-                        case 1:
-                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
-                          $tootip = "Deshabilitar";
-                          $icono = "fa fa-times-circle";
-                          $color = "danger";
-                          break;
-                        case 0:
-                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
-                          $tootip = "Habilitar";
-                          $icono = "fa fa-check-circle";
-                          $color = "info";
-                          break;
-                      }
-                      echo '
-                        <tr>
-                            <td>'.$rowRegistro_Compras['Id_Compra'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Proveedor'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Factura'].'</td>
-                            <td>'.$rowRegistro_Compras['Fecha_Compra'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Usuario'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Orden'].'</td>
-                            <td>
-                            
+              <div class="form-group" id="form_codigo">
+                <label for="codigo" class="col-sm-2 control-label">Codigo*</label>
 
-                             
-                            </td>
-                          </form>
-                        </tr>
-                      ';
-                    }
-                  ?>
-                </tbody>
-                <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                </tfoot> -->
-              </table>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" value="<?php echo $rowcompras['Id_Compra'];?>" disabled>
+                </div>
+              </div>
+
+
+
+
+              <div class="form-group" id="form_proveedor">
+                <label for="proveedor_articulo" class="col-sm-2 control-label">Proveedor*</label>
+
+                <div class="col-sm-9">
+                   <select class="form-control select2" id="proveedor_articulo" name="proveedor_articulo" style="width: 100%;" p>
+                   <option value="">Seleccione un proveedor</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM proveedores") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Proveedor'].'">'.$rowProv['Nombre_Proveedor'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
+                </div>
+              </div>
+
+
+
+            <div class="form-group" id="form_codigo_factura">
+                <label for="codigo_factura" class="col-sm-2 control-label">Codigo Factura*</label>
+
+                <div class="col-sm-9">
+                   <select class="form-control select2" id="codigo_factura" name="codigo_factura" style="width: 100%;" p>
+                   <option value="">Seleccione Codigo Factura</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM facturas_compra") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Factura'].'">'.$rowProv['Id_Factura'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
+                </div>
+              </div>
+
+
+
+
+
+             <div class="form-group" id="form_codigo_orden">
+                <label for="orden_compra" class="col-sm-2 control-label">Codigo Orden Compra*</label>
+
+                <div class="col-sm-9">
+                   <select class="form-control select2" id="orden_compra" name="orden_compra" style="width: 100%;" p>
+                   <option value="">Seleccione Orden Compra</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM ordenes_compra") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Orden_Compra'].'">'.$rowProv['Id_Orden_Compra'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
+                </div>
+                </div>
+              </div>
+              
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <!-- <div class="box-header with-border"> -->
+            <!-- <h3 class="box-title">Acciones</h3> -->
+          <!-- </div> -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
+                <button type="button" id="btnActualizar" class="btn btn-success pull-right">Actualizar</button>
+              </div>
+              <div class="col-sm-4"></div>
             </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+          </form>
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-
+      <!--/.col (izq) -->
+    </div>
     </section>
     <!-- /.content -->
   </div>
@@ -551,32 +559,38 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
-<script src="<?php echo $cd;?>bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="<?php echo $cd;?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- Material Design -->
-<script src="<?php echo $cd;?>dist/js/material.min.js"></script>
-<script src="<?php echo $cd;?>dist/js/ripples.min.js"></script>
+<script src="../../dist/js/material.min.js"></script>
+<script src="../../dist/js/ripples.min.js"></script>
 <script>
     $.material.init();
 </script>
 <!-- DataTables -->
-<script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="../../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap notify -->
+<script src="../../plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
 <!-- SlimScroll -->
-<script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
-<script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
-<script src="<?php echo $cd;?>plugins/sweet-alert/sweetalert.min.js"></script>
-
+<script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<!-- InputMask -->
+<script src="../../plugins/input-mask/jquery.inputmask.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="../../plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- AdminLTE App -->
-<script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
+<script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="<?php echo $cd;?>dist/js/demo.js"></script>
+<script src="../../dist/js/demo.js"></script>
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-proveedores').DataTable({
+    $('#lista-proveedor').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -584,87 +598,158 @@
       'info'        : true,
       'autoWidth'   : false
     });
+    //Date picker
+    $('#fecha_nacimiento').datepicker({
+      autoclose: true
+    });
+    $('#fecha_ingreso').datepicker({
+      autoclose: true
+    });
   })
   $(document).ready(function () {
     $('.sidebar-menu').tree();
+    $('[data-mask]').inputmask()
     // $('#lista-empleados').DataTable();
 
-    $("#btnRegistrarNuevo").click(function(){
-      $(location).attr('href', 'guardar_compra.php');
+    function alertaIngresarDatos(){
+      $.notify({
+        title: "Error : ",
+        message: "Por favor, complete los campos obligatorios",
+        icon: 'fa fa-times' 
+      },{
+        type: "danger"
+      });
+    }
+
+    $("#btnCancelar").click(function(){
+      window.setTimeout('location.href="registro_compras.php"', 1);
     });
 
-  $('.sweetalert').click(function(){
-    var codigoProveedor = $(this).attr('id');
-    var accion = $(this).attr('class');
-    accion = accion.split(" ");
-    var nuevoEstado;
-    if (accion[4]=='Habilitar') {
-      nuevoEstado = 1;
-    } else {
-      nuevoEstado = 0;
-    }
-    // alert(accion[4] + " - " + nuevoEstado);
-    swal({
-        title: "¿Esta seguro?",
-        text: "Esta accion " + accion[4] + "á el elemento seleccionado",
-        type: "warning",
-        showCancelButton: true,
-        closeOnConfirm: false,
-        showLoaderOnConfirm: true,
-    }, function () {
-        $.ajax({
-          //Direccion destino
-          url: "proveedor_cambiar_estado.php",
-          // Variable con los datos necesarios
-          data: "codigo_proveedor=" + codigoProveedor + "&estado=" + nuevoEstado,
-          type: "POST",     
-          dataType: "html",
-          //cache: false,
-          //success
-          success: function (data) {
-            // alert(data);
-            setTimeout(function () {
-              if (data) {
-                swal({
-                  title: "¡Realizado!",
-                  text: "La acción se ha completado con éxito.",
-                  type: "success",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: false
-                }, function(isConfirm) {
-                  if (isConfirm) {
-                    window.setTimeout('location.href="proveedores.php"', 3);
-                  }
-                });
-              }
-              if (!data) {
-                swal({
-                  title: "¡Error!",
-                  text: "Ha ocurrido un problema, inténtelo más tarde.",
-                  type: "error",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: true
-                });
-              }
-            }, 2000);
-          },
-          error : function(xhr, status) {
-            //  alert('Disculpe, existió un problema');
-          },
-          complete : function(xhr, status) {
-            // alert('Petición realizada');
-            // $.notify({
-            //    title: "Informacion : ",
-            //    message: "Petición realizada!",
-            //    icon: 'fa fa-check' 
-            //  },{
-            //    type: "info"
-            // });
-          }   
-        });
-    });
+    $("#btnActualizar").click(function(){
+      //Obtencion de valores en los inputs
+    var codigo=$('#codigo').val();
+     var proveedor_articulo=$('#proveedor_articulo').val();
+     var codigo_factura=$('#codigo_factura').val();
+     var orden_compra=$('#orden_compra').val();
+     var Id_Usuario=$('#Id_Usuario').val();
+      
+      // Validaciones
+      if (codigo=='') {
+        $("#codigo").attr('required',true);
+        document.getElementById("codigo").focus();
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#codigo").attr('required',false);
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-success');
+      }
+
+      
+      if (proveedor_articulo=='') {
+        $("#proveedor_articulo").attr('required',true);
+        document.getElementById("proveedor_articulo").focus();
+        $("#form_proveedor").removeClass('has-success');
+        $("#form_proveedor").removeClass('has-error');
+        $("#form_proveedor").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#proveedor_articulo").attr('required',false);
+        $("#form_proveedor").removeClass('has-success');
+        $("#form_proveedor").removeClass('has-error');
+        $("#form_proveedor").addClass('has-success');
+      }
+       if (codigo_factura=='') {
+        $("#codigo_factura").attr('required',true);
+        document.getElementById("codigo_factura").focus();
+        $("#form_codigo_factura").removeClass('has-success');
+        $("#form_codigo_factura").removeClass('has-error');
+        $("#form_codigo_factura").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#codigo_factura").attr('required',false);
+        $("#form_codigo_factura").removeClass('has-success');
+        $("#form_codigo_factura").removeClass('has-error');
+        $("#form_codigo_factura").addClass('has-success');
+      }
+
+      if (orden_compra=='') {
+        $("#orden_compra").attr('required',true);
+        document.getElementById("orden_compra").focus();
+        $("#form_codigo_orden").removeClass('has-success');
+        $("#form_codigo_orden").removeClass('has-error');
+        $("#form_codigo_orden").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#orden_compra").attr('required',false);
+        $("#form_codigo_orden").removeClass('has-success');
+        $("#form_codigo_orden").removeClass('has-error');
+        $("#form_codigo_orden").addClass('has-success');
+      }
+
+      //Fin validaciones
+
+      // Variable con todos los valores necesarios para la consulta
+      var datos = 'codigo=' + codigo + '&proveedor_articulo=' + proveedor_articulo + '&codigo_factura=' + codigo_factura + '&orden_compra=' + orden_compra;
+       //alert(datos);
+      $.ajax({
+        //Direccion destino
+        url: "editar_compras.php",
+        // Variable con los datos necesarios
+        data: datos,
+        type: "POST",     
+        dataType: "html",
+        //cache: false,
+        //success
+        success: function (data) {
+          //alert(data);
+          if (data) {
+            $.notify({
+              title: "Correcto : ",
+              message: "¡La Compra se actualizó exitosamente!",
+              icon: 'fa fa-check' 
+            },{
+              type: "success"
+            });
+            window.setTimeout('location.href="registro_compras.php"', 5);
+          }
+          if (!data) {
+            $.notify({
+              title: "Error : ",
+              message: "¡El numero de RTN ingresado NO existe!",
+              icon: 'fa fa-times' 
+            },{
+              type: "danger"
+            });
+            document.getElementById("rtn").focus();
+            $("#form_rtn").removeClass('has-success');
+            $("#form_rtn").removeClass('has-error');
+            $("#form_rtn").addClass('has-error');
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          //    title: "Informacion : ",
+          //    message: "Petición realizada!",
+          //    icon: 'fa fa-check' 
+          //  },{
+          //    type: "info"
+          // });
+        }   
+      });
+
     });
   })
 </script>
