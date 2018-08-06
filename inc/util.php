@@ -255,6 +255,43 @@
         return $codigo[0] . "." . $nuevo;
     }
 
+
+
+
+function obtenerUltimoCodigofacturacompra(){
+        include ("conexion.php");
+        $query = "SELECT MAX(Id_Factura) AS Ultimo_Codigo FROM facturas_compra;";
+        $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
+        $rowCodigo=mysqli_fetch_array($sqlcon);
+        if(is_null($rowCodigo['Ultimo_Codigo'])){
+            return "FACO.0";
+        }else{
+            return $rowCodigo['Ultimo_Codigo'];
+        }
+    }
+
+     function nuevoCodigofacturacompras($codigo){
+        $codigo = explode('.', $codigo);
+        $nuevo = $codigo[1]+1;
+        return $codigo[0] . "." . $nuevo;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     function obtenerUltimoCodigoCotizacion_Compra(){
         include ("conexion.php");
         $query = "SELECT MAX(Id_Cotizacion_compra) AS Ultimo_Codigo FROM cotizaciones_compra;";

@@ -1,4 +1,6 @@
 <?php
+
+
   $cd = "http://" . $_SERVER['HTTP_HOST'];
   $uri = explode("/", $_SERVER['REQUEST_URI']);
   if (in_array('proyecto-erp', $uri)) {
@@ -26,6 +28,8 @@
     $relative = '../../';
   }
 
+ 
+
   include($relative.'inc/conexion.php');
   include($relative.'inc/util.php');
   include($relative.'inc/constructor.php');
@@ -33,8 +37,12 @@
   // echo $relative.'inc/constructor.php';
   // exit();
   session_start();
+  $_SESSION['detalle'] = array();
   if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
+    
     header("Location: ".$cd."login.php", true);
+    
+     
     die();
   } else {
 ?>
@@ -44,6 +52,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>MaterialAdminLTE 2 | Empleados</title>
+ 
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -54,15 +63,72 @@
   <link rel="stylesheet" href="<?php echo $cd;?>plugins/sweet-alert/sweetalert.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/Ionicons/css/ionicons.min.css">
+
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/AdminLTE.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/ripples.min.css">
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/MaterialAdminLTE.min.css">
+
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/skins/all-md-skins.min.css">
+ 
+ <script>
+  function evaluacion(){
+ var txt_costo =document.getElementById('txt_costo').value;
+  var txt_porcentaje=document.getElementById('txt_porcentaje').value;
+  var preci01;
+   var preciof=document.getElementById('txt_precio').value;
+if (txt_costo=='') {
+    var num1=0; 
+  }
+  if (txt_costo!='') {
+    var num1=parseFloat(txt_costo);
+  }
+if (txt_porcentaje=='') {
+    var num2=0; 
+  }
+  if (txt_porcentaje!='') {
+    var num2=parseFloat(txt_porcentaje);
+  }
+
+var preciof=((num1*num2)/100)+num1;
+     document.frmdatos.txt_precio.value=preciof;
+}
+  </script>
+<script>
+  function numeros(e){
+    key = e.keyCode || e.which;
+    tecla = String.fromCharCode(key).toLowerCase();
+    letras = " 0123456789";
+    especiales = [8,37,39,46];
+ 
+    tecla_especial = false
+    for(var i in especiales){
+ if(key == especiales[i]){
+     tecla_especial = true;
+     break;
+        } 
+    }
+ 
+    if(letras.indexOf(tecla)==-1 && !tecla_especial)
+        return false;
+}
+
+</script>
+  
+    
+  
+   <!-- Alertity -->
+    <link rel="stylesheet" href="libs/js/alertify/themes/alertify.core.css" />
+  <link rel="stylesheet" href="libs/js/alertify/themes/alertify.bootstrap.css" id="toggleCSS" />
+    <script src="libs/js/alertify/lib/alertify.min.js"></script>
+   <script src="<?php echo $cd;?>bower_components/jquery/dist/jquery.js"></script>
+  <script type="text/javascript" src="libs/ajax_compras.js"></script>
+
+
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -191,24 +257,14 @@
           <a href="#"><i class="fa fa-user"></i> <?php echo $_SESSION['Codigo_Empleado'];?></a>          
         </div>
       </div>
-      <!-- search form -->
-      <!-- <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form> -->
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
+     
       <?php
         menu($_SESSION['Tipo_Usuario'], $thisFileName, $cd);
       ?>
     </section>
     <!-- /.sidebar -->
   </aside>
+
 
   <!-- =============================================== -->
 
@@ -217,132 +273,254 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Proveedores
+        Registrar Facturas Compras
         <small>Compras</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Compras</a></li>
-        <li class="active">Proveedor</li>
+        <li class="active">Registrar Facturas Compras</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
-      <div class="row">
-       
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Totales</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryTotalfactura=mysqli_query($db, "SELECT COUNT(*) AS Total_Facturas_Compras FROM facturas_compra") or die(mysqli_error());
-                  $rowfactura=mysqli_fetch_array($queryTotalfactura);
-                  echo $rowfactura['Total_Facturas_Compras'];
-                  // mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
+    <div class="row">
+      <!-- columna izq -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos Administrativos</h3>
           </div>
-          <!-- /.info-box -->
-        </div>
-      
-      <!-- /.row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Lista de Facturas Compras</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
             <div class="box-body">
-              <table id="lista-proveedores" class="table table-bordered table-striped table-hover">
-                <thead>
+              <div class="form-group" id="form_codigo">
+                <label for="codigo" class="col-sm-2 control-label">Codigo*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigofacturacompra());?>" readonly>
+                </div>
+              </div>
+
+              <div class="form-group" id="form_proveedor">
+                <label for="proveedor_articulo" class="col-sm-2 control-label">Proveedor*</label>
+
+                <div class="col-sm-9">
+                   <select class="form-control select2" id="proveedor_articulo" name="proveedor_articulo" style="width: 100%;" p>
+                   <option value="">Seleccione un proveedor</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM proveedores") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Proveedor'].'">'.$rowProv['Nombre_Proveedor'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
+                </div>
+              </div>
+<div class="form-group" id="form_subtotal">
+                <label for="subtotal" class="col-sm-2 control-label">Sub-Total*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="subtotal" name="subtotal" placeholder="Ingrese el numero..">
+                </div>
+              </div>
+<div class="form-group" id="form_descuento">
+                <label for="descuento" class="col-sm-2 control-label">Descuento*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="descuento" name="descuento" placeholder="Ingrese el numero..">
+                </div>
+              </div>
+<div class="form-group" id="form_impuesto">
+                <label for="impuesto" class="col-sm-2 control-label">Impuesto*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="impuesto" name="impuesto" placeholder="Ingrese el numero..">
+                </div>
+              </div>
+<div class="form-group" id="form_total">
+                <label for="total" class="col-sm-2 control-label">Total*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="total" name="total" placeholder="Ingrese el numero..">
+                </div>
+              </div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <!-- <button type="submit" class="btn btn-default">Cancel</button>
+              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+
+        <!-- Horizontal Form -->
+
+
+<div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos de Producto</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form  name="frmdatos" class="form-horizontal">
+            <div class="box-body">
+
+
+
+<div class="col-md-4" style="margin-left: 40px;">
+  <div class="form-group">Producto:
+       <select class="form-control select2" id="txt_producto" name="txt_producto" style="width: 100%;" p>
+                   <option value="">Seleccione Producto</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM articulos") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Articulo'].'">'.$rowProv['Descripcion'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Cantidad:
+          <input id="txt_cantidad"  style="width: 200px;  "  name="txt_cantidad" type="text" class="col-md-2 form-control" placeholder="Ingrese cantidad" autocomplete="off" onkeypress="return numeros(event)" />
+        </div>
+      </div>
+       <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group" >Existencia Minima:
+          <input id="txt_existencia"   style="width: 200px;" name="txt_existencia" type="text" class="col-md-2 form-control" placeholder="Ingrese Existencia" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group" >Costo:
+          <input id="txt_costo"   style="width: 200px;" name="txt_costo" type="text" class="col-md-2 form-control" placeholder="Ingrese costo" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Porcentaje:
+          <input id="txt_porcentaje"   style="width: 200px;" name="txt_porcentaje" type="text" class="col-md-2 form-control" placeholder="Ingrese porcentaje" autocomplete="off" onkeypress="return numeros(event)" onkeyup="evaluacion()"/>
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Precio Final:
+          <input id="txt_precio"   style="width: 200px;"  name="txt_precio" type="text" class="col-md-2 form-control" readonly="" />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div style="margin-top: 19px;">
+        <button type="button" class="btn btn-success btn-agregar-producto">Agregar</button>
+        </div>
+      </div>
+      </div>
+
+  
+           </div>
+              </div>
+            
+            </div>
+          </form>
+  <br>
+    <div class="panel panel-info">
+ <div class="panel-heading">
+  <h3 class="panel-title">Productos</h3>
+   </div>
+   <div class="panel-body detalle-producto">
+        <?php if(count($_SESSION['detalle'])>0){?>
+          <table class="table">
+              <thead>
                   <tr>
-                    <th>Codigo Factura</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Codigo Proveedor</th>
-                    <th>Sub-Total</th>
-                    <th>Descuento</th>
-                    <th>Impuesto</th>
-                    <th>Total</th>
-                    <th></th>
                     
+                     <th>Descripcion</th>
+                      <th>Cantidad</th>
+                       <th>Existencia</th>
+                       <th>Costo</th>
+                        <th>Porcentaje</th>
+                        <th>Precio Final</th>
+                     
+                      <th></th>
                   </tr>
-                </thead>
-                <tbody>
-                  <?php
-                    $queryfactura=mysqli_query($db, "SELECT * FROM facturas_compra") or die(mysqli_error());
-                   while ($rowfacturas=mysqli_fetch_array($queryfactura)) {
-                      $etiqueta = null;
-                      $tootip = null;
-                      $icono = null;
-                      $color = null;
-                      switch ($rowfacturas["Hora"]) {
-                        case 1:
-                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
-                          $tootip = "Deshabilitar";
-                          $icono = "fa fa-times-circle";
-                          $color = "danger";
-                          break;
-                        case 0:
-                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
-                          $tootip = "Habilitar";
-                          $icono = "fa fa-check-circle";
-                          $color = "info";
-                          break;
-                      }
-                      echo '
-                        <tr>
-                            <td>'.$rowfacturas['Id_Factura'].'</td>
-                            <td>'.$rowfacturas['Fecha'].'</td>
-                            <td>'.$rowfacturas['Hora'].'</td>
-                            <td>'.$rowfacturas['Id_Proveedor'].'</td>
-                            <td>'.$rowfacturas['Sub_Total'].'</td>
-                            <td>'.$rowfacturas['Descuento'].'</td>
-                            <td>'.$rowfacturas['Impuesto'].'</td>
-                            <td>'.$rowfacturas['Total'].'</td>
-                            <td>
-                           
-                            </td>
-                          </form>
-                        </tr>
-                      ';
-                    }
-                  ?>
-                </tbody>
-                <!-- <tfoot>
+              </thead>
+              <tbody>
+                <?php 
+                foreach($_SESSION['detalle'] as $k => $detalle){ 
+                ?>
                   <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
+                  
+                  <td><?php echo $detalle['descripcion'];?></td>
+                  <td><?php echo $detalle['cantidad'];?></td>
+                   <td><?php echo $detalle['existencia'];?></td>
+                   <td><?php echo $detalle['costo'];?></td>
+                   <td><?php echo $detalle['porcentaje'];?></td>
+                   <td><?php echo $detalle['precio'];?></td>
+
+                   
+                      <td><button type="button" class="btn btn-sm btn-danger eliminar-producto" id="<?php echo $detalle['id'];?>">Eliminar</button></td>
                   </tr>
-                </tfoot> -->
-              </table>
+                  <?php }?>
+              </tbody>
+          </table>
+        <?php }else{?>
+        <div class="panel-body"> No hay productos agregados</div>
+        <?php }?>
+      </div>
+    
+
+  
+  </form>
+  </div>
+
+
+
+         
+        <div class="box box-info">
+          <!-- <div class="box-header with-border"> -->
+            <!-- <h3 class="box-title">Acciones</h3> -->
+          <!-- </div> -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
+                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
+              </div>
+              <div class="col-sm-4"></div>
             </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+          </form>
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
-
+      <!--/.col (izq) -->
+    </div>
     </section>
     <!-- /.content -->
   </div>
@@ -554,6 +732,7 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
+
 <script src="<?php echo $cd;?>bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="<?php echo $cd;?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -566,12 +745,18 @@
 <!-- DataTables -->
 <script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="<?php echo $cd;?>bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap notify -->
+<script src="<?php echo $cd;?>plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
-<script src="<?php echo $cd;?>plugins/sweet-alert/sweetalert.min.js"></script>
-
+<!-- InputMask -->
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.js"></script>
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -579,7 +764,7 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#lista-proveedores').DataTable({
+    $('#lista-empleados').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -587,87 +772,154 @@
       'info'        : true,
       'autoWidth'   : false
     });
+    //Date picker
+  
   })
   $(document).ready(function () {
     $('.sidebar-menu').tree();
+    $('[data-mask]').inputmask()
     // $('#lista-empleados').DataTable();
 
-    $("#btnRegistrarNuevo").click(function(){
-      $(location).attr('href', 'factura_compras_registrar.php');
+    function alertaIngresarDatos(){
+      $.notify({
+        title: "Error : ",
+        message: "Por favor, complete los campos obligatorios",
+        icon: 'fa fa-times' 
+      },{
+        type: "danger"
+      });
+    }
+
+    $("#btnCancelar").click(function(){
+      $(location).attr('href', 'registro_compras.php');
     });
 
-  $('.sweetalert').click(function(){
-    var codigoProveedor = $(this).attr('id');
-    var accion = $(this).attr('class');
-    accion = accion.split(" ");
-    var nuevoEstado;
-    if (accion[4]=='Habilitar') {
-      nuevoEstado = 1;
-    } else {
-      nuevoEstado = 0;
-    }
-    // alert(accion[4] + " - " + nuevoEstado);
-    swal({
-        title: "¿Esta seguro?",
-        text: "Esta accion " + accion[4] + "á el elemento seleccionado",
-        type: "warning",
-        showCancelButton: true,
-        closeOnConfirm: false,
-        showLoaderOnConfirm: true,
-    }, function () {
-        $.ajax({
-          //Direccion destino
-          url: "proveedor_cambiar_estado.php",
-          // Variable con los datos necesarios
-          data: "codigo_proveedor=" + codigoProveedor + "&estado=" + nuevoEstado,
-          type: "POST",     
-          dataType: "html",
-          //cache: false,
-          //success
-          success: function (data) {
-            // alert(data);
-            setTimeout(function () {
-              if (data) {
-                swal({
-                  title: "¡Realizado!",
-                  text: "La acción se ha completado con éxito.",
-                  type: "success",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: false
-                }, function(isConfirm) {
-                  if (isConfirm) {
-                    window.setTimeout('location.href="proveedores.php"', 3);
-                  }
-                });
-              }
-              if (!data) {
-                swal({
-                  title: "¡Error!",
-                  text: "Ha ocurrido un problema, inténtelo más tarde.",
-                  type: "error",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: true
-                });
-              }
-            }, 2000);
-          },
-          error : function(xhr, status) {
-            //  alert('Disculpe, existió un problema');
-          },
-          complete : function(xhr, status) {
-            // alert('Petición realizada');
-            // $.notify({
-            //    title: "Informacion : ",
-            //    message: "Petición realizada!",
-            //    icon: 'fa fa-check' 
-            //  },{
-            //    type: "info"
-            // });
-          }   
-        });
-    });
+    $("#btnRegistrar").click(function(){
+      //Obtencion de valores en los inputs
+     var codigo=$('#codigo').val();
+     var proveedor_articulo=$('#proveedor_articulo').val();
+     var codigo_factura=$('#codigo_factura').val();
+     var orden_compra=$('#orden_compra').val();
+     var Id_Usuario=$('#Id_Usuario').val();
+      
+      // Validaciones
+      if (codigo=='') {
+        $("#codigo").attr('required',true);
+        document.getElementById("codigo").focus();
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#codigo").attr('required',false);
+        $("#form_codigo").removeClass('has-success');
+        $("#form_codigo").removeClass('has-error');
+        $("#form_codigo").addClass('has-success');
+      }
+
+      
+      if (proveedor_articulo=='') {
+        $("#proveedor_articulo").attr('required',true);
+        document.getElementById("proveedor_articulo").focus();
+        $("#form_proveedor").removeClass('has-success');
+        $("#form_proveedor").removeClass('has-error');
+        $("#form_proveedor").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#proveedor_articulo").attr('required',false);
+        $("#form_proveedor").removeClass('has-success');
+        $("#form_proveedor").removeClass('has-error');
+        $("#form_proveedor").addClass('has-success');
+      }
+       if (codigo_factura=='') {
+        $("#codigo_factura").attr('required',true);
+        document.getElementById("codigo_factura").focus();
+        $("#form_codigo_factura").removeClass('has-success');
+        $("#form_codigo_factura").removeClass('has-error');
+        $("#form_codigo_factura").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#codigo_factura").attr('required',false);
+        $("#form_codigo_factura").removeClass('has-success');
+        $("#form_codigo_factura").removeClass('has-error');
+        $("#form_codigo_factura").addClass('has-success');
+      }
+
+      if (orden_compra=='') {
+        $("#orden_compra").attr('required',true);
+        document.getElementById("orden_compra").focus();
+        $("#form_codigo_orden").removeClass('has-success');
+        $("#form_codigo_orden").removeClass('has-error');
+        $("#form_codigo_orden").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#orden_compra").attr('required',false);
+        $("#form_codigo_orden").removeClass('has-success');
+        $("#form_codigo_orden").removeClass('has-error');
+        $("#form_codigo_orden").addClass('has-success');
+      }
+
+      //Fin validaciones
+
+      // Variable con todos los valores necesarios para la consulta
+      var datos = 'codigo=' + codigo + '&proveedor_articulo=' + proveedor_articulo + '&codigo_factura=' + codigo_factura + '&orden_compra=' + orden_compra;
+
+      //alert(datos);
+      $.ajax({
+        //Direccion destino
+        url: "registrar_compras.php",
+        // Variable con los datos necesarios
+        data: datos,
+        type: "POST",     
+        dataType: "html",
+        //cache: false,
+        //success
+        success: function (data) {
+        //  alert(data);
+          if (data) {
+            $.notify({
+              title: "Correcto : ",
+              message: "¡La Compra se registró exitosamente!",
+              icon: 'fa fa-check' 
+            },{
+              type: "success"
+            });
+            window.setTimeout('location.href="registro_compras.php"', 5);
+          }
+          if (!data) {
+            $.notify({
+              title: "Error : ",
+              message: "¡El numero de Compra ingresado ya existe!",
+              icon: 'fa fa-times' 
+            },{
+              type: "danger"
+            });
+            document.getElementById("codigo_factura").focus();
+            $("#form_codigo_factura").removeClass('has-success');
+            $("#form_codigo_factura").removeClass('has-error');
+            $("#form_codigo_factura").addClass('has-error');
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          //    title: "Informacion : ",
+          //    message: "Petición realizada!",
+          //    icon: 'fa fa-check' 
+          //  },{
+          //    type: "info"
+          // });
+        }   
+      });
+
     });
   })
 </script>
