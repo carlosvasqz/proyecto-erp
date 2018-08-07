@@ -119,6 +119,18 @@
         }
     }
 
+    function obtenerUltimoCodigoVenta(){
+        include ("conexion.php");
+        $query = "SELECT MAX(Id_Venta) AS Ultima_Venta FROM ventas;";
+        $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
+        $rowCodigo=mysqli_fetch_array($sqlcon);
+        if(is_null($rowCodigo['Ultima_Venta'])){
+            return "VNT.0";
+        }else{
+            return $rowCodigo['Ultima_Venta'];
+        }
+    }
+
     function obtenerUltimoCodigoUsuario(){
         include ("conexion.php");
         $query = "SELECT MAX(Id_Usuario) AS Ultimo_Codigo FROM usuarios;";
