@@ -281,6 +281,16 @@ function obtenerUltimoCodigofacturacompra(){
 
 
 
+function fechaHoy(){
+      $hoy = getdate();
+                  $anio= $hoy["year"];
+                  $mes= $hoy["mon"];
+                  $dia= $hoy["mday"];
+
+                  $fechaInicioAnioDB = $dia."/".$mes."/".$anio;
+
+                  return $fechaInicioAnioDB;
+}
 
 
 
@@ -291,10 +301,9 @@ function obtenerUltimoCodigofacturacompra(){
 
 
 
-
-    function obtenerUltimoCodigoCotizacion_Compra(){
+    function obtenerUltimo_CodigoOrden_Compra(){
         include ("conexion.php");
-        $query = "SELECT MAX(Id_Cotizacion_compra) AS Ultimo_Codigo FROM cotizaciones_compra;";
+        $query = "SELECT MAX(Id_Orden_compra) AS Ultimo_Codigo FROM ordenes_compra;";
         $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
         $rowCodigo=mysqli_fetch_array($sqlcon);
         if(is_null($rowCodigo['Ultimo_Codigo'])){
@@ -304,7 +313,7 @@ function obtenerUltimoCodigofacturacompra(){
         }
     }
 
-     function nuevoCodigoCotizacion_Compra($codigo){
+     function nuevoCodigo_Orden_Compra($codigo){
         $codigo = explode('.', $codigo);
         $nuevo = $codigo[1]+1;
         return $codigo[0] . "." . $nuevo;
