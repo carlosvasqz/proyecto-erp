@@ -241,7 +241,7 @@
               <span class="info-box-text"><h4>Totales</h4></span>
               <span class="info-box-number">
                 <?php 
-                  $queryTotalArticulos=mysqli_query($db, "SELECT COUNT(*) AS Total_Articulos FROM Articulos") or die(mysqli_error());
+                  $queryTotalArticulos=mysqli_query($db, "SELECT COUNT(*) AS Total_Articulos FROM articulos") or die(mysqli_error());
                   $rowArticulos=mysqli_fetch_array($queryTotalArticulos);
                   echo $rowArticulos['Total_Articulos'];
                   // mysqli_close($queryTotalEmpleados);
