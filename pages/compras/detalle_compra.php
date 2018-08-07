@@ -7,6 +7,7 @@
 	        <tr>
 	          
 				<th>Descripcion</th>
+				<th>Compra</th>
 				<th>Cantidad</th>
 				<th>Existencia</th>	
 				<th>Costo</th>
@@ -22,6 +23,7 @@
 	        <tr>
 	       
 	         <td><?php echo $detalle['descripcion'];?></td>
+	         <td><?php echo $detalle['compra'];?></td>
 	         <td><?php echo $detalle['cantidad'];?></td>
 	         <td><?php echo $detalle['existencia'];?></td>
 	         <td><?php echo $detalle['costo'];?></td>

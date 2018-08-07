@@ -13,10 +13,11 @@ switch($page){
 		$json['msj'] = 'Producto Agregado';
 		$json['success'] = true;
 	
-		if (isset($_POST['descripcion']) && $_POST['descripcion']!='' && isset($_POST['cantidad']) && $_POST['cantidad']!='' && isset($_POST['existencia']) && $_POST['existencia']!='' && isset($_POST['costo']) && $_POST['costo']!='' && isset($_POST['porcentaje']) && $_POST['porcentaje']!='' && isset($_POST['precio']) && $_POST['precio']!='' ) {
+		if (isset($_POST['descripcion']) && $_POST['descripcion']!='' && isset($_POST['cantidad']) && $_POST['cantidad']!='' && isset($_POST['compra']) && $_POST['compra']!='' && isset($_POST['existencia']) && $_POST['existencia']!='' && isset($_POST['costo']) && $_POST['costo']!='' && isset($_POST['porcentaje']) && $_POST['porcentaje']!='' && isset($_POST['precio']) && $_POST['precio']!='' ) {
 			try {
 				
 				$descripcion = $_POST['descripcion'];
+				$compra = $_POST['compra'];
 				$cantidad = $_POST['cantidad'];
 				$existencia = $_POST['existencia'];
 				$costo = $_POST['costo'];
@@ -30,7 +31,7 @@ switch($page){
 				}else{
 					$count = count($_SESSION['detalle'])+1;
 				}
-				$_SESSION['detalle'][$count] = array('id'=>$count, 'descripcion'=>$descripcion, 'cantidad'=>$cantidad, 'existencia'=>$existencia, 'costo'=> $costo, 'porcentaje'=>$porcentaje, 'precio'=>$precio);
+				$_SESSION['detalle'][$count] = array('id'=>$count, 'descripcion'=>$descripcion, 'compra'=>$compra, 'cantidad'=>$cantidad, 'existencia'=>$existencia, 'costo'=> $costo, 'porcentaje'=>$porcentaje, 'precio'=>$precio);
 
 				$json['success'] = true;
 

@@ -327,23 +327,13 @@ var preciof=((num1*num2)/100)+num1;
 
 
 
-            <div class="form-group" id="form_codigo_factura">
+          <div class="form-group" id="form_codigo_factura">
                 <label for="codigo_factura" class="col-sm-2 control-label">Codigo Factura*</label>
 
                 <div class="col-sm-9">
-                   <select class="form-control select2" id="codigo_factura" name="codigo_factura" style="width: 100%;" p>
-                   <option value="">Seleccione Codigo Factura</option>
-                   <?php 
-                          $queryListaProv=mysqli_query($db, "SELECT * FROM facturas_compra") or die(mysqli_error());
-                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
-                            echo '<option value="'.$rowProv['Id_Factura'].'">'.$rowProv['Id_Factura'].'</option>';  
-                          }
-                        ?>
-                  
-                </select>
+                  <input type="text" class="form-control" id="codigo_factura" name="codigo_factura" placeholder="Ingrese el numero..">
                 </div>
               </div>
-
 
 
 
@@ -375,7 +365,143 @@ var preciof=((num1*num2)/100)+num1;
           </form>
         </div>
 
-        <!-- Horizontal Form -->
+      
+
+ <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Datos de Producto</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form  name="frmdatos" class="form-horizontal">
+            <div class="box-body">
+
+
+
+<div class="col-md-4" style="margin-left: 40px;">
+  <div class="form-group">Producto:
+       <select class="form-control select2" id="txt_producto" name="txt_producto" style="width: 100%;" p>
+                   <option value="">Seleccione Producto</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM articulos") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Articulo'].'">'.$rowProv['Descripcion'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Cantidad:
+          <input id="txt_cantidad"  style="width: 200px;  "  name="txt_cantidad" type="text" class="col-md-2 form-control" placeholder="Ingrese cantidad" autocomplete="off" onkeypress="return numeros(event)" />
+        </div>
+      </div>
+       <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group" >Existencia Minima:
+          <input id="txt_existencia"   style="width: 200px;" name="txt_existencia" type="text" class="col-md-2 form-control" placeholder="Ingrese Existencia" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group" >Costo:
+          <input id="txt_costo"   style="width: 200px;" name="txt_costo" type="text" class="col-md-2 form-control" placeholder="Ingrese costo" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Porcentaje:
+          <input id="txt_porcentaje"   style="width: 200px;" name="txt_porcentaje" type="text" class="col-md-2 form-control" placeholder="Ingrese porcentaje" autocomplete="off" onkeypress="return numeros(event)" onkeyup="evaluacion()"/>
+        </div>
+      </div>
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Precio Final:
+          <input id="txt_precio"   style="width: 200px;"  name="txt_precio" type="text" class="col-md-2 form-control" readonly="" />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div style="margin-top: 19px;">
+        <button type="button" class="btn btn-success btn-agregar-producto">Agregar</button>
+        </div>
+      </div>
+      </div>
+
+  
+           </div>
+              </div>
+            
+            </div>
+          </form>
+  <br>
+    <div class="panel panel-info">
+ <div class="panel-heading">
+  <h3 class="panel-title">Productos</h3>
+   </div>
+   <div class="panel-body detalle-producto">
+        <?php if(count($_SESSION['detalle'])>0){?>
+          <table class="table">
+              <thead>
+                  <tr>
+                    
+                     <th>Descripcion</th>
+                      <th>Compra</th>
+                      <th>Cantidad</th>
+                       <th>Existencia</th>
+                       <th>Costo</th>
+                        <th>Porcentaje</th>
+                        <th>Precio Final</th>
+
+                     
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                <?php 
+                foreach($_SESSION['detalle'] as $k => $detalle){ 
+                ?>
+                  <tr>
+                  
+                  <td><?php echo $detalle['descripcion'];?></td>
+                  <td><?php echo $detalle['compra'];?></td>
+                  <td><?php echo $detalle['cantidad'];?></td>
+                   <td><?php echo $detalle['existencia'];?></td>
+                   <td><?php echo $detalle['costo'];?></td>
+                   <td><?php echo $detalle['porcentaje'];?></td>
+                   <td><?php echo $detalle['precio'];?></td>
+
+                   
+                      <td><button type="button" class="btn btn-sm btn-danger eliminar-producto" id="<?php echo $detalle['id'];?>">Eliminar</button></td>
+                  </tr>
+                  <?php }?>
+              </tbody>
+          </table>
+        <?php }else{?>
+        <div class="panel-body"> No hay productos agregados</div>
+        <?php }?>
+      </div>
+    
+
+  
+  </form>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
          

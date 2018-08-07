@@ -5,6 +5,7 @@ $(function(){
 	$(".btn-agregar-producto").on("click", function(e) {
 		
 		var descripcion = $("#txt_producto").val();
+		var compra = $("#codigo").val();
 		var cantidad = $("#txt_cantidad").val();
 		var existencia = $("#txt_existencia").val();
 		var costo = $("#txt_costo").val();
@@ -13,7 +14,7 @@ $(function(){
 		$.ajax({
 			url: 'Controller/ProductoController_Compras.php?page=1',
 			type: 'post',
-			data: { 'descripcion':descripcion, 'cantidad':cantidad, 'existencia':existencia, 'costo':costo, 'porcentaje':porcentaje, 'precio':precio},
+			data: { 'descripcion':descripcion, 'compra':compra, 'cantidad':cantidad, 'existencia':existencia, 'costo':costo, 'porcentaje':porcentaje, 'precio':precio},
 			dataType: 'json'
 		}).done(function(data){
 			if(data.success==true){
