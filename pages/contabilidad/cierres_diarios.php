@@ -697,7 +697,7 @@ var VentasHoy=(num1-num2);
       // Variable con todos los valores necesarios para la consulta
       var datos = 'codigo=' + codigo + '&usuario=' + usuario + '&fecha=' + fecha + '&hora=' + hora + '&caja=' + Caja + '&ventas_hoy=' + VentasHoy + '&total=' + Total + '&justificacion=' + justificacion;
 
-     alert(datos);
+    // alert(datos);
       $.ajax({
         //Direccion destino
         url: "guardar_cierre.php",
