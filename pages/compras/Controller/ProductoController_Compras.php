@@ -85,6 +85,7 @@ case 3:
 				$cantidad = $detalle['cantidad'];
 				$costo = $detalle['costo'];
 				$objProducto->guardarDetalleVenta($proveedor,$descripcion,$cantidad,$costo);
+				
 			    endforeach;
 			    $_SESSION['detalle']= array();
 				$json['success'] = true;

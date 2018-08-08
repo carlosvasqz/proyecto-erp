@@ -120,6 +120,32 @@ var preciof=((num1*num2)/100)+num1;
 </script>
   
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
    <!-- Alertity -->
     <link rel="stylesheet" href="libs/js/alertify/themes/alertify.core.css" />
@@ -301,7 +327,7 @@ var preciof=((num1*num2)/100)+num1;
                 <label for="codigo" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoRegistro_Compra());?>" readonly>
+                  <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoRegistro_Compra());?>" readonly>
                 </div>
               </div>
 
@@ -387,39 +413,45 @@ var preciof=((num1*num2)/100)+num1;
 
 
 
-<div class="col-md-2" style="margin-left: 40px;">
-        <div class="form-group">Id_Compra: <input id="txt_codigo" name="txt_codigo" type="text" class="col-md-2 form-control" placeholder="Ingresar Proveedor.." autocomplete="off" />
-  </div>
-    </div>
+
       
-<<div class="col-md-2" style="margin-left: 40px;">
-        <div class="form-group">roducto: <input id="txt_producto" name="txt_producto" type="text" class="col-md-2 form-control" placeholder="Ingresar Producto.." autocomplete="off" />
-  </div>
-</div>
+<div class="col-md-4" style="margin-left: 40px;">
+  <div class="form-group">Producto:
+       <select class="form-control select2" id="txt_producto" name="txt_producto" style="width: 100%;" p>
+                   <option value="">Seleccione Producto</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM articulos") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Articulo'].'">'.$rowProv['Descripcion'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
+        </div>
+      </div>
      <div class="col-md-2" style="margin-left: 40px;">
         <div class="form-group">Cantidad:
-          <input id="txt_cantidad" name="txt_cantidad" type="text" class="col-md-2 form-control" placeholder="Ingrese cantidad" autocomplete="off" />
+          <input id="txt_cantidad"  style="width: 200px;  "  name="txt_cantidad" type="text" class="col-md-2 form-control" placeholder="Ingrese cantidad" autocomplete="off" onkeypress="return numeros(event)" />
         </div>
       </div>
-    <div class="col-md-2" style="margin-left: 40px;">
-        <div class="form-group">Existencia:
-          <input id="txt_existencia" name="txt_existencia" type="text" class="col-md-2 form-control" placeholder="Ingrese cantidad" autocomplete="off" />
+       <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group" >Existencia Minima:
+          <input id="txt_existencia"   style="width: 200px;" name="txt_existencia" type="text" class="col-md-2 form-control" placeholder="Ingrese Existencia" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
         </div>
       </div>
-  <div class="col-md-2" style="margin-left: 40px;">
-        <div class="form-group">Costo:
-          <input id="txt_costo" name="txt_costo" type="text" class="col-md-2 form-control" placeholder="Ingrese costo" autocomplete="off" />
+      <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group" >Costo:
+          <input id="txt_costo"   style="width: 200px;" name="txt_costo" type="text" class="col-md-2 form-control" placeholder="Ingrese costo" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
         </div>
       </div>
-  <div class="col-md-2" style="margin-left: 40px;">
+      <div class="col-md-2" style="margin-left: 40px;">
         <div class="form-group">Porcentaje:
-          <input id="txt_porcentaje" name="txt_porcentaje" type="text" class="col-md-2 form-control" placeholder="Ingrese Porcentaje" autocomplete="off" />
+          <input id="txt_porcentaje"   style="width: 200px;" name="txt_porcentaje" type="text" class="col-md-2 form-control" placeholder="Ingrese porcentaje" autocomplete="off" onkeypress="return numeros(event)" onkeyup="evaluacion()"/>
         </div>
       </div>
-  
-  <div class="col-md-2" style="margin-left: 40px;">
+      <div class="col-md-2" style="margin-left: 40px;">
         <div class="form-group">Precio Final:
-          <input id="txt_precio" name="txt_precio" type="text" class="col-md-2 form-control" placeholder="Ingrese Precio" autocomplete="off" />
+          <input id="txt_precio"   style="width: 200px;"  name="txt_precio" type="text" class="col-md-2 form-control" readonly="" />
         </div>
       </div>
 
@@ -504,9 +536,9 @@ var preciof=((num1*num2)/100)+num1;
               <div class="col-sm-4">
                 <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
 
-                 <button type="button" class="btn btn-sm btn-default guardar-carrito">Guardar</button>
+                
 
-                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
+                <button type="button" id="btnRegistrar" name="btnRegistrar" class="btn btn-success pull-right guardar-carrito">Registrar</button>
               </div>
               <div class="col-sm-4"></div>
             </div>
@@ -791,7 +823,7 @@ var preciof=((num1*num2)/100)+num1;
 
     $("#btnRegistrar").click(function(){
       //Obtencion de valores en los inputs
-     var codigo=$('#codigo').val();
+     var codigo=$('#txt_codigo').val();
      var proveedor_articulo=$('#proveedor_articulo').val();
      var codigo_factura=$('#codigo_factura').val();
      var orden_compra=$('#orden_compra').val();

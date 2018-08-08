@@ -54,6 +54,8 @@ $(function(){
 
 $(".guardar-carrito").off("click");
 	$(".guardar-carrito").on("click", function(e) {
+
+		
 				$.ajax({
 					url: 'Controller/ProductoController_Compras.php?page=3',
 					type: 'post',
