@@ -9,8 +9,8 @@
 				<th>Código de Artículo</th>
 				<th>Cantidad</th>
 				<th>Existencia Minima</th>	
-				<th>Costo</th>
-				<th>Utilidad</th>	
+				<th>Utilidad</th>
+				<th>Porcentaje</th>	
 				<th>Precio Final</th>	           
 	            <th></th>
 	        </tr>
