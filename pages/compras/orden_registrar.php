@@ -463,16 +463,22 @@
          <div class="box-header with-border">
             <h3 class="box-title">Lista de Articulos</h3>
           </div>
-          <!-- /.
-          <!-- <div class="box-header with-border"> -->
-            <!-- <h3 class="box-title">Acciones</h3> -->
-          <!-- </div> -->
-          <!-- /.box-header -->
-          <!-- form start -->
+         
             <form name="frmListaArticulos" class="form-horizontal">
             <div class="box-body"  >
-
-            
+           
+                  <table id="lista-articulos" class="table table-bordered table-striped table-hover">
+                <thead>
+                  
+                </thead>
+                <tbody>
+               <div  id=rowsArticulos>
+                    
+                  </div>
+                </tbody>
+                  
+              </table>
+              
               </div>
               </form>
 
@@ -811,6 +817,7 @@ var precioFinalPrim=(num1*num2);
       'autoWidth'   : false
     });
 
+
       $('.select2').select2();
     //Date picker
     $('#fecha_nacimiento').datepicker({
@@ -823,6 +830,45 @@ var precioFinalPrim=(num1*num2);
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     $('[data-mask]').inputmask()
+
+  
+   
+    $("#btnagregar_lista").click(function(){
+      var codigoArt = $("#codigo_Articulo").val();
+      var existencias = $("#cantidadPrim").val();
+      var preciU = $("#precio_unidadPrim").val();
+      var precioT = $("#precio_totalPrim").val();
+       $.ajax({
+                    type: "POST",
+                    url: "orden_enlistar_articulo.php",
+                    data: "Id_Articulo="+codigoArt,
+                    dataType: "json",
+                })
+        .done(function( data, textStatus, jqXHR ){
+                    //alert(".done - data.exito=" + data.exito + " mensaje="+data.datos.mensaje+" articulo="+data.datos.articulo.Id_Articulo);
+                      console.log(data);
+                      var tdArticulo ="<tr id='row" + data.Id_Articulo + "'>" +
+                        "<td class='sorting_1' id='Num" + data.Id_Articulo + "'>1</td>"+
+                        "<td  class='sorting_1' id='Id" + data.Id_Articulo + "'>" + data.Id_Articulo + "</td>"+
+                        "<td class='sorting_1' id='Desc" + data.Id_Articulo + "'>" + data.Descripcion + "</td>"+
+                        "<td  class='sorting_1' id='Cantidad" + data.Id_Articulo + "'>" + existencias + "</td>"+
+                        "<td  class='sorting_1' id='PecUnit" + data.Id_Articulo + "'>" + data.Precio_Final + "</td>"+
+                        "<td  class='sorting_1' id='Prec" + data.Id_Articulo + "'>" + precioT + "</td>"+
+                      "</tr>";
+                      $( "#lista-articulos" ).append(tdArticulo);
+                      $("#codigo_Articulo").val("Seleccione");
+                      $("#cantidadPrim").val("");
+                      $("#precio_unidadPrim").val("");
+                      $("#precio_totalPrim").val("");
+
+                    
+                })
+                .fail(function( data, textStatus, jqXHR ){
+                    alert(".fail");
+
+
+    });
+})
 
 
     $('#codigo_Articulo').change(function(){
