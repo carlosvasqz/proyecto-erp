@@ -294,15 +294,12 @@
 
 
             <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
+          
             <!-- /.box-footer -->
           </form>
         </div>
 
-         <div class="box box-info" hidden>
+         <div class="box box-info" id="agregar_nuevo" hidden>
           <div class="box-header with-border">
             <h3 class="box-title">Agregar Articulo</h3>
           </div>
@@ -347,9 +344,24 @@
               </form>
 
               <input type="number" id="estado" value="0" disabled hidden>
-                     
-             
+                  
+          <div class="box box-info">
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnCancelarNuevo" class="btn btn-default">Cancelar</button>
+                <button type="button" id="btnAgregar_lista_nuevo" class="btn btn-success pull-right">Agregar</button>
+              </div>
+              <div class="col-sm-4"></div>
             </div>
+            <!-- /.box-body -->
+          </form>
+          </div>
+      
+            </div>
+
+
 
 
 
@@ -369,33 +381,30 @@
 
 
             <!-- /.box-body -->
-            <div class="box-footer">
-              <!-- <button type="submit" class="btn btn-default">Cancel</button>
-              <button type="submit" class="btn btn-info pull-right">Sign in</button> -->
-            </div>
+           
             <!-- /.box-footer -->
           </form>
         </div>
 
-         <div class="box box-info">
+         <div class="box box-info" id="divInfoArticulo">
           <!-- <div class="box-header with-border"> -->
             <!-- <h3 class="box-title">Acciones</h3> -->
           <!-- </div> -->
           <!-- /.box-header -->
           <!-- form start -->
             <form name="frmdatosPrim" class="form-horizontal">
-            <div class="box-body" >
+            <div class="box-body" id="divInfoArticulo" >
 
              <div class="form-group" id="form_rticulos">
                 <label for="articulo" class="col-sm-2 control-label">Informacion de articulo*</label>
 
                 <div class="col-sm-9">
                    <select class="form-control select2" id="codigo_Articulo" style="width: 100%;">
-                  <option  value="" >Seleccione un articulo</option>
+                  <option  value="Seleccione" >Seleccione un articulo</option>
                     <?php
-                      $queryArticulo=mysqli_query($db, "SELECT * FROM articulos;") or die(mysqli_error());
+                      $queryArticulo=mysqli_query($db, "SELECT * FROM articulos WHERE Estado=1;") or die(mysqli_error());
                       while($rowArticulo=mysqli_fetch_array($queryArticulo)){
-                        echo '<option value="'.$rowArticulo['Id_Articulo'].'">'.$rowArticulo['Id_Articulo'].' | '.$rowArticulo['Descripcion'].' | '.$rowArticulo['Existencias'].' </option>';
+                        echo '<option value="'.$rowArticulo['Id_Articulo'].'">'.$rowArticulo['Descripcion'].' '.$rowArticulo['Existencias'].'</option>';
                       }
                     ?>
                   </select>
@@ -404,7 +413,7 @@
 
                <div class="form-group" id="form_Cantidad">
                 <label for="cantidad" class="col-sm-2 control-label">Cantidad*</label>
-               <form  method="post" name="multiplicarPrim">
+               
                 <div class="col-sm-2">
                   <input type="number" min="0"  class="form-control" id="cantidadPrim" name="cantidadPrim"  onkeyup="calcularPrecioFinalPrim()" >
                 </div>
@@ -413,7 +422,7 @@
               <div class="form-group" id="form_precio_unidad">
                 <label for="precio_unidad" class="col-sm-2 control-label">Precio Unidad*</label>
                 <div class="col-sm-2">
-                  <input type="number" min="0.00" step="0.01" class="form-control" id="precio_unidadPrim"  name="precio_unidadPrim" onkeyup="calcularPrecioFinalPrim()" value="<?php  ?>">
+                  <input type="text"  class="form-control" id="precio_unidadPrim"  name="precio_unidadPrim" onkeyup="calcularPrecioFinalPrim()" value="" disabled  >
                 </div>
               </div>
 
@@ -425,13 +434,52 @@
                 <div class="col-sm-2">
                   <input type="text"  class="form-control" id="precio_totalPrim" name="precio_totalPrim" disabled >
                 </div>
+
                 </form>
               </div>
               
 
               </div>
               </form>
+
+
+                <div class="box box-info">
+         
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnagregar_lista" class="btn btn-default">Agregar</button>
+                <button type="button" id="btnnuevo" class="btn btn-success pull-right">Nuevo</button>
+              </div>
+              <div class="col-sm-4"></div>
+            </div>
+            <!-- /.box-body -->
+          </form>
         </div>
+        </div>
+
+        <div class="box box-info" id="divListarticulos">
+         <div class="box-header with-border">
+            <h3 class="box-title">Lista de Articulos</h3>
+          </div>
+          <!-- /.
+          <!-- <div class="box-header with-border"> -->
+            <!-- <h3 class="box-title">Acciones</h3> -->
+          <!-- </div> -->
+          <!-- /.box-header -->
+          <!-- form start -->
+            <form name="frmListaArticulos" class="form-horizontal">
+            <div class="box-body"  >
+
+            
+              </div>
+              </form>
+
+
+        </div>
+
+
 
 
         <!-- Horizontal Form -->
@@ -440,11 +488,7 @@
      
         <!-- Horizontal Form -->
         <div class="box box-info">
-          <!-- <div class="box-header with-border"> -->
-            <!-- <h3 class="box-title">Acciones</h3> -->
-          <!-- </div> -->
-          <!-- /.box-header -->
-          <!-- form start -->
+         
           <form class="form-horizontal">
             <div class="box-body">
               <div class="col-sm-4"></div>
@@ -454,7 +498,7 @@
               </div>
               <div class="col-sm-4"></div>
             </div>
-            <!-- /.box-body -->
+          
           </form>
         </div>
       </div>
@@ -781,6 +825,34 @@ var precioFinalPrim=(num1*num2);
     $('[data-mask]').inputmask()
 
 
+    $('#codigo_Articulo').change(function(){
+      var codigoArticulo = $(this).val();
+      if (codigoArticulo=="Seleccione") {
+        $('#precio_unidadPrim').val("");
+       
+      } else {
+        $.ajax({
+          //Direccion destino
+          url: "registro_orden_datos.php",
+          // Variable con los datos necesarios
+          data: "codigo_articulo=" + codigoArticulo,
+          type: "POST",     
+          dataType: "json"
+        })
+
+        .done(function( data, textStatus, jqXHR ){
+            console.log(data);
+            $('#precio_unidadPrim').val(data.Precio_Final);
+           
+        })
+        .fail(function( data, textStatus, jqXHR ){
+          console.log(data);
+          alert(".fail");
+        });
+      }
+    });
+
+
 $(function multiplicar() {
 var cantidad = $("#cantidad").val()
 var precio = $("#precio_unidad").val()
@@ -788,9 +860,15 @@ var precioTotal = cantidad*precio
 return precioTotal;
 });
 
+ $("#btnnuevo").click(function(){
+      $("#agregar_nuevo").attr('hidden',false);
+      $("#divInfoArticulo").attr('hidden',true);
+    });
 
-
-    // $('#lista-empleados').DataTable();
+  $("#btnCancelarNuevo").click(function(){
+      $("#agregar_nuevo").attr('hidden',true);
+      $("#divInfoArticulo").attr('hidden',false);
+    });
 
     function alertaIngresarDatos(){
       $.notify({
