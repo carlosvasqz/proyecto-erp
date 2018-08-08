@@ -313,23 +313,40 @@ function fechaHoy(){
 
 
 
-    function obtenerUltimo_CodigoOrden_Compra(){
-        include ("conexion.php");
-        $query = "SELECT MAX(Id_Orden_compra) AS Ultimo_Codigo FROM ordenes_compra;";
+    function obtenerUltimo_CierreDiario(){
+          include ("conexion.php");
+        $query = "SELECT MAX(Id_Cierre_Diario) AS Ultimo_Codigo FROM cierres_diarios;";
         $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
         $rowCodigo=mysqli_fetch_array($sqlcon);
         if(is_null($rowCodigo['Ultimo_Codigo'])){
-            return "0";
+            return "CID.0";
         }else{
-            return $rowCodigo['Ultimo_Codigo']+1;
+            return $rowCodigo['Ultimo_Codigo'];
         }
     }
 
-     function nuevoCodigo_Orden_Compra($codigo){
+     function nuevoCodigoCierreDiario($codigo){
         $codigo = explode('.', $codigo);
         $nuevo = $codigo[1]+1;
         return $codigo[0] . "." . $nuevo;
     }
+
+    function obtenerVentasDia($fecha){
+        include ("conexion.php");
+        $sqlVentas = "SELECT SUM(Total_Detalle) AS Ventas_Dia FROM ventas V INNER JOIN detalles_venta DV ON V.Id_Venta=DV.Id_Venta WHERE V.Fecha='$fecha';";
+        $queryVentas=mysqli_query($db, $sqlVentas) or die(mysqli_error());
+        $rowVentas=mysqli_fetch_array($queryVentas);
+
+
+        $VentasDia = $rowVentas['Ventas_Dia'];
+
+        if(is_null($VentasDia)){
+            return 0;
+        }else{
+            return $VentasDia;
+        }
+    }
+
 
 
 ?>

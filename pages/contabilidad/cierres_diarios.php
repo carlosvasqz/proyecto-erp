@@ -184,7 +184,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-        menu($_SESSION['Tipo_Usuario'], $thisFileName);
+        menu($_SESSION['Tipo_Usuario'], $thisFileName,$cd);
       ?>
     </section>
     <!-- /.sidebar -->
@@ -197,43 +197,189 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Blank page
-        <small>it all starts here</small>
+        Cierre diario
+        <small>Contabilidad</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Blank page</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li><a href="#">Contabilidad</a></li>
+        <li class="active">Cierre diario</li>
       </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content">
+  <section class="content">
+      <div class="row">
 
-      <!-- Default box -->
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Title</h3>
+        <?php
+            date_default_timezone_set('America/Tegucigalpa');
+            $hoy = getdate();
+            //$fechaImpFullFormat = getNomDia($hoy['wday'])." ".$hoy['mday'].", ".getNomMes($hoy['mon'])." de ".$hoy['year'];
+            $fechaHoyImpNum = $hoy['mday']."/".$hoy['mon']."/".$hoy['year'];
+           // $fechaHoyImpNom = $hoy['mday']."/". getNomMes($hoy['mon'])."/".$hoy['year'];
+            $fechaHoyDB = $hoy['year']."-".$hoy['mon']."-".$hoy['mday'];
+            $tiempoCierre = date("h:i A");
+            $tiempoCierreDB = date("H:i:s");
+            $dineroParaCaja = 1000.00;
+          ?>
 
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                    title="Collapse">
-              <i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Datos Administrativos</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <!-- <form class="form-horizontal"> -->
+                <div class="form-group" id="form_codigo_venta">
+                  <label for="codigo_venta" class="col-sm-2 control-label">Codigo cierre*</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="codigo" placeholder="Codigo de venta" value="<?php echo nuevoCodigoCierreDiario(obtenerUltimo_CierreDiario());?>" disabled>
+                  </div>
+                </div>
+                <!-- </form> -->
+                <div class="form-group" id="form_usuario">
+                  <label for="usuario" class="col-sm-2 control-label">Usuario*</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="usuario" placeholder="Usuario" value="<?php echo $_SESSION['Nombre'];?>" readonly>
+                    <input type="hidden" id="codigo_usuario" value="<?php echo $_SESSION['Id_Usuario'];?>">
+                  </div>
+                </div>
+                <!-- </form> -->
+                <div class="form-group" id="form_fecha">
+                  <label for="fecha" class="col-sm-2 control-label">Fecha*</label>
+
+                  <div class="col-sm-10">
+                    <!-- <div class="input-group"> -->
+                      <!-- <span class="input-group-addon"><i class="fa fa-calendar"></i></span> -->
+                      <input type="text" class="form-control" id="fecha_formato" placeholder="Fecha" value="<?php $hoy = getdate(); echo fechaFullFormato($hoy['mday']."/".$hoy['mon']."/".$hoy['year']);?>" readonly>
+                      <input type="hidden" id="fecha" value="<?php echo $hoy['year']."-".$hoy['mon']."-".$hoy['mday'];?>">
+                    <!-- </div> -->
+                  </div>
+                </div>
+
+                  <div class="form-group" id="form_hora">
+                  <label for="fecha" class="col-sm-2 control-label">Hora*</label>
+
+                  <div class="col-sm-10">
+                    <!-- <div class="input-group"> -->
+                      <!-- <span class="input-group-addon"><i class="fa fa-calendar"></i></span> -->
+                      <input type="text" class="form-control" id="fecha_formato" placeholder="Hora" value="<?php echo $tiempoCierre?>" readonly>
+                      <input type="hidden" id="hora" value="<?php echo $tiempoCierreDB?>">
+                    <!-- </div> -->
+                  </div>
+                </div>
+                <!-- </form> -->
+            </div>
+            <!-- /.box-body -->
           </div>
+          <!-- /.box -->
         </div>
-        <div class="box-body">
-          Start creating your amazing application!
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-          Footer
-        </div>
-        <!-- /.box-footer-->
-      </div>
-      <!-- /.box -->
 
+          <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Datos Caja</h3>
+            </div>
+            <!-- /.box-header -->
+            <form method="post" name="frmCalculo">
+
+            <div class="box-body">
+              <div class="form-group" id="form_caja">
+                  <label for="codigo_cliente" class="col-sm-2 control-label">Dinero en caja*</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="dinero_caja" name="dinero_caja" placeholder="Dinero en caja" onkeyup="calcularTotalCaja()" value="" >
+                  </div>
+                </div>
+
+                 <div class="form-group" id="form_ventas">
+                  <label for="codigo_cliente" class="col-sm-2 control-label">Total ventas de hoy*</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ventas_hoy_formato" placeholder="Total vendido hoy" value="<?php echo number_format(obtenerVentasDia($fechaHoyDB), 2);?>" readonly>
+
+                    <input type="hidden" id="ventas_hoy" name="ventas_hoy" onkeyup="calcularTotalCaja()" value="<?php echo obtenerVentasDia($fechaHoyDB);?>">
+
+
+                  </div>
+                </div>
+               
+                <div class="form-group" id="form_neto">
+                  <label for="rtn_cliente" class="col-sm-2 control-label">Dinero neto en caja*</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="neto" name="neto" placeholder="Dinero neto en caja" value="" readonly>
+                  </div>
+                </div>
+                </form>
+           <div class="col-sm-12">
+                    <button type="button" id="Revisar" class="btn btn-block btn-success">Revisar</button>
+                  </div>
+            </div>
+            <!-- /.box-body -->
+
+          </div>
+          <!-- /.box -->
+        </div>
+
+               <div hidden class="col-xs-12" id="divJustificacion">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Justificacion</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="form-group" id="form_justificacion">
+                  <label for="justificacion" class="col-sm-2 control-label">Justificacion*</label>
+
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="justificacion" placeholder="ingrese una justificacion" value="" >
+                  </div>
+
+
+                </div>
+
+
+                
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+
+            <div class="col-xs-12">
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+        
+
+                  <div class="col-sm-12">
+                 
+                    <button type="button" id="aceptar" class="btn btn-block btn-success">Aceptar</button>
+                    <button type="button" id="limpiar" class="btn btn-block btn-danger" aling="left">Limpiar</button>
+                  
+        
+            
+</div>
+
+
+
+                
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+
+      
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+      <!-- /.row -->
     </section>
     <!-- /.content -->
   </div>
@@ -454,10 +600,17 @@
 <script>
     $.material.init();
 </script>
+<!-- DataTables -->
+<!-- <script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script> -->
+<!-- <script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
+<script src="<?php echo $cd;?>plugins/dataTables/jquery.dataTables.min.js"></script>
+<script src="<?php echo $cd;?>plugins/dataTables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
+<!-- Sweet Alert -->
+<script src="<?php echo $cd;?>plugins/sweet-alert/sweetalert.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -466,6 +619,126 @@
   $(document).ready(function () {
     $('.sidebar-menu').tree()
   })
+
+  function calcularTotalCaja(){
+ var Caja =document.getElementById('dinero_caja').value;
+  var VentasHoy=document.getElementById('ventas_hoy').value;
+   var Total=document.getElementById('neto').value;
+if (Caja=='') {
+    var num1=0; 
+  }
+  if (Caja!='') {
+    var num1=parseFloat(Caja);
+  }
+if (VentasHoy=='') {
+    var num2=0; 
+  }
+  if (VentasHoy!='') {
+    var num2=parseFloat(VentasHoy);
+  }
+
+var VentasHoy=(num1-num2);
+     document.frmCalculo.neto.value=VentasHoy;
+}
+
+ $("#Revisar").click(function(){
+      var Caja = $("#dinero_caja").val();
+      var VentasHoy=$('#ventas_hoy').val();
+      var Total=$("#neto").val();
+
+  if(Total>0){
+    $("#divJustificacion").attr('hidden',false);
+    alert("Hay dinero de mas en caja explique porque");
+  }
+
+  if(Total==0){
+    alert("Los valores coinciden usted");
+  }
+
+  if(Total<0){
+     $("#divJustificacion").attr('hidden',false);
+    alert("Hace falta dinero en caja justifique porque");
+  }
+    });
+
+ $("#aceptar").click(function(){
+      //Obtencion de valores en los inputs
+      var codigo = $("#codigo").val();
+      var usuario = $("#usuario").val();
+      var fecha=$('#fecha').val();
+      var hora=$("#hora").val();
+      var Caja = $("#dinero_caja").val();
+      var VentasHoy=$('#ventas_hoy').val();
+      var Total=$("#neto").val();
+      var justificacion = $("#justificacion").val();
+      
+      
+      // Validaciones
+      if (Caja=='') {
+        $("#dinero_caja").attr('required',true);
+        document.getElementById("dinero_caja").focus();
+        $("#form_caja").removeClass('has-success');
+        $("#form_caja").removeClass('has-error');
+        $("#form_caja").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#codigo").attr('required',false);
+        $("#form_caja").removeClass('has-success');
+        $("#form_caja").removeClass('has-error');
+        $("#form_caja").addClass('has-success');
+      }
+
+     
+      
+
+      //Fin validaciones
+
+      // Variable con todos los valores necesarios para la consulta
+      var datos = 'codigo=' + codigo + '&usuario=' + usuario + '&fecha=' + fecha + '&hora=' + hora + '&caja=' + Caja + '&ventas_hoy=' + VentasHoy + '&total=' + Total + '&justificacion=' + justificacion;
+
+     alert(datos);
+      $.ajax({
+        //Direccion destino
+        url: "guardar_cierre.php",
+        // Variable con los datos necesarios
+        data: datos,
+        type: "POST",     
+        dataType: "html",
+        //cache: false,
+        //success
+        success: function (data) {
+          // alert(data);
+          if (data) {
+            
+            alert("Se registro el cierre")
+          }
+          if (!data) {
+           alert("Ya se registro un cierre hoy")
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          //    title: "Informacion : ",
+          //    message: "Petición realizada!",
+          //    icon: 'fa fa-check' 
+          //  },{
+          //    type: "info"
+          // });
+        }   
+      });
+
+    });
+  
+   
+  
+  
+  
 </script>
 </body>
 </html>

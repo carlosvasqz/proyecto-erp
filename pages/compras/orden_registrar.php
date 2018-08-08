@@ -854,6 +854,8 @@ var precioFinalPrim=(num1*num2);
                         "<td  class='sorting_1' id='Cantidad" + data.Id_Articulo + "'>" + existencias + "</td>"+
                         "<td  class='sorting_1' id='PecUnit" + data.Id_Articulo + "'>" + data.Precio_Final + "</td>"+
                         "<td  class='sorting_1' id='Prec" + data.Id_Articulo + "'>" + precioT + "</td>"+
+                        
+
                       "</tr>";
                       $( "#lista-articulos" ).append(tdArticulo);
                       $("#codigo_Articulo").val("Seleccione");
