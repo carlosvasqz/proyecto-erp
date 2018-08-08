@@ -90,6 +90,7 @@ case 3:
 			    $_SESSION['detalle']= array();
 				$json['success'] = true;
 				echo json_encode($json);
+
 	
 			} catch (PDOException $e) {
 				$json['msj'] = $e->getMessage();

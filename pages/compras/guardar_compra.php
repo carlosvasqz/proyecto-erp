@@ -460,6 +460,7 @@ var preciof=((num1*num2)/100)+num1;
       <div class="col-md-2">
         <div style="margin-top: 19px;">
         <button type="button" class="btn btn-success btn-agregar-producto">Agregar</button>
+          
         </div>
       </div>
       
@@ -476,7 +477,10 @@ var preciof=((num1*num2)/100)+num1;
 <div class="panel panel-info">
  <div class="panel-heading">
   <h3 class="panel-title">Productos</h3>
+
+
    </div>
+   <button type="button" id="btnDetalle" name="btnDetalle" class="btn btn-success guardar-carrito">Cargar Detalle</button>
    <div class="panel-body detalle-producto">
         <?php if(count($_SESSION['detalle'])>0){?>
           <table class="table">
@@ -538,7 +542,9 @@ var preciof=((num1*num2)/100)+num1;
 
                 
 
-                <button type="button" id="btnRegistrar" name="btnRegistrar" class="btn btn-success pull-right guardar-carrito">Registrar</button>
+                <button type="button" id="btnRegistrar" class="btn btn-success"> Registrar</button>
+
+
               </div>
               <div class="col-sm-4"></div>
             </div>
@@ -939,7 +945,7 @@ var preciof=((num1*num2)/100)+num1;
           if (!data) {
             $.notify({
               title: "Error : ",
-              message: "¡El numero de Compra ingresado ya existe!",
+              message: "¡El numero de Factura ingresado ya existe!",
               icon: 'fa fa-times' 
             },{
               type: "danger"

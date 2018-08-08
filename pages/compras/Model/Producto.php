@@ -31,7 +31,7 @@ class Producto
 	}
 	
 	function actualizarDetalleVenta($descripcion,$cantidad){
-		$sql=mysqli_query($db,"UPDATE articulos SET Existencias= Existencias + '$cantidad' WHERE Id_Articulo='$descripcion'") or die(mysqli_error());
+		$sql = " UPDATE articulos SET Existencias= Existencias + '$cantidad' WHERE Id_Articulo='$descripcion'" ;
 		global $cnx;
 		return $cnx->query($sql);
 

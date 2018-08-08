@@ -5,12 +5,12 @@
 	<table class="table">
 	    <thead>
 	        <tr>
-	          <th>Compra</th>
-				<th>Descripcion</th>
+	          <th>Regístro Compra</th>
+				<th>Código de Artículo</th>
 				<th>Cantidad</th>
-				<th>Existencia</th>	
+				<th>Existencia Minima</th>	
 				<th>Costo</th>
-				<th>Porcentaje</th>	
+				<th>Utilidad</th>	
 				<th>Precio Final</th>	           
 	            <th></th>
 	        </tr>
