@@ -4,8 +4,8 @@ $(function(){
 	$(".btn-agregar-producto").off("click");
 	$(".btn-agregar-producto").on("click", function(e) {
 		
+		var proveedor = $("#txt_codigo").val();
 		var descripcion = $("#txt_producto").val();
-		var compra = $("#codigo").val();
 		var cantidad = $("#txt_cantidad").val();
 		var existencia = $("#txt_existencia").val();
 		var costo = $("#txt_costo").val();
@@ -14,7 +14,7 @@ $(function(){
 		$.ajax({
 			url: 'Controller/ProductoController_Compras.php?page=1',
 			type: 'post',
-			data: { 'descripcion':descripcion, 'compra':compra, 'cantidad':cantidad, 'existencia':existencia, 'costo':costo, 'porcentaje':porcentaje, 'precio':precio},
+			data: { 'proveedor':proveedor, 'descripcion':descripcion, 'cantidad':cantidad, 'existencia':existencia, 'costo':costo, 'porcentaje':porcentaje, 'precio':precio},
 			dataType: 'json'
 		}).done(function(data){
 			if(data.success==true){
@@ -50,6 +50,29 @@ $(function(){
 			}
 		})
 	});
-	
+
+
+$(".guardar-carrito").off("click");
+	$(".guardar-carrito").on("click", function(e) {
+				$.ajax({
+					url: 'Controller/ProductoController_Compras.php?page=3',
+					type: 'post',
+					dataType: 'json',
+					success: function(data) {
+						if(data.success==true){
+							$("#txt_cantidad").val('');
+							alertify.success(data.msj);
+							$(".detalle-producto").load('detalle_compra.php');
+						}else{
+							alertify.error(data.msj);
+						}
+					},
+					error: function(jqXHR, textStatus, error) {
+						alertify.error(error);
+					}
+				});				
+	});
+
+
 });
 

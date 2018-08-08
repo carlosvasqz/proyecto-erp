@@ -283,7 +283,7 @@ var preciof=((num1*num2)/100)+num1;
       </ol>
     </section>
 
-    <!-- Main content -->
+ <!-- Main content -->
     <section class="content">
     <div class="row">
       <!-- columna izq -->
@@ -293,9 +293,9 @@ var preciof=((num1*num2)/100)+num1;
           <div class="box-header with-border">
             <h3 class="box-title">Datos Administrativos</h3>
           </div>
-          <!-- /.box-header -->
-          <!-- form start -->
-          <form class="form-horizontal">
+          
+
+<form class="form-horizontal">
             <div class="box-body">
               <div class="form-group" id="form_codigo">
                 <label for="codigo" class="col-sm-2 control-label">Codigo*</label>
@@ -336,7 +336,14 @@ var preciof=((num1*num2)/100)+num1;
               </div>
 
 
+<div class="form-group" id="form_usuario">
+                  <label for="usuario" class="col-sm-2 control-label">Usuario*</label>
 
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="usuario" placeholder="Usuario" value="<?php echo $_SESSION['Nombre'];?>" readonly>
+                    <input type="hidden" id="codigo_usuario" value="<?php echo $_SESSION['Id_Usuario'];?>">
+                  </div>
+                </div>
 
              <div class="form-group" id="form_codigo_orden">
                 <label for="orden_compra" class="col-sm-2 control-label">Codigo Orden Compra*</label>
@@ -365,9 +372,10 @@ var preciof=((num1*num2)/100)+num1;
           </form>
         </div>
 
-      
 
- <div class="box box-info">
+
+
+<div class="box box-info">
           <div class="box-header with-border">
             <h3 class="box-title">Datos de Producto</h3>
           </div>
@@ -378,60 +386,62 @@ var preciof=((num1*num2)/100)+num1;
 
 
 
-<div class="col-md-4" style="margin-left: 40px;">
-  <div class="form-group">Producto:
-       <select class="form-control select2" id="txt_producto" name="txt_producto" style="width: 100%;" p>
-                   <option value="">Seleccione Producto</option>
-                   <?php 
-                          $queryListaProv=mysqli_query($db, "SELECT * FROM articulos") or die(mysqli_error());
-                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
-                            echo '<option value="'.$rowProv['Id_Articulo'].'">'.$rowProv['Descripcion'].'</option>';  
-                          }
-                        ?>
-                  
-                </select>
-        </div>
-      </div>
-      <div class="col-md-2" style="margin-left: 40px;">
+
+<div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Id_Compra: <input id="txt_codigo" name="txt_codigo" type="text" class="col-md-2 form-control" placeholder="Ingresar Proveedor.." autocomplete="off" />
+  </div>
+    </div>
+      
+<<div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">roducto: <input id="txt_producto" name="txt_producto" type="text" class="col-md-2 form-control" placeholder="Ingresar Producto.." autocomplete="off" />
+  </div>
+</div>
+     <div class="col-md-2" style="margin-left: 40px;">
         <div class="form-group">Cantidad:
-          <input id="txt_cantidad"  style="width: 200px;  "  name="txt_cantidad" type="text" class="col-md-2 form-control" placeholder="Ingrese cantidad" autocomplete="off" onkeypress="return numeros(event)" />
+          <input id="txt_cantidad" name="txt_cantidad" type="text" class="col-md-2 form-control" placeholder="Ingrese cantidad" autocomplete="off" />
         </div>
       </div>
-       <div class="col-md-2" style="margin-left: 40px;">
-        <div class="form-group" >Existencia Minima:
-          <input id="txt_existencia"   style="width: 200px;" name="txt_existencia" type="text" class="col-md-2 form-control" placeholder="Ingrese Existencia" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
+    <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Existencia:
+          <input id="txt_existencia" name="txt_existencia" type="text" class="col-md-2 form-control" placeholder="Ingrese cantidad" autocomplete="off" />
         </div>
       </div>
-      <div class="col-md-2" style="margin-left: 40px;">
-        <div class="form-group" >Costo:
-          <input id="txt_costo"   style="width: 200px;" name="txt_costo" type="text" class="col-md-2 form-control" placeholder="Ingrese costo" autocomplete="off" onkeypress="return numeros(event)"onkeyup="evaluacion()"/>
+  <div class="col-md-2" style="margin-left: 40px;">
+        <div class="form-group">Costo:
+          <input id="txt_costo" name="txt_costo" type="text" class="col-md-2 form-control" placeholder="Ingrese costo" autocomplete="off" />
         </div>
       </div>
-      <div class="col-md-2" style="margin-left: 40px;">
+  <div class="col-md-2" style="margin-left: 40px;">
         <div class="form-group">Porcentaje:
-          <input id="txt_porcentaje"   style="width: 200px;" name="txt_porcentaje" type="text" class="col-md-2 form-control" placeholder="Ingrese porcentaje" autocomplete="off" onkeypress="return numeros(event)" onkeyup="evaluacion()"/>
+          <input id="txt_porcentaje" name="txt_porcentaje" type="text" class="col-md-2 form-control" placeholder="Ingrese Porcentaje" autocomplete="off" />
         </div>
       </div>
-      <div class="col-md-2" style="margin-left: 40px;">
+  
+  <div class="col-md-2" style="margin-left: 40px;">
         <div class="form-group">Precio Final:
-          <input id="txt_precio"   style="width: 200px;"  name="txt_precio" type="text" class="col-md-2 form-control" readonly="" />
+          <input id="txt_precio" name="txt_precio" type="text" class="col-md-2 form-control" placeholder="Ingrese Precio" autocomplete="off" />
         </div>
       </div>
+
+
+
       <div class="col-md-2">
         <div style="margin-top: 19px;">
         <button type="button" class="btn btn-success btn-agregar-producto">Agregar</button>
         </div>
       </div>
+      
       </div>
-
-  
-           </div>
+    
+    </div>
+       </div>
               </div>
             
-            </div>
+            
           </form>
-  <br>
-    <div class="panel panel-info">
+
+<br>
+<div class="panel panel-info">
  <div class="panel-heading">
   <h3 class="panel-title">Productos</h3>
    </div>
@@ -440,16 +450,14 @@ var preciof=((num1*num2)/100)+num1;
           <table class="table">
               <thead>
                   <tr>
-                    
-                     <th>Descripcion</th>
+                     <th>C&oacute;digo</th>
                       <th>Compra</th>
+                      <th>Descripci&oacute;n</th>
                       <th>Cantidad</th>
                        <th>Existencia</th>
-                       <th>Costo</th>
-                        <th>Porcentaje</th>
-                        <th>Precio Final</th>
-
-                     
+                      <th>Costo</th>
+                      <th>Porcentaje</th>
+                       <th>Precio Final</th>
                       <th></th>
                   </tr>
               </thead>
@@ -458,16 +466,14 @@ var preciof=((num1*num2)/100)+num1;
                 foreach($_SESSION['detalle'] as $k => $detalle){ 
                 ?>
                   <tr>
-                  
-                  <td><?php echo $detalle['descripcion'];?></td>
-                  <td><?php echo $detalle['compra'];?></td>
-                  <td><?php echo $detalle['cantidad'];?></td>
-                   <td><?php echo $detalle['existencia'];?></td>
-                   <td><?php echo $detalle['costo'];?></td>
-                   <td><?php echo $detalle['porcentaje'];?></td>
-                   <td><?php echo $detalle['precio'];?></td>
-
-                   
+                  <td><?php echo $detalle['codigo'];?></td> 
+                  <td><?php echo $detalle['proveedor'];?></td>
+                    <td><?php echo $detalle['producto'];?></td>
+                      <td><?php echo $detalle['cantidad'];?></td>
+                       <td><?php echo $detalle['existencia'];?></td>
+                       <td><?php echo $detalle['costo'];?></td>
+                        <td><?php echo $detalle['porcentaje'];?></td>
+                      <td><?php echo $detalle['precio'];?></td>
                       <td><button type="button" class="btn btn-sm btn-danger eliminar-producto" id="<?php echo $detalle['id'];?>">Eliminar</button></td>
                   </tr>
                   <?php }?>
@@ -477,26 +483,7 @@ var preciof=((num1*num2)/100)+num1;
         <div class="panel-body"> No hay productos agregados</div>
         <?php }?>
       </div>
-    
-
-  
-  </form>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    </div>
 
 
 
@@ -516,6 +503,9 @@ var preciof=((num1*num2)/100)+num1;
               <div class="col-sm-4"></div>
               <div class="col-sm-4">
                 <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
+
+                 <button type="button" class="btn btn-sm btn-default guardar-carrito">Guardar</button>
+
                 <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
               </div>
               <div class="col-sm-4"></div>
@@ -805,7 +795,11 @@ var preciof=((num1*num2)/100)+num1;
      var proveedor_articulo=$('#proveedor_articulo').val();
      var codigo_factura=$('#codigo_factura').val();
      var orden_compra=$('#orden_compra').val();
-     var Id_Usuario=$('#Id_Usuario').val();
+     var usuario=$('#usuario').val();
+
+   
+
+
       
       // Validaciones
       if (codigo=='') {
@@ -853,6 +847,21 @@ var preciof=((num1*num2)/100)+num1;
         $("#form_codigo_factura").addClass('has-success');
       }
 
+ if (usuario=='') {
+        $("#usuario").attr('required',true);
+        document.getElementById("usuario").focus();
+        $("#form_usuario").removeClass('has-success');
+        $("#form_usuario").removeClass('has-error');
+        $("#form_usuario").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#usuario").attr('required',false);
+        $("#form_usuario").removeClass('has-success');
+        $("#form_usuario").removeClass('has-error');
+        $("#form_usuario").addClass('has-success');
+      }
+
       if (orden_compra=='') {
         $("#orden_compra").attr('required',true);
         document.getElementById("orden_compra").focus();
@@ -871,7 +880,7 @@ var preciof=((num1*num2)/100)+num1;
       //Fin validaciones
 
       // Variable con todos los valores necesarios para la consulta
-      var datos = 'codigo=' + codigo + '&proveedor_articulo=' + proveedor_articulo + '&codigo_factura=' + codigo_factura + '&orden_compra=' + orden_compra;
+      var datos = 'codigo=' + codigo + '&proveedor_articulo=' + proveedor_articulo + '&codigo_factura=' + codigo_factura + '&usuario='+ usuario +'&orden_compra=' + orden_compra;
 
       //alert(datos);
       $.ajax({
@@ -884,7 +893,7 @@ var preciof=((num1*num2)/100)+num1;
         //cache: false,
         //success
         success: function (data) {
-        //  alert(data);
+        //alert(data);
           if (data) {
             $.notify({
               title: "Correcto : ",
@@ -893,7 +902,7 @@ var preciof=((num1*num2)/100)+num1;
             },{
               type: "success"
             });
-            window.setTimeout('location.href="registro_compras.php"', 5);
+           window.setTimeout('location.href="registro_compras.php"', 5);
           }
           if (!data) {
             $.notify({
