@@ -85,13 +85,16 @@ case 3:
 				$descripcion = $detalle['descripcion'];
 				$cantidad = $detalle['cantidad'];
 				$costo = $detalle['costo'];
-				$objProducto->guardarDetalleVenta($proveedor,$descripcion,$cantidad,$costo);
 				
+
+				$objProducto->guardarDetalleVenta($proveedor,$descripcion,$cantidad,$costo);
+				$existencia = $detalle['existencia'];
 				$porcentaje = $detalle['porcentaje'];
 				$precio = $detalle['precio'];
+				$Fecha = date('Y/m/d H:i'); 
 
 
-				$objProducto2->actualizarDetalleVenta($descripcion,$cantidad,$precio,$porcentaje);
+				$objProducto2->actualizarDetalleVenta($descripcion,$cantidad,$existencia,$precio,$porcentaje,$Fecha);
 			    endforeach;
 			    $_SESSION['detalle']= array();
 				$json['success'] = true;
