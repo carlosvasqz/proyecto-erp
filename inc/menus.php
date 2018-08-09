@@ -58,7 +58,7 @@
         'clientes' => '',
         'clientes_registrar' => '',
         'clientes_editar' => '',
-        'cotizaciones_venta' => '',
+        'ventas_pendientes' => '',
         'registrar_cliente' => '',
         'registro_ventas' => ''
       );
@@ -120,7 +120,7 @@
         'clientes' => '',
         'clientes_registrar' => '',
         'clientes_editar' => '',
-        'cotizaciones_venta' => '',
+        'ventas_pendientes' => '',
         'registrar_cliente' => '',
         'registro_ventas' => ''
       );
@@ -207,7 +207,7 @@
           <ul class="treeview-menu">
             <li'.$li['registro_compras'].'><a href="'.$cd.'pages/compras/registro_compras.php"><i class="fa fa-clipboard"></i> Registro de Compras</a></li> 
             <li'.$li['proveedores'].'><a href="'.$cd.'pages/compras/proveedores.php"><i class="fa fa-truck"></i> Proveedores</a></li>
-            <li'.$li['cotizaciones_compra'].'><a href="'.$cd.'pages/compras/cotizaciones_compra.php"><i class="fa fa-file-text-o"></i> Cotizaciones de Compra</a></li>
+            
             <li'.$li['ordenes_compra'].'><a href="'.$cd.'pages/compras/ordenes_compra.php"><i class="fa fa-file-text"></i> Ordenes de Compra</a></li>
             <!-- <li class="treeview">
               <a href="#"><i class="fa fa-circle-o"></i> Nivel Uno
@@ -242,7 +242,7 @@
           <ul class="treeview-menu">
             <li'.$li['registro_ventas'].'><a href="'.$cd.'pages/ventas/registro_ventas.php"><i class="fa fa-cart-plus"></i> Registro de Ventas</a></li> 
             <li'.$li['clientes'].'><a href="'.$cd.'pages/ventas/clientes.php"><i class="fa fa-users"></i> Clientes</a></li>
-            <li'.$li['cotizaciones_venta'].'><a href="'.$cd.'pages/ventas/cotizaciones_venta.php"><i class="fa fa-file-text-o"></i> Cotizaciones de Venta</a></li>
+            <li'.$li['ventas_pendientes'].'><a href="'.$cd.'pages/ventas/ventas_pendientes.php"><i class="fa fa-file-powerpoint-o"></i> Ventas Pendientes</a></li>
             <!-- <li class="treeview">
               <a href="#"><i class="fa fa-circle-o"></i> Nivel Uno
                 <span class="pull-right-container">
@@ -309,7 +309,7 @@
           </a>
           <ul class="treeview-menu">
             <li'.$li['cierres_diarios'].'><a href="'.$cd.'pages/contabilidad/cierres_diarios.php"><i class="fa fa-calendar-times-o"></i> Cierres Diarios</a></li> 
-            <li'.$li['reportes'].'><a href="'.$cd.'pages/contabilidad/reportes.php"><i class="fa fa-print"></i> Reportes</a></li>
+            
             <!-- <li class="treeview">
               <a href="#"><i class="fa fa-circle-o"></i> Nivel Uno
                 <span class="pull-right-container">
@@ -333,38 +333,7 @@
             </li> -->
           </ul>
         </li>
-        <li class="'.$modulos['configuraciones'].'treeview">
-          <a href="#">
-            <i class="fa fa-gears"></i> <span> Configuraciones</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li'.$li['perfil'].'><a href="'.$cd.'pages/configuraciones/perfil.php"><i class="fa fa-user"></i> Perfil</a></li> 
-            <!-- <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Nivel Uno
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Nivel Dos</a></li>
-                <li class="treeview">
-                  <a href="#"><i class="fa fa-circle-o"></i> Nivel Dos
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                  </a>
-                  <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Nivel Tres</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Nivel Tres</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li> -->
-          </ul>
-        </li>
+        
         <li class="header">ETIQUETAS</li>
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Importante</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Advertencia</span></a></li>
@@ -898,7 +867,7 @@
           <ul class="treeview-menu">
             <li'.$li['registro_ventas'].'><a href="'.$cd.'pages/ventas/registro_ventas.php"><i class="fa fa-cart-plus"></i> Registro de Ventas</a></li> 
             <li'.$li['clientes'].'><a href="'.$cd.'pages/ventas/clientes.php"><i class="fa fa-users"></i> Clientes</a></li>
-            <li'.$li['cotizaciones_venta'].'><a href="'.$cd.'pages/ventas/cotizaciones_venta.php"><i class="fa fa-file-text-o"></i> Cotizaciones de Venta</a></li>
+            <li'.$li['ventas_pendientes'].'><a href="'.$cd.'pages/ventas/ventas_pendientes.php"><i class="fa fa-file-powerpoint-o"></i> Ventas Pendientes</a></li>
             <!-- <li class="treeview">
               <a href="#"><i class="fa fa-circle-o"></i> Nivel Uno
                 <span class="pull-right-container">
