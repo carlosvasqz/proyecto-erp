@@ -280,6 +280,7 @@
 
                 <div class="col-sm-9">
                   <input type="text" class="form-control" id="fecha"  value="<?php echo fechaHoy();?>" disabled>
+                  <input type="hidden" id="fechaDB" value="<?php echo DBF();?>" >
                 </div>
               </div>
              
@@ -343,7 +344,7 @@
               </div>
               </form>
 
-              <input type="number" id="estado" value="0" disabled hidden>
+              <input type="hidden" id="estado" value="0" disabled hidden>
                   
           <div class="box box-info">
           <form class="form-horizontal">
@@ -416,6 +417,7 @@
                
                 <div class="col-sm-2">
                   <input type="number" min="0"  class="form-control" id="cantidadPrim" name="cantidadPrim"  onkeyup="calcularPrecioFinalPrim()" >
+                  <input type="hidden" id="estado" value="0">
                 </div>
               </div>
 
@@ -854,7 +856,6 @@ var precioFinalPrim=(num1*num2);
                         "<td  class='sorting_1' id='Cantidad" + data.Id_Articulo + "'>" + existencias + "</td>"+
                         "<td  class='sorting_1' id='PecUnit" + data.Id_Articulo + "'>" + data.Precio_Final + "</td>"+
                         "<td  class='sorting_1' id='Prec" + data.Id_Articulo + "'>" + precioT + "</td>"+
-                        
 
                       "</tr>";
                       $( "#lista-articulos" ).append(tdArticulo);
@@ -863,6 +864,51 @@ var precioFinalPrim=(num1*num2);
                       $("#precio_unidadPrim").val("");
                       $("#precio_totalPrim").val("");
 
+                      var codigoOrdenListar = $("#codigo").val();
+                      var fechaDB = $("#fechaDB").val();
+                      var estado = $("#estado").val();
+
+
+                      var idArticuloListar = data.Id_Articulo;
+                      var idProveedorListar = data.Id_Proveedor;
+
+
+                      var datoslistar = 'codigo=' + codigoOrdenListar + '&idArticuloListar=' + idArticuloListar + '&existenciasListar=' + existencias + '&preciUListar=' + preciU + '&precioTListar=' + precioT + '&idProveedor=' + idProveedorListar + '&fecha=' + fechaDB + '&estado=' + estado;
+                      alert(datoslistar);
+
+                      $.ajax({
+                       url: "guardar_orden.php",
+                      data: datoslistar,
+                      type: "POST",     
+                      dataType: "html",
+
+                         success: function (data) {
+          // alert(data);
+          if (datoslistar) {
+            
+            alert("rowSuccess");
+          
+
+          }
+          if (!datoslistar) {
+        alert("rowError");
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          //    title: "Informacion : ",
+          //    message: "Petición realizada!",
+          //    icon: 'fa fa-check' 
+          //  },{
+          //    type: "info"
+          // });
+        } 
+                      })
                     
                 })
                 .fail(function( data, textStatus, jqXHR ){

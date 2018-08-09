@@ -291,7 +291,7 @@
                   <label for="codigo_cliente" class="col-sm-2 control-label">Dinero en caja*</label>
 
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="dinero_caja" name="dinero_caja" placeholder="Dinero en caja" onkeyup="calcularTotalCaja()" value="" >
+                    <input type="number" min="0.00" step="0.01" class="form-control" id="dinero_caja" name="dinero_caja" placeholder="Dinero en caja" onkeyup="calcularTotalCaja()" value="" >
                   </div>
                 </div>
 
@@ -311,7 +311,7 @@
                   <label for="rtn_cliente" class="col-sm-2 control-label">Dinero neto en caja*</label>
 
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="neto" name="neto" placeholder="Dinero neto en caja" value="" readonly>
+                    <input type="number" min="0.00" class="form-control" id="neto" name="neto" placeholder="Dinero neto en caja" value="" readonly>
                   </div>
                 </div>
                 </form>
@@ -712,9 +712,14 @@ var VentasHoy=(num1-num2);
           if (data) {
             
             alert("Se registro el cierre")
+            var Caja = $("#dinero_caja").val("");
+            var Total=$("#neto").val("");
+
           }
           if (!data) {
            alert("Ya se registro un cierre hoy")
+            var Caja = $("#dinero_caja").val("");
+            var Total=$("#neto").val("");
           }
           
         },

@@ -304,6 +304,18 @@ function fechaHoy(){
                   return $fechaInicioAnioDB;
 }
 
+function DBF(){
+    $fecha = getdate();
+              $anio= $fecha["year"];
+              $mes= $fecha["mon"];
+              $dia= $fecha["mday"];
+
+              $fechaDB = $anio."/".$mes."/".$dia;
+
+
+    return $fechaDB;
+}
+
 
 
 
