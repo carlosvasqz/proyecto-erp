@@ -277,6 +277,7 @@
                     <th>Fecha Compra</th>
                     <th>Código Usuario</th>
                     <th>Código Orden</th>
+                    <th>Acciones</th>
                      <th></th>
                   </tr>
                 </thead>
@@ -311,9 +312,10 @@
                             <td>'.$rowRegistro_Compras['Id_Usuario'].'</td>
                             <td>'.$rowRegistro_Compras['Id_Orden'].'</td>
                             <td>
-                            
+                             <form action="compras_editar.php" method="POST">
+                                <input type="hidden" name="codigo_compra" value="'.$rowRegistro_Compras['Id_Compra'].'"/>
+                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
 
-                             
                             </td>
                           </form>
                         </tr>

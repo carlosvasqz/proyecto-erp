@@ -24,14 +24,14 @@ class Producto
 		return $cnx->query($sql);
 	}
 	function guardarDetalleVenta($proveedor,$descripcion,$cantidad,$costo){
-		$sql = "INSERT INTO detalles_factura_compra (`Id_Compra`, `Id_Articulo`, `Cantidad`, `Costo`) values ('$proveedor','$descripcion','$cantidad','$costo') ";
+		$sql = "INSERT INTO detalles_factura_compra (`Id_Compra`, `Id_Articulo`, `Cantidad`, `Costo`) values ('$proveedor','$descripcion', $cantidad , $costo) ";
 		global $cnx;
 		return $cnx->query($sql);
 
 	}
 	
-	function actualizarDetalleVenta($descripcion,$cantidad,$precio,$porcentaje){
-		$sql = " UPDATE articulos SET Existencias= Existencias + '$cantidad', Precio_Final='$precio', Porcentaje_Ganancia='$porcentaje' WHERE Id_Articulo='$descripcion'" ;
+	function actualizarDetalleVenta($descripcion,$cantidad,$existencia, $precio,$porcentaje,$Fecha){
+		$sql = " UPDATE articulos SET Existencias= Existencias + '$cantidad', Existencias_Minimas ='$existencia', Precio_Final='$precio', Porcentaje_Ganancia='$porcentaje', Fecha_Ultima_Compra='$Fecha' WHERE Id_Articulo='$descripcion'" ;
 		global $cnx;
 		return $cnx->query($sql);
 
