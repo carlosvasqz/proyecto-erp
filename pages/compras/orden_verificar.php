@@ -360,7 +360,7 @@
                     <?php
                       $queryArticulo=mysqli_query($db, "SELECT * FROM articulos WHERE Estado=1;") or die(mysqli_error());
                       while($rowArticulo=mysqli_fetch_array($queryArticulo)){
-                        echo '<option value="'.$rowArticulo['Id_Articulo'].'">'.$rowArticulo['Descripcion'].' '.$rowArticulo['Existencias'].'</option>';
+                        echo '<option value="'.$rowArticulo['Id_Articulo'].'">'.$rowArticulo['Id_Articulo'].'   '.$rowArticulo['Descripcion'].' </option>';
                       }
                     ?>
                   </select>
@@ -694,7 +694,7 @@
 var codigo = $("#codigo").val();
 var estado = $("#estado").val();
 var datos = 'codigo=' + codigo + '&estado=' + estado;
-alert(datos);
+//alert(datos);
 $.ajax({
        
         url: "orden_actualizar_estado.php",
@@ -735,7 +735,7 @@ var precio = $("#precio").val();
 
 
 var datos = 'codigo=' + codigo + '&articulo=' + articulo + '&cantidad=' + cantidad + '&precio=' + precio;
-alert(articulo);
+//alert(articulo);
 $.ajax({
        
         url: "orden_verificar_agregar_nuevo.php",
@@ -777,7 +777,7 @@ $("#btnNuevo").click(function(){
  $('.sweetalert').click(function(){
       var codigoRowAticulo = $(this).attr('id');
       var unidadesRowrecibidas = $("#cambiar" + codigoRowAticulo).val();
-      alert(unidadesRowrecibidas);
+      //alert(unidadesRowrecibidas);
 
           $.ajax({
             //Direccion destino
