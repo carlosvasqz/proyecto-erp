@@ -1058,7 +1058,7 @@ if (tipo==0) {
       // Variable con todos los valores necesarios para la consulta
       var datos = 'codigo_conversiones=' + codigo_conversiones + '&tipo=' + tipo + '&Id_Articulo=' + Id_Articulo + '&cantidad_inicial=' + cantidad_inicial + '&cantidad=' + cantidad + '&cantidad_final=' + cantidad_final + '&justificacion=' + justificacion;
 
-     alert(datos);
+    // alert(datos);
       $.ajax({
         //Direccion destino
         url: "conversiones_guardar.php",
@@ -1069,7 +1069,7 @@ if (tipo==0) {
         //cache: false,
         //success
         success: function (data) {
-          alert(data);
+      //    alert(data);q
           if (data) {
             $.notify({
               title: "Correcto : ",
@@ -1079,6 +1079,19 @@ if (tipo==0) {
               type: "success"
             });
             window.setTimeout('location.href="conversiones.php"', 5);
+          }
+        if (!data) {
+            $.notify({
+              title: "Error : ",
+              message: "¡El codigo ingresado NO existe!",
+              icon: 'fa fa-times' 
+            },{
+              type: "danger"
+            });
+            document.getElementById("Id_Articulo").focus();
+            $("#form_articulo").removeClass('has-success');
+            $("#form_articulo").removeClass('has-error');
+            $("#form_articulo").addClass('has-error');
           }
           
         },

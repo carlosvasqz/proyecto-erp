@@ -125,10 +125,29 @@
         $sqlcon = mysqli_query($db, $query) or die(mysqli_error());
         $rowCodigo=mysqli_fetch_array($sqlcon);
         if(is_null($rowCodigo['Ultima_Venta'])){
-            return "VNT.0";
+            return "VNT.1";
         }else{
             return $rowCodigo['Ultima_Venta'];
         }
+    }
+
+    function obtenerNuevoIdVentaTmp(){
+        include ('conexion.php');
+        $sql = "SELECT MAX(Id_Venta_Tmp)+1 AS Nuevo FROM ventas_tmp;";
+        $queryNuevo=mysqli_query($db, $sql) or die(mysqli_error());
+        $rowNuevo=mysqli_fetch_array($queryNuevo);
+        if (is_null($rowNuevo['Nuevo'])) {
+            $rowNuevo['Nuevo'] = 1;
+        }
+        return $rowNuevo['Nuevo'];
+    }
+
+    function obtenerDatosVentaTmp($idVentaTmp){
+        include ('conexion.php');
+        $sqlVentaTmp = "SELECT * FROM ventas_tmp WHERE Id_Venta_Tmp='$idVentaTmp'";
+        $queryVentaTmp=mysqli_query($db, $sqlVentaTmp) or die(mysqli_error());
+        $rowVentaTmp=mysqli_fetch_array($queryVentaTmp);
+        return $rowVentaTmp;
     }
 
     function obtenerUltimoCodigoUsuario(){
