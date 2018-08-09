@@ -184,7 +184,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-        menu($_SESSION['Tipo_Usuario'], $thisFileName);
+        menu($_SESSION['Tipo_Usuario'], $thisFileName,$cd);
       ?>
     </section>
     <!-- /.sidebar -->
@@ -192,47 +192,197 @@
 
   <!-- =============================================== -->
 
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Blank page
-        <small>it all starts here</small>
+        Ordenes Compra
+        <small>Compras</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Blank page</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li><a href="#">Compras</a></li>
+        <li class="active">Ordenes Compra</li>
       </ol>
     </section>
 
     <!-- Main content -->
+    
     <section class="content">
 
-      <!-- Default box -->
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Title</h3>
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-calendar-check-o"></i></span>
 
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                    title="Collapse">
-              <i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Creadas Hoy</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $hoy = getdate();
+                  $anio= $hoy["year"];
+                  $mes= $hoy["mon"];
+                  $dia= $hoy["mday"];
+
+                  $fechaInicioAnioDB = $anio."-".$mes."-".$dia;
+                  $queryCotizacionesNuevas=mysqli_query($db, "SELECT COUNT(*) AS Ordenes_Nuevas FROM ordenes_compra WHERE Fecha_Emision = '$fechaInicioAnioDB';") or die(mysqli_error());
+                  $rowCotizacionesNuevas=mysqli_fetch_array($queryCotizacionesNuevas);
+                  echo $rowCotizacionesNuevas['Ordenes_Nuevas'];
+                  
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
           </div>
+          <!-- /.info-box -->
         </div>
-        <div class="box-body">
-          Start creating your amazing application!
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-file-text"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Totales</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $queryCotizacionesTotales=mysqli_query($db, "SELECT COUNT(*) AS Total_Cotizaciones FROM ordenes_compra") or die(mysqli_error());
+                  $rowCotizacionesTotales=mysqli_fetch_array($queryCotizacionesTotales);
+                  echo $rowCotizacionesTotales['Total_Cotizaciones'];
+                  // mysqli_close($queryTotalEmpleados);
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
         </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-          Footer
+
+         <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-hourglass"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Pendientes</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $queryCotizacionesTotales=mysqli_query($db, "SELECT COUNT(*) As Ordenes_Des FROM ordenes_compra WHERE Estado=0") or die(mysqli_error());
+                  $rowCotizacionesTotales=mysqli_fetch_array($queryCotizacionesTotales);
+                  echo $rowCotizacionesTotales['Ordenes_Des'];
+                  // mysqli_close($queryTotalEmpleados);
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
         </div>
-        <!-- /.box-footer-->
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+        
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
       </div>
-      <!-- /.box -->
+      <!-- /.row -->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Lista de Ordenes de Compra</h3>
+              <!-- tools box -->
+             <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
+                  <i class="fa fa-plus"></i> <b>Registrar Nueva</b></button>
+              </div>
+              <!-- /. tools -->
+            </div>
+            <!-- /.box-header -->
+          <div class="box-body">
+              <table id="lista-ordenes" class="table table-bordered table-striped table-hover">
+                <thead>
+                  <tr>
+              
+                    <th>Codigo</th>
+                    <th>Proveedor</th>
+                    <th>Fecha de Emision</th>
+                    <th>Estado</th>
+                    <th>Sub Total</th>
+                    <th>Impuesto</th>
+                    <th>Total</th>
+                    <th>Imprimir</th>
+                    <th>Verificar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 <?php
+                    $queryOrdens=mysqli_query($db, "SELECT * FROM ordenes_compra") or die(mysqli_error());
+                   while ($rowOrden=mysqli_fetch_array($queryOrdens)){
+                      $etiqueta = null;
+                      $tootip = null;
+                      $icono = null;
+                      $color = null;
+
+                        switch ($rowOrden["Estado"]) {
+                        case 1:
+                          $etiqueta = "<small class='label bg-blue'>Registrada</small>";
+                         
+                          break;
+                        case 0:
+                          $etiqueta = "<small class='label bg-red'>Pendiente</small>";
+                          $tootip = "Habilitar";
+                          $icono = "fa fa-check-circle";
+                          $color = "info";
+                          break;
+                      }
+                    
+                      echo '
+                        <tr>
+                            <td>'.$rowOrden['Id_Orden_Compra'].'</td>
+                            <td>'.$rowOrden['Id_Proveedor'].'</td>
+                            <td>'.fechaFormato(fechaIngAEsp($rowOrden['Fecha_Emision'])).'</td>
+                            <td>'.$etiqueta.'</td>
+                            <td>Lps. '.$rowOrden['Sub_Total'].'</td>
+                            <td>Lps. '.$rowOrden['Impuesto'].'</td>
+                            <td>Lps. '.$rowOrden['Total'].'</td>
+                            
+                           
+
+                            <td>
+                              <form action="orden_pdf.php" method="POST">
+                             <input type="hidden" name="codigo_Orden" value="'.$rowOrden['Id_Orden_Compra'].'"/>
+                              <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Ver PDF"><i class="fa fa-file-text"></i></button>
+                              </td>
+                              </form>
+                              
+                                <td>
+                                <form action="orden_verificar.php" method="POST">
+                                <input type="hidden" name="codigo_Orden_imprimir" value="'.$rowOrden['Id_Orden_Compra'].'"/>
+                              <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Verificar"><i class="fa fa-check-circle"></i></button>
+                            </td>
+                           </form>
+                        </tr>
+                      ';
+                    }
+                  ?>
+                </tbody>
+                <!-- <tfoot>
+                  <tr>
+                    <th>Rendering engine</th>
+                    <th>Browser</th>
+                    <th>Platform(s)</th>
+                    <th>Engine version</th>
+                    <th>CSS grade</th>
+                  </tr>
+                </tfoot> -->
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
 
     </section>
     <!-- /.content -->
@@ -454,18 +604,43 @@
 <script>
     $.material.init();
 </script>
+<!-- DataTables -->
+<!-- <script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script> -->
+<!-- <script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
+<script src="<?php echo $cd;?>plugins/dataTables/jquery.dataTables.min.js"></script>
+<script src="<?php echo $cd;?>plugins/dataTables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
+<!-- Sweet Alert -->
+<script src="<?php echo $cd;?>plugins/sweet-alert/sweetalert.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo $cd;?>dist/js/demo.js"></script>
 <script>
+  $(function () {
+    $('#lista-ordenes').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    });
+  })    
+
   $(document).ready(function () {
     $('.sidebar-menu').tree()
   })
+
+  $("#btnRegistrarNuevo").click(function(){
+      $(location).attr('href', 'orden_registrar.php');
+    });
+
+
+
 </script>
 </body>
 </html>

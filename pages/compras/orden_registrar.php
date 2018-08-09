@@ -56,6 +56,7 @@
   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="<?php echo $cd;?>bower_components/select2/dist/css/select2.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/bootstrap-material-design.min.css">
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/ripples.min.css">
@@ -213,17 +214,17 @@
   <!-- =============================================== -->
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Registrar Categoria
-        <small>Inventario</small>
+        Registrar Orden de Compra
+        <small>Compras</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Administracion</a></li>
-        <li class="active">Registrar Categoria</li>
+        <li><a href="#">Compras</a></li>
+        <li class="active">Registrar Orden de Compra</li>
       </ol>
     </section>
 
@@ -235,68 +236,275 @@
         <!-- Horizontal Form -->
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">Datos de Registro</h3>
+            <h3 class="box-title">Encabezado de Orden de Compra</h3>
           </div>
           <!-- /.box-header -->
           <!-- form start -->
-          <form class="form-horizontal">
+          <form  class="form-horizontal">
             <div class="box-body">
-              <div class="form-group" id="form_codigo">
-                <label for="codigo_categoria" class="col-sm-2 control-label">Codigo*</label>
+               <div class="form-group" id="form_codigo">
+                <label for="codigo" class="col-sm-2 control-label">Codigo*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="codigo_categoria" placeholder="Codigo" value="<?php echo nuevoCodigo(obtenerUltimoCodigoCategoria());?>" readonly>
+                  <input type="text" class="form-control" id="codigo" placeholder="Codigo" disabled value="<?php  $queryListaProv=mysqli_query($db, "SELECT MAX(Id_Orden_compra) AS Ultimo_Codigo FROM ordenes_compra") or die(mysqli_error());
+                         while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo $rowProv['Ultimo_Codigo']+1;  
+                          }?>" >
                 </div>
               </div>
-              <!-- Date -->
-              
-              
-            <!-- /.box-body -->
-           
-          
-          <!-- /.box-header -->
-          <!-- form start -->
-          <form class="form-horizontal">
+
+               <form class="form-horizontal">
             <div class="box-body">
-              <div class="form-group" id="form_nombre_categoria">
-                <label for="nombre_categoria" class="col-sm-2 control-label">Nombre*</label>
+
+             <div class="form-group" id="form_proveedor_articulo">
+                <label for="proveedor" class="col-sm-2 control-label">Proveedor*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="nombre_categoria" placeholder="Ingrese el nomre...">
+                   <select class="form-control select2" id="proveedor" style="width: 100%;" p>
+                   <option value="">Seleccione un proveedor</option>
+                   <?php 
+                          $queryListaProv=mysqli_query($db, "SELECT * FROM proveedores") or die(mysqli_error());
+                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
+                            echo '<option value="'.$rowProv['Id_Proveedor'].'">'.$rowProv['Nombre_Proveedor'].'</option>';  
+                          }
+                        ?>
+                  
+                </select>
                 </div>
               </div>
-              <div class="form-group" id="form_descripcion_categoria">
-                <label for="descripcion_categoria" class="col-sm-2 control-label">Descripcion*</label>
+              </div>
+              </form>
+
+               <div class="form-group" id="form_descripcion_categoria">
+                <label for="fecha" class="col-sm-2 control-label">Fecha*</label>
 
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="descripcion_categoria" placeholder="Ingrese la descripcion de categoria..">
+                  <input type="text" class="form-control" id="fecha"  value="<?php echo fechaHoy();?>" disabled>
                 </div>
               </div>
              
-              <!-- Date -->
-              
-              <!-- <div class="form-group" id="form_">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
-                </div>
-              </div> -->
+            </div>
 
-     
+
+              
+
+              
+              
+
+
+
+            <!-- /.box-body -->
+          
+            <!-- /.box-footer -->
+          </form>
+        </div>
+
+         <div class="box box-info" id="agregar_nuevo" hidden>
+          <div class="box-header with-border">
+            <h3 class="box-title">Agregar Articulo</h3>
+          </div>
+          <!-- /.box-header -->
           <!-- form start -->
+   
+
+          <form name="frmdatos" class="form-horizontal">
+            <div class="box-body">
+               <div class="form-group" id="form_descripcion_articulo">
+                <label for="descripcion_articulo" class="col-sm-2 control-label">Descripcion*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="descripcion_articulo" name="descripcion_articulo" placeholder="Ingrese una descripcion para el articulo...">
+                </div>
+              </div>
+             
+            <div class="form-group" id="form_Cantidad">
+                <label for="cantidad" class="col-sm-2 control-label">Cantidad*</label>
+               <form  method="post" name="multiplicar">
+                <div class="col-sm-2">
+                  <input type="number" min="0"  class="form-control" id="cantidad" name="cantidad"  onkeyup="calcularPrecioFinal()" >
+                </div>
+              </div>
+
+               <div class="form-group" id="form_precio_unidad">
+                <label for="precio_unidad" class="col-sm-2 control-label">Precio Unidad*</label>
+
+                <div class="col-sm-2">
+                  <input type="number" min="0.00" step="0.01" class="form-control" id="precio_unidad"  name="precio_unidad" onkeyup="calcularPrecioFinal()">
+                </div>
+              </div>
+
+              
+              <div class="form-group" id="form_precio_total" >
+                <label for="precio_total" class="col-sm-2 control-label">Precio Total*</label>
+
+                <div class="col-sm-2">
+                  <input type="text"  class="form-control" id="precio_total" name="precio_total" disabled >
+                </div>
+              </div>
+              </form>
+
+              <input type="number" id="estado" value="0" disabled hidden>
+                  
+          <div class="box box-info">
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnCancelarNuevo" class="btn btn-default">Cancelar</button>
+                <button type="button" id="btnAgregar_lista_nuevo" class="btn btn-success pull-right">Agregar</button>
+              </div>
+              <div class="col-sm-4"></div>
+            </div>
+            <!-- /.box-body -->
+          </form>
+          </div>
+      
+            </div>
+
+
+
+
+
+
+
+
+
+
+              
+
+         
+
+
+      
+              
+
+
+
+            <!-- /.box-body -->
+           
+            <!-- /.box-footer -->
+          </form>
+        </div>
+
+         <div class="box box-info" id="divInfoArticulo">
+          <!-- <div class="box-header with-border"> -->
+            <!-- <h3 class="box-title">Acciones</h3> -->
+          <!-- </div> -->
+          <!-- /.box-header -->
+          <!-- form start -->
+            <form name="frmdatosPrim" class="form-horizontal">
+            <div class="box-body" id="divInfoArticulo" >
+
+             <div class="form-group" id="form_rticulos">
+                <label for="articulo" class="col-sm-2 control-label">Informacion de articulo*</label>
+
+                <div class="col-sm-9">
+                   <select class="form-control select2" id="codigo_Articulo" style="width: 100%;">
+                  <option  value="Seleccione" >Seleccione un articulo</option>
+                    <?php
+                      $queryArticulo=mysqli_query($db, "SELECT * FROM articulos WHERE Estado=1;") or die(mysqli_error());
+                      while($rowArticulo=mysqli_fetch_array($queryArticulo)){
+                        echo '<option value="'.$rowArticulo['Id_Articulo'].'">'.$rowArticulo['Descripcion'].' '.$rowArticulo['Existencias'].'</option>';
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
+
+               <div class="form-group" id="form_Cantidad">
+                <label for="cantidad" class="col-sm-2 control-label">Cantidad*</label>
+               
+                <div class="col-sm-2">
+                  <input type="number" min="0"  class="form-control" id="cantidadPrim" name="cantidadPrim"  onkeyup="calcularPrecioFinalPrim()" >
+                </div>
+              </div>
+
+              <div class="form-group" id="form_precio_unidad">
+                <label for="precio_unidad" class="col-sm-2 control-label">Precio Unidad*</label>
+                <div class="col-sm-2">
+                  <input type="text"  class="form-control" id="precio_unidadPrim"  name="precio_unidadPrim" onkeyup="calcularPrecioFinalPrim()" value="" disabled  >
+                </div>
+              </div>
+
+             
+
+               <div class="form-group" id="form_precio_total" >
+                <label for="precio_total" class="col-sm-2 control-label">Precio Total*</label>
+
+                <div class="col-sm-2">
+                  <input type="text"  class="form-control" id="precio_totalPrim" name="precio_totalPrim" disabled >
+                </div>
+
+                </form>
+              </div>
+              
+
+              </div>
+              </form>
+
+
+                <div class="box box-info">
+         
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" id="btnagregar_lista" class="btn btn-default">Agregar</button>
+                <button type="button" id="btnnuevo" class="btn btn-success pull-right">Nuevo</button>
+              </div>
+              <div class="col-sm-4"></div>
+            </div>
+            <!-- /.box-body -->
+          </form>
+        </div>
+        </div>
+
+        <div class="box box-info" id="divListarticulos">
+         <div class="box-header with-border">
+            <h3 class="box-title">Lista de Articulos</h3>
+          </div>
+         
+            <form name="frmListaArticulos" class="form-horizontal">
+            <div class="box-body"  >
+           
+                  <table id="lista-articulos" class="table table-bordered table-striped table-hover">
+                <thead>
+                  
+                </thead>
+                <tbody>
+               <div  id=rowsArticulos>
+                    
+                  </div>
+                </tbody>
+                  
+              </table>
+              
+              </div>
+              </form>
+
+
+        </div>
+
+
+
+
+        <!-- Horizontal Form -->
+       
+        <!-- Horizontal Form -->
+     
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+         
           <form class="form-horizontal">
             <div class="box-body">
               <div class="col-sm-4"></div>
               <div class="col-sm-4">
                 <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button>
-                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
+                <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Generar</button>
               </div>
               <div class="col-sm-4"></div>
             </div>
-            <!-- /.box-body -->
+          
           </form>
         </div>
       </div>
@@ -533,6 +741,8 @@
 <script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
+<!-- select2 -->
+<script src="<?php echo $cd;?>bower_components/select2/dist/js/select2.full.min.js"></script>
 <!-- InputMask -->
 <script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.js"></script>
 <script src="<?php echo $cd;?>plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
@@ -541,7 +751,61 @@
 <script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo $cd;?>dist/js/demo.js"></script>
+
+
+
+
+
 <!-- page script -->
+<script>
+  function calcularPrecioFinal(){
+ var cantidad =document.getElementById('cantidad').value;
+  var precioUnidad=document.getElementById('precio_unidad').value;
+  var preci01;
+   var precioFinal=document.getElementById('precio_total').value;
+if (cantidad=='') {
+    var num1=0; 
+  }
+  if (cantidad!='') {
+    var num1=parseFloat(cantidad);
+  }
+if (precioUnidad=='') {
+    var num2=0; 
+  }
+  if (precioUnidad!='') {
+    var num2=parseFloat(precioUnidad);
+  }
+
+var precioFinal=(num1*num2);
+     document.frmdatos.precio_total.value=precioFinal;
+}
+  </script>
+
+  <script>
+  function calcularPrecioFinalPrim(){
+ var cantidadPrim =document.getElementById('cantidadPrim').value;
+  var precioPrim=document.getElementById('precio_unidadPrim').value;
+  var preci01;
+   var precioFinalPrim=document.getElementById('precio_totalPrim').value;
+if (cantidadPrim=='') {
+    var num1=0; 
+  }
+  if (cantidadPrim!='') {
+    var num1=parseFloat(cantidadPrim);
+  }
+if (precioPrim=='') {
+    var num2=0; 
+  }
+  if (precioPrim!='') {
+    var num2=parseFloat(precioPrim);
+  }
+
+var precioFinalPrim=(num1*num2);
+     document.frmdatosPrim.precio_totalPrim.value=precioFinalPrim;
+}
+  </script>
+
+
 <script>
   $(function () {
     $('#lista-empleados').DataTable({
@@ -552,6 +816,9 @@
       'info'        : true,
       'autoWidth'   : false
     });
+
+
+      $('.select2').select2();
     //Date picker
     $('#fecha_nacimiento').datepicker({
       autoclose: true
@@ -563,7 +830,93 @@
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     $('[data-mask]').inputmask()
-    // $('#lista-empleados').DataTable();
+
+  
+   
+    $("#btnagregar_lista").click(function(){
+      var codigoArt = $("#codigo_Articulo").val();
+      var existencias = $("#cantidadPrim").val();
+      var preciU = $("#precio_unidadPrim").val();
+      var precioT = $("#precio_totalPrim").val();
+       $.ajax({
+                    type: "POST",
+                    url: "orden_enlistar_articulo.php",
+                    data: "Id_Articulo="+codigoArt,
+                    dataType: "json",
+                })
+        .done(function( data, textStatus, jqXHR ){
+                    //alert(".done - data.exito=" + data.exito + " mensaje="+data.datos.mensaje+" articulo="+data.datos.articulo.Id_Articulo);
+                      console.log(data);
+                      var tdArticulo ="<tr id='row" + data.Id_Articulo + "'>" +
+                        "<td class='sorting_1' id='Num" + data.Id_Articulo + "'>1</td>"+
+                        "<td  class='sorting_1' id='Id" + data.Id_Articulo + "'>" + data.Id_Articulo + "</td>"+
+                        "<td class='sorting_1' id='Desc" + data.Id_Articulo + "'>" + data.Descripcion + "</td>"+
+                        "<td  class='sorting_1' id='Cantidad" + data.Id_Articulo + "'>" + existencias + "</td>"+
+                        "<td  class='sorting_1' id='PecUnit" + data.Id_Articulo + "'>" + data.Precio_Final + "</td>"+
+                        "<td  class='sorting_1' id='Prec" + data.Id_Articulo + "'>" + precioT + "</td>"+
+                        
+
+                      "</tr>";
+                      $( "#lista-articulos" ).append(tdArticulo);
+                      $("#codigo_Articulo").val("Seleccione");
+                      $("#cantidadPrim").val("");
+                      $("#precio_unidadPrim").val("");
+                      $("#precio_totalPrim").val("");
+
+                    
+                })
+                .fail(function( data, textStatus, jqXHR ){
+                    alert(".fail");
+
+
+    });
+})
+
+
+    $('#codigo_Articulo').change(function(){
+      var codigoArticulo = $(this).val();
+      if (codigoArticulo=="Seleccione") {
+        $('#precio_unidadPrim').val("");
+       
+      } else {
+        $.ajax({
+          //Direccion destino
+          url: "registro_orden_datos.php",
+          // Variable con los datos necesarios
+          data: "codigo_articulo=" + codigoArticulo,
+          type: "POST",     
+          dataType: "json"
+        })
+
+        .done(function( data, textStatus, jqXHR ){
+            console.log(data);
+            $('#precio_unidadPrim').val(data.Precio_Final);
+           
+        })
+        .fail(function( data, textStatus, jqXHR ){
+          console.log(data);
+          alert(".fail");
+        });
+      }
+    });
+
+
+$(function multiplicar() {
+var cantidad = $("#cantidad").val()
+var precio = $("#precio_unidad").val()
+var precioTotal = cantidad*precio
+return precioTotal;
+});
+
+ $("#btnnuevo").click(function(){
+      $("#agregar_nuevo").attr('hidden',false);
+      $("#divInfoArticulo").attr('hidden',true);
+    });
+
+  $("#btnCancelarNuevo").click(function(){
+      $("#agregar_nuevo").attr('hidden',true);
+      $("#divInfoArticulo").attr('hidden',false);
+    });
 
     function alertaIngresarDatos(){
       $.notify({
@@ -578,6 +931,8 @@
     $("#btnCancelar").click(function(){
       $(location).attr('href', 'empleados.php');
     });
+
+
 
     $("#btnRegistrar").click(function(){
       //Obtencion de valores en los inputs

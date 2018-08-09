@@ -5,12 +5,11 @@
 	<table class="table">
 	    <thead>
 	        <tr>
-	          
-				<th>Descripcion</th>
-				<th>Compra</th>
+	          <th>Regístro Compra</th>
+				<th>Código de Artículo</th>
 				<th>Cantidad</th>
-				<th>Existencia</th>	
-				<th>Costo</th>
+				<th>Existencia Minima</th>	
+				<th>Utilidad</th>
 				<th>Porcentaje</th>	
 				<th>Precio Final</th>	           
 	            <th></th>
@@ -21,9 +20,9 @@
 	    	foreach($_SESSION['detalle'] as $k => $detalle){ 
 	    	?>
 	        <tr>
-	       
+
+	       <td><?php echo $detalle['proveedor'];?></td>
 	         <td><?php echo $detalle['descripcion'];?></td>
-	         <td><?php echo $detalle['compra'];?></td>
 	         <td><?php echo $detalle['cantidad'];?></td>
 	         <td><?php echo $detalle['existencia'];?></td>
 	         <td><?php echo $detalle['costo'];?></td>

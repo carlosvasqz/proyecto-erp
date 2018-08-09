@@ -21,9 +21,11 @@ $queryVerificar = mysqli_query($db, "SELECT Tipo FROM conversiones WHERE Id_Conv
 	$rowTipo=mysqli_fetch_array($queryVerificar);
 	if($rowTipo['Tipo']==1){
 $sql=mysqli_query($db,"UPDATE articulos SET Existencias= Existencias + '$cantidad_final' WHERE Id_Articulo='$Id_Articulo'") or die(mysqli_error());
+echo 'Guardado';
 }
 	if ($rowTipo['Tipo']==0) {
            $sql=mysqli_query($db,"UPDATE articulos SET Existencias= Existencias - '$cantidad_final' WHERE Id_Articulo='$Id_Articulo'") or die(mysqli_error());
+           echo 'Guardado';
 }
         
             
