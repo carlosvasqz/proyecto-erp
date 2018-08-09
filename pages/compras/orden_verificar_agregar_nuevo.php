@@ -3,13 +3,10 @@ include ('../../inc/conexion.php');
  include ('../../inc/util.php');
 //$empleado=$_GET['empleado'];
 $codigo=$_POST['codigo'];
-$idArticuloListar=$_POST['idArticuloListar'];
-$existenciasListar=$_POST['existenciasListar'];
-$preciUListar=$_POST['preciUListar'];
-$precioTListar=$_POST['precioTListar'];
-$idProveedor=$_POST['idProveedor'];
-$fecha=$_POST['fecha'];
-$estado=$_POST['estado'];
+$articulo=$_POST['articulo'];
+$cantidad=$_POST['cantidad'];
+$precio=$_POST['precio'];
+
 
 
 
@@ -25,7 +22,7 @@ $estado=$_POST['estado'];
 //echo "INSERT INTO  detalles_orden_compra (Id_Orden_Compra, Id_Articulo, Cantidad, Precio_Unitario, Precio_Total) VALUES ('$codigo','$idArticuloListar','$existenciasListar','$preciUListar','$precioTListar');";
 //exit();
 
-	$queryGuardar = mysqli_query($db, "INSERT INTO  detalles_orden_compra (Id_Orden_Compra, Id_Articulo, Cantidad, Precio_Unitario, Precio_Total) VALUES ('$codigo','$idArticuloListar','$existenciasListar','$preciUListar','$precioTListar');") or die(mysqli_error());
+	$queryGuardar = mysqli_query($db, "INSERT INTO  detalles_orden_compra (Id_Orden_Compra, Id_Articulo, Cantidad, Precio_Unitario, Precio_Total) VALUES ('$codigo','$articulo','$cantidad','$precio','0');") or die(mysqli_error());
 
 
 

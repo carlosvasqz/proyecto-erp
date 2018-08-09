@@ -23,7 +23,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Proveedores</title>
+  <title>MaterialAdminLTE 2 | Cierres Diarios</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -35,6 +35,7 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
+   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/select2/dist/css/select2.min.css">
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/AdminLTE.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/bootstrap-material-design.min.css">
@@ -192,168 +193,114 @@
 
   <!-- =============================================== -->
 
+  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Ordenes Compra
+        Verificar Orden de Compras
         <small>Compras</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Compras</a></li>
-        <li class="active">Ordenes Compra</li>
+        <li class="active">Verificar Orden de Compra</li>
       </ol>
     </section>
 
+     <?php
+
+      $queryOrdenE=mysqli_query($db, "SELECT * FROM ordenes_compra WHERE Id_Orden_Compra = '".$_POST['codigo_orden']."'") or die(mysqli_error());
+      $rowOrdenE=mysqli_fetch_array($queryOrdenE);
+
+      $queryOrden=mysqli_query($db, "SELECT * FROM detalles_orden_compra WHERE Id_Orden_Compra = '".$_POST['codigo_orden']."'") or die(mysqli_error());
+      $rowOrden=mysqli_fetch_array($queryOrden);
+    ?>
+
     <!-- Main content -->
-    
-    <section class="content">
-
-      <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-calendar-check-o"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Creadas Hoy</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $hoy = getdate();
-                  $anio= $hoy["year"];
-                  $mes= $hoy["mon"];
-                  $dia= $hoy["mday"];
-
-                  $fechaInicioAnioDB = $anio."-".$mes."-".$dia;
-                  $queryCotizacionesNuevas=mysqli_query($db, "SELECT COUNT(*) AS Ordenes_Nuevas FROM ordenes_compra WHERE Fecha_Emision = '$fechaInicioAnioDB';") or die(mysqli_error());
-                  $rowCotizacionesNuevas=mysqli_fetch_array($queryCotizacionesNuevas);
-                  echo $rowCotizacionesNuevas['Ordenes_Nuevas'];
-                  
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
+<section class="content">
+    <div class="row">
+      <!-- columna izq -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Encabezado de Orden de Compra</h3>
           </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-file-text"></i></span>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form  class="form-horizontal">
+            <div class="box-body">
+               <div class="form-group" id="form_codigo">
+                <label for="codigo" class="col-sm-2 control-label">Codigo*</label>
 
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Totales</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryCotizacionesTotales=mysqli_query($db, "SELECT COUNT(*) AS Total_Cotizaciones FROM ordenes_compra") or die(mysqli_error());
-                  $rowCotizacionesTotales=mysqli_fetch_array($queryCotizacionesTotales);
-                  echo $rowCotizacionesTotales['Total_Cotizaciones'];
-                  // mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-
-         <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-hourglass"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Pendientes</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryCotizacionesTotales=mysqli_query($db, "SELECT COUNT(*) As Ordenes_Des FROM ordenes_compra WHERE Estado=0") or die(mysqli_error());
-                  $rowCotizacionesTotales=mysqli_fetch_array($queryCotizacionesTotales);
-                  echo $rowCotizacionesTotales['Ordenes_Des'];
-                  // mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-        
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Lista de Ordenes de Compra</h3>
-              <!-- tools box -->
-             <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
-                  <i class="fa fa-plus"></i> <b>Registrar Nueva</b></button>
+                <div class="col-sm-9">
+                <input type="hidden" id="estadoVerificado" value="<?php echo $rowOrdenE['Estado']?>;">
+                  <input type="text" class="form-control" id="codigo" placeholder="Codigo" disabled value="<?php echo $rowOrden['Id_Orden_Compra']?>" >
+                </div>
               </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
-          <div class="box-body">
+
+               <form class="form-horizontal">
+            <div class="box-body">
+
+             <div class="form-group" id="form_proveedor_articulo">
+                <label for="proveedor" class="col-sm-2 control-label">Proveedor*</label>
+
+                <div class="col-sm-9">
+                   <select disabled class="form-control select2" id="proveedor" style="width: 100%;" p>
+                  
+                   <option value=""> <?php echo $rowOrdenE['Id_Proveedor'] ?></option>
+                  
+                  
+                </select>
+                </div>
+              </div>
+              </div>
+              </form>
+
+               <div class="form-group" id="form_descripcion_categoria">
+                <label for="fecha" class="col-sm-2 control-label">Fecha*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="fecha"  value="<?php echo $rowOrdenE['Fecha_Emision'];?>" disabled>
+                  <input type="hidden" id="fechaDB" value="">
+                </div>
+              </div>
+
+              <div class="box-body">
               <table id="lista-ordenes" class="table table-bordered table-striped table-hover">
                 <thead>
                   <tr>
               
-                    <th>Codigo</th>
-                    <th>Proveedor</th>
-                    <th>Fecha de Emision</th>
-                    <th>Estado</th>
-                    <th>Verificar</th>
+                    <th>Numero</th>
+                    <th>Orden</th>
+                    <th>Articulo</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Actualizar Unidades Recibidas</th>
+                    <th>Actualizar</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
                  <?php
-                    $queryOrdens=mysqli_query($db, "SELECT * FROM ordenes_compra") or die(mysqli_error());
-                   while ($rowOrden=mysqli_fetch_array($queryOrdens)){
-                      $etiqueta = null;
-                      $tootip = null;
-                      $icono = null;
-                      $color = null;
-
-
-
-                        switch ($rowOrden["Estado"]) {
-                        case 1:
-                          $etiqueta = "<small class='label bg-blue'>Registrada</small>";
-                         
-                          break;
-                        case 0:
-                          $etiqueta = "<small class='label bg-red'>Pendiente</small>";
-                          $tootip = "Habilitar";
-                          $icono = "fa fa-check-circle";
-                          $color = "info";
-                          break;
-                      }
+                    $queryOrdenL=mysqli_query($db, 'SELECT * FROM detalles_orden_compra WHERE Id_Orden_Compra='.$rowOrden['Id_Orden_Compra']) or die(mysqli_error());
+                   while ($rowOrdenL=mysqli_fetch_array($queryOrdenL)){
+                    
+                      
                     
                       echo '
                         <tr>
-                            <td>'.$rowOrden['Id_Orden_Compra'].'</td>
-                            <td>'.$rowOrden['Id_Proveedor'].'</td>
-                            <td>'.fechaFormato(fechaIngAEsp($rowOrden['Fecha_Emision'])).'</td>
-                            <td>'.$etiqueta.'</td>
-                           
-                            
-                           
+                            <td>'.$rowOrdenL['Num_Detalle'].'</td>
+                            <td>'.$rowOrdenL['Id_Orden_Compra'].'</td>
+                            <td>'.$rowOrdenL['Id_Articulo'].'</td>
+                            <td>'.$rowOrdenL['Cantidad'].'</td>
+                            <td>'.$rowOrdenL['Precio_Unitario'].'</td>
+                            <td><input type="number" class="cambiar" id="cambiar'.$rowOrdenL['Num_Detalle'].'"></td>
+                            <td>
+                             <input type="hidden" name="codigo_detalle" value="'.$rowOrdenL['Num_Detalle'].'"/>
+                              <button type="button" id="'.$rowOrdenL['Num_Detalle'].'" class="btn btn-success btn-sm sweetalert" data-toggle="tooltip" title=""><i class="fa fa-check"></i></button></td>
 
-                          
-                             
-                           
-                              
-                                <td>
-                                <form action="orden_verificar.php" method="POST">
-
-                                <input type="hidden" name="codigo_orden" value="'.$rowOrden['Id_Orden_Compra'].'"/>
-                              <button type="submit" hidden class="btn btn-primary btn-sm" data-toggle="tooltip" title="Verificar"><i class="fa fa-check-circle"></i></button>
-                            </td>
-                           </form>
                         </tr>
                       ';
                     }
@@ -370,14 +317,121 @@
                 </tfoot> -->
               </table>
             </div>
+
+            
+                  <div class="col-sm-12">
+                    <input type="hidden" id="estado" value="1">
+                    <button type="button" id="btnNuevo" class="btn btn-block btn-success">Nuevo</button>
+                  
+               
+            </div>
+             
+            </div>
+
+
+              
+
+              
+              
+
+
+
+            <!-- /.box-body -->
+          
+            <!-- /.box-footer -->
+          </form>
+
+
+          
+        </div>
+         <form  class="form-horizontal">
+            <div class="box-body">
+ 
+               <div hidden class="col-xs-12" id="divNuevo">
+          <div class="box">
+           
+            <!-- /.box-header -->
+            <div class="box-body">
+               <div class="form-group" id="form_rticulos">
+                <label for="articulo" class="col-sm-2 control-label">Informacion de articulo*</label>
+
+                <div class="col-sm-9">
+                   <select class="form-control select2" id="codigo_Articulo" style="width: 100%;">
+                    <?php
+                      $queryArticulo=mysqli_query($db, "SELECT * FROM articulos WHERE Estado=1;") or die(mysqli_error());
+                      while($rowArticulo=mysqli_fetch_array($queryArticulo)){
+                        echo '<option value="'.$rowArticulo['Id_Articulo'].'">'.$rowArticulo['Descripcion'].' '.$rowArticulo['Existencias'].'</option>';
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
+
+               <div class="form-group" id="form_Cantidad">
+                <label for="cantidad" class="col-sm-2 control-label">Cantidad*</label>
+                  <div class="col-sm-2">
+                  <input type="number" min="0"  class="form-control" id="cantidad" name="cantidad" required  >
+                </div>
+              </div>
+
+              <div class="form-group" id="form_Cantidad">
+                <label for="precio" class="col-sm-2 control-label">Precio*</label>
+                  <div class="col-sm-2">
+                  <input type="number" min="0.00" step="0.01"  class="form-control" id="precio" name="precio" required  >
+                </div>
+              </div>
+
+                  <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+                  <div class="col-sm-12">
+                    <input type="hidden" id="estado" value="1">
+                    <button type="button" id="btnAgregar" class="btn btn-block btn-success">Agregar</button>
+                  
+                </div>
+            </div>
+            <!-- /.box-body -->
+          </div>          
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+          
+          <!-- /.box -->
+       
+          <!-- /.box -->
+        </div>
+          
+          <!-- /.box -->
+        </div>
+
+        </form>
+
+       
+
+         <div class="col-xs-12">
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+                  <div class="col-sm-12">
+                    <input type="hidden" id="estado" value="1">
+                    <button type="button" id="aceptar" class="btn btn-block btn-success">Aceptar</button>
+                  
+                </div>
+            </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
-        </div>
+        </div>  
+
+
+          
+      
         <!-- /.col -->
       </div>
       <!-- /.row -->
 
+      <!-- /.row -->
     </section>
     <!-- /.content -->
   </div>
@@ -611,30 +665,166 @@
 <script src="<?php echo $cd;?>plugins/sweet-alert/sweetalert.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
+
+<script src="<?php echo $cd;?>bower_components/select2/dist/js/select2.full.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo $cd;?>dist/js/demo.js"></script>
 <script>
   $(function () {
-    $('#lista-ordenes').DataTable({
-      'paging'      : true,
-      'lengthChange': false,
-      'searching'   : true,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
-    });
-  })    
-
+      $('.select2').select2();
+    //Date picker
+  })
   $(document).ready(function () {
     $('.sidebar-menu').tree()
+
+       var codigoRowAticulo = $('.sweetalert').attr('id');
+     $("#cambiar" + codigoRowAticulo).val();
+    var estado = $("#estadoVerificado").val();
+
+
+
+    if(estado == 0){
+
+    }
   })
 
-  $("#btnRegistrarNuevo").click(function(){
-      $(location).attr('href', 'orden_registrar.php');
+ 
+
+ $("#aceptar").click(function(){
+var codigo = $("#codigo").val();
+var estado = $("#estado").val();
+var datos = 'codigo=' + codigo + '&estado=' + estado;
+alert(datos);
+$.ajax({
+       
+        url: "orden_actualizar_estado.php",
+        data: datos,
+        type: "POST",     
+        dataType: "html",
+
+        success: function(data){ 
+            if (data) {
+            
+            alert("Orden de compra verificada")
+             window.location.href="ordenes_compra.php";
+          }
+          if (!data) {
+           alert("Error")
+            
+          }
+
+        },
+
+        error : function(xhr, status){
+
+        }, 
+        complete : function(xhr, status){
+
+        }
+});
+
+  });
+
+
+
+ $("#btnAgregar").click(function(){
+var codigo = $("#codigo").val();
+var articulo = $("#codigo_Articulo").val();
+var cantidad = $("#cantidad").val();
+var precio = $("#precio").val();
+
+
+var datos = 'codigo=' + codigo + '&articulo=' + articulo + '&cantidad=' + cantidad + '&precio=' + precio;
+alert(articulo);
+$.ajax({
+       
+        url: "orden_verificar_agregar_nuevo.php",
+        data: datos,
+        type: "POST",     
+        dataType: "html",
+
+        success: function(data){ 
+            if (data) {
+            
+            alert("nuevo agregado")
+             window.location.reload();
+          }
+          if (!data) {
+           alert("Error")
+            
+          }
+
+        },
+
+        error : function(xhr, status){
+
+        }, 
+        complete : function(xhr, status){
+
+        }
+});
+
+  });
+
+
+$("#btnNuevo").click(function(){
+   $("#divNuevo").attr('hidden',false);
+
+});
+
+
+    
+ $('.sweetalert').click(function(){
+      var codigoRowAticulo = $(this).attr('id');
+      var unidadesRowrecibidas = $("#cambiar" + codigoRowAticulo).val();
+      alert(unidadesRowrecibidas);
+
+          $.ajax({
+            //Direccion destino
+            url: "orden_cambiar_cantidad.php",
+            // Variable con los datos necesarios
+            data: "codigo_detalle=" + codigoRowAticulo + "&unidades=" + unidadesRowrecibidas,
+            type: "POST",     
+            dataType: "html",
+            //cache: false,
+            //success
+          success: function (data) {
+          // alert(data);
+            
+          if (data) {
+            
+            window.location.reload();
+       
+
+          }
+          if (!data) {
+           alert("Error")
+          
+          }
+               
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          //    title: "Informacion : ",
+          //    message: "Petición realizada!",
+          //    icon: 'fa fa-check' 
+          //  },{
+          //    type: "info"
+          // });
+        }   
+      });
+
     });
-
-
-
+  
+   
+  
+  
+  
 </script>
 </body>
 </html>

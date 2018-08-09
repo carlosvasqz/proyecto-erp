@@ -261,7 +261,7 @@
 
                 <div class="col-sm-9">
                    <select class="form-control select2" id="proveedor" style="width: 100%;" p>
-                   <option value="">Seleccione un proveedor</option>
+                   <option value="S">Seleccione un proveedor</option>
                    <?php 
                           $queryListaProv=mysqli_query($db, "SELECT * FROM proveedores") or die(mysqli_error());
                           while ($rowProv=mysqli_fetch_array($queryListaProv)) {
@@ -298,6 +298,8 @@
           
             <!-- /.box-footer -->
           </form>
+
+          
         </div>
 
          <div class="box box-info" id="agregar_nuevo" hidden>
@@ -451,8 +453,8 @@
             <div class="box-body">
               <div class="col-sm-4"></div>
               <div class="col-sm-4">
-                <button type="button" id="btnagregar_lista" class="btn btn-default">Agregar</button>
-                <button type="button" id="btnnuevo" class="btn btn-success pull-right">Nuevo</button>
+                <button type="button" id="btnagregar_lista" class="btn btn-block btn-success">Agregar</button>
+                
               </div>
               <div class="col-sm-4"></div>
             </div>
@@ -811,7 +813,7 @@ var precioFinalPrim=(num1*num2);
 <script>
   $(function () {
     $('#lista-empleados').DataTable({
-      'paging'      : true,
+      'paging'      : false,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,
@@ -865,7 +867,7 @@ var precioFinalPrim=(num1*num2);
                       $("#precio_totalPrim").val("");
 
                       var codigoOrdenListar = $("#codigo").val();
-                      var fechaDB = $("#fechaDB").val();
+                      
                       var estado = $("#estado").val();
 
 
@@ -873,7 +875,7 @@ var precioFinalPrim=(num1*num2);
                       var idProveedorListar = data.Id_Proveedor;
 
 
-                      var datoslistar = 'codigo=' + codigoOrdenListar + '&idArticuloListar=' + idArticuloListar + '&existenciasListar=' + existencias + '&preciUListar=' + preciU + '&precioTListar=' + precioT + '&idProveedor=' + idProveedorListar + '&fecha=' + fechaDB + '&estado=' + estado;
+                      var datoslistar = 'codigo=' + codigoOrdenListar + '&idArticuloListar=' + idArticuloListar + '&existenciasListar=' + existencias + '&preciUListar=' + preciU + '&precioTListar=' + precioT + '&estado=' + estado;
                       alert(datoslistar);
 
                       $.ajax({
@@ -883,7 +885,7 @@ var precioFinalPrim=(num1*num2);
                       dataType: "html",
 
                          success: function (data) {
-          // alert(data);
+          alert(data.trim);
           if (datoslistar) {
             
             alert("rowSuccess");
@@ -917,7 +919,71 @@ var precioFinalPrim=(num1*num2);
 
     });
 })
+$('#proveedor').change(function(){
+  var codigoEncabezado = $("#codigo").val();
+  var fechaDBEncabezado = $("#fechaDB").val();
+  var proveedorEncabezado = $("#proveedor").val();
+ 
+ var datos ='codigo=' + codigoEncabezado + '&proveedor=' + proveedorEncabezado + '&fecha=' + fechaDBEncabezado;
 
+$.ajax({
+                       url: "guardar_orden_encabezado.php",
+                      data: datos,
+                      type: "POST",     
+                      dataType: "html",
+
+                         success: function (data) {
+          alert(data.trim);
+          if (datos) {
+            
+         
+          $('#proveedor').attr('disabled',true);
+
+          }
+          if (!datos) {
+        alert("rowError");
+          }
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          //    title: "Informacion : ",
+          //    message: "Petición realizada!",
+          //    icon: 'fa fa-check' 
+          //  },{
+          //    type: "info"
+          // });
+        } 
+                      })
+
+});
+
+  $('#btnRegistrar').click(function(){
+    var proveedor = $("#proveedor").val("S")
+
+     if (proveedor=='') {
+        $("#proveedor").attr('required',true);
+        document.getElementById("proveedor").focus();
+        $("#form_proveedor_articulo").removeClass('has-success');
+        $("#form_proveedor_articulo").removeClass('has-error');
+        $("#form_proveedor_articulo").addClass('has-error');
+        alertaIngresarDatos();
+        return false;
+      } else {
+        $("#proveedor").attr('required',false);
+        $("#form_proveedor_articulo").removeClass('has-success');
+        $("#form_proveedor_articulo").removeClass('has-error');
+        $("#form_proveedor_articulo").addClass('has-success');
+      }
+
+
+window.location.href="ordenes_compra.php";
+
+  });
 
     $('#codigo_Articulo').change(function(){
       var codigoArticulo = $(this).val();
@@ -980,7 +1046,7 @@ return precioTotal;
 
 
 
-    $("#btnRegistrar").click(function(){
+    $("#d").click(function(){
       //Obtencion de valores en los inputs
       var codigoCategoria = $("#codigo_categoria").val();
       var nombreCategoria = $("#nombre_categoria").val();
