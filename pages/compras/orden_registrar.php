@@ -407,7 +407,7 @@
                     <?php
                       $queryArticulo=mysqli_query($db, "SELECT * FROM articulos WHERE Estado=1;") or die(mysqli_error());
                       while($rowArticulo=mysqli_fetch_array($queryArticulo)){
-                        echo '<option value="'.$rowArticulo['Id_Articulo'].'">'.$rowArticulo['Descripcion'].' '.$rowArticulo['Existencias'].'</option>';
+                        echo '<option value="'.$rowArticulo['Id_Articulo'].'">'.$rowArticulo['Id_Articulo'].' '.$rowArticulo['Descripcion'].' </option>';
                       }
                     ?>
                   </select>

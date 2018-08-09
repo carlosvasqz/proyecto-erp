@@ -909,7 +909,7 @@
       // Variable con todos los valores necesarios para la consulta
       var datos = 'codigo_articulo=' + codigoArticulo + '&descripcion_articulo=' + descripcionArticulo + '&existencias_articulos=' + existencias + '&existencias_minimas_articulos=' + existenciasMinimas + '&precio_articulo=' + precioArticulo + '&ganancia_articulos=' + ganancia +  '&estado=' + estado + '&proveedor_articulo=' + proveedor + '&fecha_compra=' + ultimaCompra + '&fecha_venta=' + ultimaVenta + '&categoria_articulo=' + categoria;
 
-      alert(datos);
+     //alert(datos);
       $.ajax({
         //Direccion destino
         url: "articulos_guardar.php",
