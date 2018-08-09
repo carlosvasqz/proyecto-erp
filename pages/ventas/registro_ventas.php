@@ -38,6 +38,38 @@
     die();
   } else {
     $hoy = getdate();
+    $idVentaTmp = null;
+    // $datosVentaTmp = null;
+    $cliente = null;
+    $subTotal = 0;
+    $descuento = 0;
+    $isv = 0;
+    $total = 0;
+    if (isset($_POST['codigo_venta_tmp'])) {
+      $idVentaTmp = $_POST['codigo_venta_tmp'];
+  
+      $datosVentaTmp = obtenerDatosVentaTmp($idVentaTmp);
+      // $detallesVentaTmp = obtenerDetallesVentaTmp($idVentaTmp);
+      // usuario
+      $fecha_venta = $datosVentaTmp['Fecha'];
+      $fecha_venta_formato = fechaBDAEsp($datosVentaTmp['Fecha']);
+      $fecha_venta_formato = fechaFullFormato($fecha_venta_formato);
+      $cliente = $datosVentaTmp['Id_Cliente'];
+      $subTotal = $datosVentaTmp['Sub_Total'];
+      $descuento = $datosVentaTmp['Descuento'];
+      $isv = $datosVentaTmp['Impuesto'];
+      $total = $datosVentaTmp['Total'];	
+  
+    } else {
+      // $idVentaTmp = "is not set";
+      $fecha_venta = date("Y-m-d");
+      $fecha_venta_formato = fechaFullFormato($hoy['mday']."/".$hoy['mon']."/".$hoy['year']);;
+      $subTotal = 0;
+      $descuento = 0;
+      $isv = 0;
+      $total = 0;
+    }
+    $existencias;
 ?>
 <!DOCTYPE html>
 <html>
@@ -76,6 +108,21 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <style>
+    .example-modal .modal {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      right: auto;
+      left: auto;
+      display: block;
+      z-index: 1;
+    }
+
+    .example-modal .modal {
+      background: transparent !important;
+    }
+  </style>
 </head>
 <body class="skin-blue sidebar-mini fixed">
 <!-- Site wrapper -->
@@ -240,35 +287,36 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <!-- <form class="form-horizontal"> -->
+              <form class="form-horizontal">
                 <div class="form-group" id="form_codigo_venta">
                   <label for="codigo_venta" class="col-sm-2 control-label">Venta*</label>
 
                   <div class="col-sm-10">
                     <input type="text" class="form-control" id="codigo_venta" placeholder="Codigo de venta" value="<?php echo obtenerUltimoCodigoVenta();?>" disabled>
+                    <input type="hidden" id="codigo_venta_tmp" value="<?php if(is_null($idVentaTmp)){echo obtenerNuevoIdVentaTmp();}else{echo $idVentaTmp;}?>">
                   </div>
                 </div>
                 <!-- </form> -->
                 <div class="form-group" id="form_usuario">
-                  <label for="usuario" class="col-sm-2 control-label">Usuario*</label>
+                  <label for="usuario" class="col-sm-2 control-label">Vendedor*</label>
 
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="usuario" placeholder="Usuario" value="<?php echo $_SESSION['Nombre'];?>" readonly>
+                    <input type="text" class="form-control" id="usuario" placeholder="Usuario" value="<?php echo $_SESSION['Nombre'] . " " .$_SESSION['Apellido'];?>" readonly>
                     <input type="hidden" id="codigo_usuario" value="<?php echo $_SESSION['Id_Usuario'];?>">
                   </div>
                 </div>
-                <!-- </form> -->
                 <div class="form-group" id="form_fecha">
                   <label for="fecha" class="col-sm-2 control-label">Fecha*</label>
 
                   <div class="col-sm-10">
                     <!-- <div class="input-group"> -->
                       <!-- <span class="input-group-addon"><i class="fa fa-calendar"></i></span> -->
-                      <input type="text" class="form-control" id="fecha_formato" placeholder="Fecha" value="<?php echo fechaFullFormato($hoy['mday']."/".$hoy['mon']."/".$hoy['year']);?>" readonly>
-                      <input type="hidden" id="fecha" value="<?php echo $hoy['year']."-".$hoy['mon']."-".$hoy['mday'];?>">
+                      <input type="text" class="form-control" id="fecha_formato" placeholder="Fecha" value="<?php echo $fecha_venta_formato;?>" readonly>
+                      <input type="hidden" id="fecha" value="<?php echo $fecha_venta;?>">
                     <!-- </div> -->
                   </div>
                 </div>
+              </form>
                 <!-- </form> -->
             </div>
             <!-- /.box-body -->
@@ -282,7 +330,8 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <div class="form-group" id="form_codigo_cliente">
+              <form action="" class="form-horizontal">
+                <div class="form-group" id="form_codigo_cliente">
                   <label for="codigo_cliente" class="col-sm-2 control-label">Codigo*</label>
 
                   <div class="col-sm-10">
@@ -298,7 +347,11 @@
                       <?php
                         $queryCliente=mysqli_query($db, "SELECT * FROM clientes WHERE Estado=1;") or die(mysqli_error());
                         while($rowCliente=mysqli_fetch_array($queryCliente)){
-                          echo '<option value="'.$rowCliente['Id_Cliente'].'">'.$rowCliente['Nombres'].' '.$rowCliente['Apellido'].'</option>';
+                          if ($rowCliente['Id_Cliente']===$cliente) {
+                            echo '<option value="'.$rowCliente['Id_Cliente'].'" selected>'.$rowCliente['Nombres'].' '.$rowCliente['Apellido'].'</option>';
+                          } else {
+                            echo '<option value="'.$rowCliente['Id_Cliente'].'">'.$rowCliente['Nombres'].' '.$rowCliente['Apellido'].'</option>';
+                          }
                         }
                       ?>
                     </select>
@@ -311,6 +364,7 @@
                     <input type="text" class="form-control" id="rtn_cliente" placeholder="RTN" value="" readonly>
                   </div>
                 </div>
+              </form>
             </div>
             <!-- /.box-body -->
           </div>
@@ -324,15 +378,214 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Articulos</h3>
+              <h3 class="box-title">Detalles de la venta</h3>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info" id="modalAgregar">
+                  <i class="fa fa-plus"></i> <b>Agregar</b></button>
+              </div>
+              <!-- /. tools -->
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-             
+              <table class="table table-bordered table-hover" id="" name="">
+                <thead>
+                  <th>Num Detalle</th>
+                  <th>Codigo Articulo</th>
+                  <th>Descripcion</th>
+                  <th>Cantidad</th>
+                  <th>Precio Unitario</th>
+                  <th>Total</th>
+                  <th>Acciones</th>
+                </thead>
+                <tbody id="detalles">
+                  <?php 
+                    if (!is_null($idVentaTmp)){
+                      $sqlExisteVenta = "SELECT COUNT(*) AS Existe FROM detalles_venta_tmp WHERE Id_Venta_Tmp = '$idVentaTmp'";
+                      $queryExisteVenta=mysqli_query($db, $sqlExisteVenta) or die(mysqli_error());
+                      $rowExiste=mysqli_fetch_array($queryExisteVenta);
+                      if($rowExiste['Existe']>0){
+                        $sqlVentaDetalles = "SELECT Num_Detalle_Tmp, Id_Articulo, Cantidad, Precio, Total_Detalle FROM detalles_venta_tmp WHERE Id_Venta_Tmp = '$idVentaTmp'";
+                        $queryVentaDetalles=mysqli_query($db, $sqlVentaDetalles) or die(mysqli_error());
+                        while($rowVentaDetalles=mysqli_fetch_array($queryVentaDetalles)){
+                          $sqlDescripcionProducto = "SELECT Descripcion FROM articulos WHERE Id_Articulo = '".$rowVentaDetalles['Id_Articulo']."';";
+                          $queryDescripcionProducto = mysqli_query($db, $sqlDescripcionProducto) or die(mysqli_error());
+                          $rowDescripcionProducto = mysqli_fetch_array($queryDescripcionProducto);
+                          echo '<tr id="'.$rowVentaDetalles['Id_Articulo'].'">';
+                          echo '<td>'.$rowVentaDetalles['Num_Detalle_Tmp'].'</td>';
+                          echo '<td>'.$rowVentaDetalles['Id_Articulo'].'</td>';
+                          echo '<td>'.$rowDescripcionProducto['Descripcion'].'</td>';
+                          echo '<td>'.$rowVentaDetalles['Cantidad'].'</td>';
+                          echo '<td>'.$rowVentaDetalles['Precio'].'</td>';
+                          echo '<td>'.$rowVentaDetalles['Total_Detalle'].'</td>';
+                          echo '<td>
+                            <button class="btn btn-primary btn-sm editarfila" title="Modificar cantidad">
+                              <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-primary btn-sm eliminarfila" title="Quitar de la lista">
+                              <i class="fa fa-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                        ';
+                        }
+                      } else {
+                        echo '<tr>
+                        <td>-----</td>
+                        <td>-----</td>
+                        <td>-----</td>
+                        <td>-----</td>
+                        <td>-----</td>
+                        <td>-----</td>
+                        <td>-----</td>
+                      </tr>
+                      ';
+                      }
+                    } else {
+                      echo '<tr>
+                        <td>-----</td>
+                        <td>-----</td>
+                        <td>-----</td>
+                        <td>-----</td>
+                        <td>-----</td>
+                        <td>-----</td>
+                        <td>-----</td>
+                      </tr>
+                      ';
+                    }
+                  ?>
+                </tbody>
+              </table>
+              <div class="col-xs-9"></div>
+              <div class="col-xs-3">
+                <table class="table table-bordered table-hover table-striped" id="" name="">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <!-- <div class="form-horizontal"> -->
+                          <div class="form-group" id="form_usuario">
+                            <label for="sub_total" class="col-sm-3 control-label"><b>SUB</b></label>
+
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control" id="sub_total" placeholder="Subtotal" value="<?php echo $subTotal; ?>" readonly>
+                            </div>
+                          </div>
+                        <!-- </div> -->
+                        <!-- <div class="form-horizontal"> -->
+                          <!-- <div class="form-group" id="form_usuario">
+                            <label for="descuento" class="col-sm-3 control-label"><b>DESC</b></label>
+
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control" id="descuento" placeholder="Descuento" value="<?php //echo $descuento; ?>" readonly>
+                            </div>
+                          </div> -->
+                          <div class="form-group" id="form_usuario">
+                            <label for="isv" class="col-sm-3 control-label"><b>ISV</b></label>
+
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control" id="isv" placeholder="ISV" value="<?php echo $isv; ?>" readonly>
+                            </div>
+                          </div>
+                        <!-- </div> -->
+                        <!-- <div class="form-horizontal"> -->
+                          <div class="form-group" id="form_usuario">
+                            <label for="total" class="col-sm-3 control-label"><b>TOTAL</b></label>
+
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control" id="total" placeholder="Total" value="<?php echo $total; ?>" readonly>
+                            </div>
+                          </div>
+                        <!-- </div> -->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
+          <!-- modal default -->
+          <div class="modal fade" id="modal-default">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title">Agregar articulo</h4>
+                </div>
+                <div class="modal-body">
+                <!-- seleccion del articulo -->
+                  <form action="" class="form-horizontal">
+                    <div class="form-group" id="form_articulo">
+                      <label for="articulo" class="col-sm-2 control-label">Articulo*</label>
+
+                      
+                      <div class="col-sm-10">
+                        <select class="form-control select2" id="articulo" style="width: 100%;">
+                          <option value="Seleccione" disabled selected>Seleccione...</option>
+                          <?php
+                            $queryArticulo=mysqli_query($db, "SELECT * FROM articulos WHERE Estado=1 AND Existencias>0;") or die(mysqli_error());
+                            while($rowArticulo=mysqli_fetch_array($queryArticulo)){
+                              global $existencias;
+                              $existencias = $rowArticulo['Existencias'];
+                              echo '<option value="'.$rowArticulo['Id_Articulo'].'">'.$rowArticulo['Id_Articulo'].' | '.$rowArticulo['Descripcion'].'</option>';
+                            }
+                          ?>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group" id="form_precio">
+                      <label for="precio" class="col-sm-2 control-label">Precio*</label>
+
+                      <div class="col-sm-10">
+                        <div class="input-group">
+                          <span class="input-group-addon" id="current"><b>Lps.</b></span>
+                          <input type="number" class="form-control" id="precio" placeholder="Precio" value="0" readonly>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group" id="form_cantidad">
+                      <label for="cantidad" class="col-sm-2 control-label">Cantidad*</label>
+
+                      <div class="col-sm-10">
+                        <div class="input-group">
+                          <input type="number" min="1" max="1" step=0 class="form-control" id="cantidad" placeholder="Cantidad" value="1">
+                          <span class="input-group-addon" id="existencias"><i>MAX</i></span>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                <!-- fin seleccion del articulo -->
+                </div>
+                <div class="modal-footer">
+                  <!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> -->
+                  <button type="button" class="btn btn-primary" id="btnAgregar">Agregar</button>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
+          <div class="box box-info">
+            <!-- <div class="box-header with-border"> -->
+              <!-- <h3 class="box-title">Acciones</h3> -->
+            <!-- </div> -->
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal">
+              <div class="box-body">
+                <div class="col-sm-5"></div>
+                <div class="col-sm-2">
+                  <!-- <button type="button" id="btnCancelar" class="btn btn-default">Cancelar</button> -->
+                  <button type="button" id="btnRegistrar" class="btn btn-success pull-right">Registrar</button>
+                </div>
+                <div class="col-sm-5"></div>
+              </div>
+              <!-- /.box-body -->
+            </form>
+          </div>
         </div>
       </div>
       <!-- /.row -->
@@ -558,6 +811,8 @@
 </script>
 <!-- Select2 -->
 <script src="<?php echo $cd;?>bower_components/select2/dist/js/select2.full.min.js"></script>
+<!-- bootstrap notify -->
+<script src="<?php echo $cd;?>plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
 <!-- DataTables -->
 <!-- <script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script> -->
 <!-- <script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
@@ -591,6 +846,101 @@
     $('.sidebar-menu').tree();
     // $('#lista-empleados').DataTable();
 
+    function actualizarTabla(tmp_num_venta){
+      $.ajax({	
+        type: "POST",
+        url: "registro_ventas_obtener_detalles_tmp.php",
+        data: "tmp_num_venta="+tmp_num_venta,
+        dataType: "json",
+      })
+      .done(function( data, textStatus, jqXHR ){
+        console.log(data);
+        var fila = '';
+
+        $.each(data, function(keyrow, row) {
+          fila += '<tr>';
+          $.each(row, function(keycol, col) {
+            if (keycol!=="Num_Factura") {
+              // alert("keycol = " + keycol + " | col = " + col );
+              fila +='<td>'+col+'</td>';
+            }
+          });
+
+            fila += '<td>';
+              fila += '<button class="btn btn-primary btn-sm editarfila" title="Modificar cantidad">';
+                fila += '<i class="fa fa-pencil"></i>';
+              fila += '</button>';
+              fila += '<button class="btn btn-primary btn-sm eliminarfila" title="Quitar de la lista">';
+                fila += '<i class="fa fa-trash"></i>';
+              fila += '</button>';
+            fila += '</td>';
+          fila += '</tr>';
+        });
+        console.log(fila);
+        $("#Detalles").html("");
+        $("#Detalles").html(fila);
+      })
+      .fail(function( data, textStatus, jqXHR ){
+        console.log(data);
+        alert(".fail");
+      });
+    }
+
+    function contarDetalles(tmp_num_factura){
+      $.ajax({	
+        type: "POST",
+        url: "inc/Interacciones_db/obtenerDetalles.php",
+        data: "tmp_num_factura="+tmp_num_factura,
+        dataType: "json",
+      })
+      .done(function( data, textStatus, jqXHR ){
+        console.log(data);
+        if (data.length>0) {
+          $.each(data, function(keyrow, row) {
+            $.post(
+              "inc/Interacciones_db/contarDetalles.php",
+              {
+                tmp_num_factura: tmp_num_factura,
+                tmp_num_detalle: row.Num_Detalle,
+                index: keyrow+1
+              },
+              function (data){
+                // alert(data);
+                if (data.trim()=="Detalles contados") {
+                  actualizarTabla(tmp_num_factura);
+                }
+              }
+            );
+          });
+        } else {
+          actualizarTabla(tmp_num_factura);
+        }
+      })
+      .fail(function( data, textStatus, jqXHR ){
+        console.log(data);
+        alert(".fail");
+      });
+    }
+
+    function guardarVentaTemporal(){
+      var codigo_venta_tmp = $("#codigo_venta_tmp").val();
+      var codigo_usuario = $("#codigo_usuario").val();
+      var fecha = $("#fecha").val();
+      var codigo_cliente = $("#nombre_cliente").val();
+      $.post(
+        "registro_ventas_registro_temporal.php",
+        {
+          codigo_venta_tmp : codigo_venta_tmp,
+          codigo_usuario : codigo_usuario,
+          fecha : fecha,
+          codigo_cliente : codigo_cliente,
+        }, function(data){
+          // alert(data);
+          console.log(data);
+        }
+      );
+    }
+
     $('#nombre_cliente').change(function(){
       var idCliente = $(this).val();
       if (idCliente=="Seleccione") {
@@ -609,11 +959,121 @@
         		console.log(data);
         		$('#codigo_cliente').val(data.Codigo_Cliente);
         		$('#rtn_cliente').val(data.RTN);
+            guardarVentaTemporal();
         })
         .fail(function( data, textStatus, jqXHR ){
           console.log(data);
           alert(".fail");
         });
+      }
+    });
+
+    $('#articulo').change(function(){
+      var idArticulo = $(this).val();
+      if (idArticulo=="Seleccione") {
+        $('#articulo').val("");
+        $('#rtn_cliente').html("");
+      } else {
+        $.ajax({
+          //Direccion destino
+          url: "registro_ventas_existencias_articulo.php",
+          // Variable con los datos necesarios
+          data: "id_articulo=" + idArticulo,
+          type: "POST",			
+          dataType: "json"
+        })
+        .done(function( data, textStatus, jqXHR ){
+        		console.log(data);
+        		$('#cantidad').attr('max', data.Existencias);
+        		$('#cantidad').val(1);
+        		$('#precio').val(data.Precio);
+        		$('#existencias').html("<i>(" + data.Existencias + " Max)</i>");
+        })
+        .fail(function( data, textStatus, jqXHR ){
+          console.log(data);
+          alert(".fail");
+        });
+      }
+    });
+
+    $('#modalAgregar').click(function(){
+      var idCliente = $('#nombre_cliente').val();
+      if (idCliente==null){ 
+        $.notify({
+          title: "Error : ",
+          message: "Por favor, seleccione el cliente",
+          icon: 'fa fa-times' 
+        },{
+          type: "danger"
+        });
+      } else {
+        $('#modal-default').modal('show');
+      }
+    });
+
+    $('#btnAgregar').click(function(){
+      var codigoVentaTmp = $('#codigo_venta_tmp').val();
+      var idArticuloSeleccionado = $('#articulo').val();
+      var cantidadVenta = parseInt($('#cantidad').val());
+      var existenciasMax = parseInt($('#cantidad').attr('max'));
+      if (idArticuloSeleccionado=='Seleccione') {
+        $('#modal-default').modal('hide');
+        $('#articulo').attr('required','required');
+        document.getElementById("articulo").focus();
+      } else if (cantidadVenta<1||cantidadVenta>existenciasMax) {
+        $('#articulo').attr('required',false);
+        $('#cantidad').attr('required','required');
+        document.getElementById("cantidad").focus();
+      } else {
+        $('#cantidad').attr('required',false);
+        var subtotal=parseFloat($("#sub_total").val());
+        var descuento=parseFloat($("#descuento").val());
+        var isv=parseFloat($("#isv").val());
+        var total=parseFloat($("#total").val());
+        var precioFinal = parseFloat($('#precio').val());
+
+        var totalArticulo=precioFinal*cantidadVenta;
+        subtotal += totalArticulo;
+				isv += (totalArticulo * 0.15);
+				total = (subtotal + isv);
+				if (total<=0) {
+					total=0;
+				}
+        
+        $.post(
+          'registro_ventas_registro_detalles_temporal.php',
+          {
+            tmp_codigo: codigoVentaTmp,
+            tmp_subtotal: subtotal,
+            tmp_descuento : descuento,
+            tmp_isv: isv,
+            tmp_total: total,
+            tmp_id_articulo: idArticuloSeleccionado,
+            tmp_cantidad: cantidadVenta,
+            tmp_precio: precioFinal,
+            tmp_total_articulo: totalArticulo
+          }, function(data){
+            // alert(data);
+            console.log(data);
+            if (data.trim()=="Existe") {
+              $('#articulo').attr('required','required');
+              document.getElementById("articulo").focus();
+              redirigir();
+            } else if (data.trim()=="Guardada") {
+              $("#articulo").val("Seleccione");
+              $("#precio").val("0");
+              $("#cantidad").val("1");
+              $('#articulo').focus();
+              $('#modal-default').modal('hide');
+              // $("#result").html(data);
+              actualizarTabla(codigoVentaTmp);
+              // $('#filaDetalles').append(fila);
+              $('#sub_total').val(subtotal.toFixed(2));
+              $('#isv').val(isv.toFixed(2));
+              $('#total').val(total.toFixed(2));
+            }
+          }
+        );
       }
     });
 
