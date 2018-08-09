@@ -72,6 +72,7 @@ switch($page){
 
 case 3:
 		$objProducto = new Producto();
+		$objProducto2 = new Producto();
 		$json = array();
 		$json['msj'] = 'Guardado correctamente';
 		$json['success'] = true;
@@ -86,16 +87,15 @@ case 3:
 				$costo = $detalle['costo'];
 				$objProducto->guardarDetalleVenta($proveedor,$descripcion,$cantidad,$costo);
 				
+				$porcentaje = $detalle['porcentaje'];
+				$precio = $detalle['precio'];
+
+
+				$objProducto2->actualizarDetalleVenta($descripcion,$cantidad,$precio,$porcentaje);
 			    endforeach;
 			    $_SESSION['detalle']= array();
 				$json['success'] = true;
 				echo json_encode($json);
-
-
-				
-
-
-
 
 	
 			} catch (PDOException $e) {

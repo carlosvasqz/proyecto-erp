@@ -30,8 +30,8 @@ class Producto
 
 	}
 	
-	function actualizarDetalleVenta($descripcion,$cantidad){
-		$sql = " UPDATE articulos SET Existencias= Existencias + '$cantidad' WHERE Id_Articulo='$descripcion'" ;
+	function actualizarDetalleVenta($descripcion,$cantidad,$precio,$porcentaje){
+		$sql = " UPDATE articulos SET Existencias= Existencias + '$cantidad', Precio_Final='$precio', Porcentaje_Ganancia='$porcentaje' WHERE Id_Articulo='$descripcion'" ;
 		global $cnx;
 		return $cnx->query($sql);
 
