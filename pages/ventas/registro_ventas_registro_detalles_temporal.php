@@ -15,10 +15,10 @@
     // exit();
 
     // Consulta para verificar existencia de la factura en proceso
-    $queryArticuloTmpExiste=mysqli_query($db,"SELECT COUNT(*) AS Existe FROM ventas_tmp INNER JOIN detalles_venta_tmp ON ventas_tmp.Id_Venta_Tmp = detalles_venta_tmp.Id_Venta_Tmp WHERE ventas_tmp.Id_Venta_Tmp='$codVentaTmp' AND detalles_venta_tmp.Id_Venta_Tmp='$codArticulo';")or die(mysqli_error());
+    $queryArticuloTmpExiste=mysqli_query($db,"SELECT COUNT(*) AS Existe FROM detalles_venta_tmp WHERE Id_Venta_Tmp='$codVentaTmp' AND Id_Articulo='$codArticulo';")or die(mysqli_error());
     $rowArticuloTmpExiste=mysqli_fetch_array($queryArticuloTmpExiste);
     // echo "Verificando existencia de factura temporal...\n";
-    if($rowArticuloTmpExiste['Existe']==0){
+    if($rowArticuloTmpExiste['Existe']<=0){
         // echo "La factura no existe\n";
 
         // Consulta para obtener el siguiente numero del detalle -- Forma manual de AUTO INCREMENT
@@ -38,13 +38,19 @@
         // exit();
 
         // Insercion de una nueva factura en la tabla de facturas temporales
+
+        // echo "INSERT INTO detalles_venta_tmp(Num_Detalle_Tmp, Id_Venta_Tmp, Id_Articulo, Precio, Cantidad, Total_Detalle) VALUES($tmp_num_detalle, '$codVentaTmp', '$codArticulo', $precio, $cantidad, $totalArticulo);";
+        // exit();
+
         $queryInsertarArticuloTmp=mysqli_query($db,"INSERT INTO detalles_venta_tmp(Num_Detalle_Tmp, Id_Venta_Tmp, Id_Articulo, Precio, Cantidad, Total_Detalle) VALUES($tmp_num_detalle, '$codVentaTmp', '$codArticulo', $precio, $cantidad, $totalArticulo);")or die(mysqli_error());
+        $actualizarEncabezado = mysqli_query($db,"UPDATE ventas_tmp SET Sub_Total=$subtotal,Descuento=0,Impuesto=$isv,Total=$total WHERE Id_Venta_Tmp= '$codVentaTmp'")or die(mysqli_error());
         // echo "Ha sido creada\n";
         echo 'Guardada';
     } else {
-        // echo "La factura ya existe\n";
+        echo "Existe";
         // Actualizacion de una factura en la tabla de facturas temporales
-        $queryModificarArticuloTmp=mysqli_query($db,"UPDATE detalles_venta_tmp SET Id_Articulo = $codArticulo, Precio = $precio, Cantidad = $cantidad, Total_Detalle = $totalArticulo WHERE Id_Venta_Tmp=$codVentaTmp AND ;")or die(mysqli_error());
+        //$queryModificarArticuloTmp=mysqli_query($db,"UPDATE detalles_venta_tmp SET Id_Articulo = $codArticulo, Precio = $precio, Cantidad = $cantidad, Total_Detalle = $totalArticulo WHERE Id_Venta_Tmp=$codVentaTmp;")or die(mysqli_error());
+        //$actualizarEncabezado = mysqli_query($db,"UPDATE ventas_tmp SET Sub_Total=$subtotal,Descuento=0,Impuesto=$isv,Total=$total WHERE Id_Venta_Tmp= '$codVentaTmp'")or die(mysqli_error());
         // echo "Ha sido actualizada\n";
     }                                                                                                   
 ?> 

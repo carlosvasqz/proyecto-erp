@@ -63,7 +63,7 @@
     } else {
       // $idVentaTmp = "is not set";
       $fecha_venta = date("Y-m-d");
-      $fecha_venta_formato = fechaFullFormato($hoy['mday']."/".$hoy['mon']."/".$hoy['year']);;
+      $fecha_venta_formato = fechaFullFormato($hoy['mday']."/".$hoy['mon']."/".$hoy['year']);
       $subTotal = 0;
       $descuento = 0;
       $isv = 0;
@@ -388,7 +388,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table class="table table-bordered table-hover" id="" name="">
+              <table class="table table-bordered table-hover" id="tablaArticulos" name="">
                 <thead>
                   <th>Num Detalle</th>
                   <th>Codigo Articulo</th>
@@ -523,7 +523,7 @@
                       
                       <div class="col-sm-10">
                         <select class="form-control select2" id="articulo" style="width: 100%;">
-                          <option value="Seleccione" disabled selected>Seleccione...</option>
+                          <option value="Seleccione" selected>Seleccione...</option>
                           <?php
                             $queryArticulo=mysqli_query($db, "SELECT * FROM articulos WHERE Estado=1 AND Existencias>0;") or die(mysqli_error());
                             while($rowArticulo=mysqli_fetch_array($queryArticulo)){
@@ -561,6 +561,51 @@
                 <div class="modal-footer">
                   <!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> -->
                   <button type="button" class="btn btn-primary" id="btnAgregar">Agregar</button>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
+          <!-- modal default -->
+          <div class="modal fade" id="modal-cantidad">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title">Cambiar cantidad</h4>
+                </div>
+                <div class="modal-body">
+                <!-- seleccion del articulo -->
+                  <form action="" class="form-horizontal">
+                    <input type="hidden" id="num_detalle" value="">
+                    <input type="hidden" id="id_articulo" value="">
+                    <input type="hidden" id="descripcion_articulo" value="">
+                    <input type="hidden" id="precio_articulo" value="">
+                    
+                    <div class="form-group" id="form_cantidad_anterior">
+                      <label for="cantidad_anterior" class="col-sm-2 control-label">Cantidad Anterior*</label>
+
+                      <div class="col-sm-10">
+                        <input type="number" min="1" step=0 class="form-control" id="cantidad_anterior" placeholder="Cantidad Anterior" value="">
+                      </div>
+                    </div>
+
+                    <div class="form-group" id="form_cantidad_nueva">
+                      <label for="cantidad_nueva" class="col-sm-2 control-label">Cantidad Nueva*</label>
+
+                      <div class="col-sm-10">
+                        <input type="number" min="1" step=0 class="form-control" id="cantidad_nueva" placeholder="Cantidad" value="">
+                      </div>
+                    </div>
+                  </form>
+                <!-- fin seleccion del articulo -->
+                </div>
+                <div class="modal-footer">
+                  <!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> -->
+                  <button type="button" class="btn btn-primary" id="btnCambiar">Cambiar</button>
                 </div>
               </div>
               <!-- /.modal-content -->
@@ -832,7 +877,7 @@
 <script>
   $(function () {
     $('#lista').DataTable({
-      'paging'      : true,
+      'paging'      : false,
       'lengthChange': true,
       'searching'   : true,
       'ordering'    : true,
@@ -855,65 +900,31 @@
       })
       .done(function( data, textStatus, jqXHR ){
         console.log(data);
-        var fila = '';
-
-        $.each(data, function(keyrow, row) {
-          fila += '<tr>';
-          $.each(row, function(keycol, col) {
-            if (keycol!=="Num_Factura") {
-              // alert("keycol = " + keycol + " | col = " + col );
-              fila +='<td>'+col+'</td>';
-            }
-          });
-
-            fila += '<td>';
-              fila += '<button class="btn btn-primary btn-sm editarfila" title="Modificar cantidad">';
-                fila += '<i class="fa fa-pencil"></i>';
-              fila += '</button>';
-              fila += '<button class="btn btn-primary btn-sm eliminarfila" title="Quitar de la lista">';
-                fila += '<i class="fa fa-trash"></i>';
-              fila += '</button>';
-            fila += '</td>';
-          fila += '</tr>';
-        });
-        console.log(fila);
-        $("#Detalles").html("");
-        $("#Detalles").html(fila);
-      })
-      .fail(function( data, textStatus, jqXHR ){
-        console.log(data);
-        alert(".fail");
-      });
-    }
-
-    function contarDetalles(tmp_num_factura){
-      $.ajax({	
-        type: "POST",
-        url: "inc/Interacciones_db/obtenerDetalles.php",
-        data: "tmp_num_factura="+tmp_num_factura,
-        dataType: "json",
-      })
-      .done(function( data, textStatus, jqXHR ){
-        console.log(data);
         if (data.length>0) {
+          var fila = '';
           $.each(data, function(keyrow, row) {
-            $.post(
-              "inc/Interacciones_db/contarDetalles.php",
-              {
-                tmp_num_factura: tmp_num_factura,
-                tmp_num_detalle: row.Num_Detalle,
-                index: keyrow+1
-              },
-              function (data){
-                // alert(data);
-                if (data.trim()=="Detalles contados") {
-                  actualizarTabla(tmp_num_factura);
-                }
+            fila += '<tr>';
+            $.each(row, function(keycol, col) {
+              if (keycol!=="Id_Venta") {
+                // alert("keycol = " + keycol + " | col = " + col );
+                fila +='<td>'+col+'</td>';
               }
-            );
+            });
+              fila += '<td>';
+                fila += '<button class="btn btn-primary btn-sm editarfila" title="Modificar cantidad">';
+                  fila += '<i class="fa fa-pencil"></i>';
+                fila += '</button>';
+                fila += '<button class="btn btn-primary btn-sm eliminarfila" title="Quitar de la lista">';
+                  fila += '<i class="fa fa-trash"></i>';
+                fila += '</button>';
+              fila += '</td>';
+            fila += '</tr>';
           });
+          console.log(fila);
+          $("#detalles").html("");
+          $("#detalles").html(fila);
         } else {
-          actualizarTabla(tmp_num_factura);
+          $("#detalles").html("");
         }
       })
       .fail(function( data, textStatus, jqXHR ){
@@ -921,6 +932,186 @@
         alert(".fail");
       });
     }
+
+    function contarDetalles(tmp_num_venta){
+      // alert(tmp_num_venta);
+      $.ajax({	
+        type: "POST",
+        url: "registro_ventas_obtener_detalles_tmp.php",
+        data: "tmp_num_venta="+tmp_num_venta,
+        dataType: "json",
+      })
+      .done(function( data, textStatus, jqXHR ){
+        console.log(data);
+        // alert("Estoy aqui");
+        console.log(data);
+        // return false;
+        // alert(data.length);
+        if (data.length>0) {
+          $.each(data, function(keyrow, row) {
+            // alert(tmp_num_venta + " " + row.Num_Detalle + " " + keyrow+1 );
+            $.post(
+              "registro_ventas_contar_detalles_tmp.php",
+              {
+                tmp_num_venta: tmp_num_venta,
+                tmp_num_detalle: row.Num_Detalle,
+                index: keyrow+1
+              },
+              function (data){
+                // alert(data);
+                if (data.trim()=="Detalles contados") {
+                  actualizarTabla(tmp_num_venta);
+                }
+              }
+            );
+          });
+        } else {
+          actualizarTabla(tmp_num_venta);
+        }
+      })
+      .fail(function( data, textStatus, jqXHR ){
+        console.log(data);
+        alert(".fail");
+      });
+    }
+
+    function actualizarExistencias(data, Fecha){
+			$.each(data, function(keyrow, row) {
+				console.log(row);
+				$.post(
+					"registro_ventas_actualizar_existencias.php",
+					{
+						id_articulo: row.Id_Articulo,
+						cantidad: row.Cantidad,
+            fecha: Fecha
+					},
+					function (respuesta){
+						console.log(respuesta.trim());
+						// alert(respuesta.trim());
+					}
+				);
+
+			});
+		}
+
+    function pasarVentaTmpARealizado(id_venta_tmp){
+      var Id_Venta = $('#codigo_venta').val();
+      Id_Venta = Id_Venta.split(".");
+      Id_Venta = Id_Venta[1];
+			guardarVentaTemporal();
+			// alert("datos obtenidos");
+			$.ajax({
+					type: "POST",
+					url: "registro_ventas_obtener_venta_tmp.php",
+					data: "tmp_num_venta="+id_venta_tmp,
+					dataType: "json",
+				})
+				.done(function( data, textStatus, jqXHR ){
+          console.log("Probando pasar venta_tmp ");
+	        		console.log(data);
+
+	        		$.post(
+	        			"registro_ventas_guardar.php",
+	        			{
+	        				Id_Venta: Id_Venta,
+                  Id_Venta_Tmp: data.Id_Venta_Tmp,
+	        				Id_Cliente: data.Id_Cliente,
+	        				Id_Usuario: data.Id_Usuario,
+	        				Fecha: data.Fecha,
+	        				Sub_Total: data.Sub_Total,
+	        				Impuesto: data.Impuesto,
+	        				Total: data.Total       				
+	        			},
+	        			function (respuesta){
+                  console.log(respuesta);
+	        				if (respuesta.trim()=="Venta ya existe") {
+	        					$.notify({
+                      title: "Error : ",
+                      message: "La venta ya existe",
+                      icon: 'fa fa-times' 
+                    },{
+                      type: "danger"
+                    });
+	        					redirigir();
+	        				} else {
+	        					pasarDetallesFactTmpARealizado(id_venta_tmp, data.Fecha);
+	        				}
+	        			}
+	        		);
+
+				})
+				.fail(function( data, textStatus, jqXHR ){
+					console.log(data);
+					console.log(textStatus);
+					console.log(jqXHR);
+					alert(".fail pasarVentaTmpARealizado();");
+	        	});
+
+		}
+
+		function pasarDetallesFactTmpARealizado(id_venta_tmp, Fecha){
+			var Id_Venta = $('#codigo_venta').val();
+      Id_Venta = Id_Venta.split(".");
+      Id_Venta = Id_Venta[1];
+
+			$.ajax({	
+				type: "POST",
+				url: "registro_ventas_obtener_detalles_tmp.php",
+				data: "tmp_num_venta="+id_venta_tmp,
+				dataType: "json",
+			})
+			.done(function( data, textStatus, jqXHR ){
+        console.log(data);
+
+				$.each(data, function(keyrow, row) {
+          console.log("Prueba insersion en detalles_venta");
+					console.log(row);
+					$.post(
+						"registro_ventas_guardar_detalles.php",
+						{
+							Num_Detalle: row.Num_Detalle,
+							Id_Venta: Id_Venta,
+							Id_Articulo: row.Id_Articulo,
+							Cantidad: row.Cantidad,
+							Precio: row.Precio,
+							Total_Detalle: row.Total_Detalle
+						},
+						function (respuesta){
+              console.log(respuesta);
+							// alert(respuesta.trim());
+							eliminarFacturaTmp(id_venta_tmp);
+							actualizarExistencias(data, Fecha);
+						}
+					);
+
+				});
+
+			})
+			.fail(function( data, textStatus, jqXHR ){
+				console.log(data);
+				alert(".fail pasarDetallesFactTmpARealizado();");
+        	});
+		}
+
+		function eliminarFacturaTmp(id_venta_tmp) {
+			$.post(
+				"registro_ventas_eliminar_venta_tmp.php",
+				{
+					id_venta_tmp: id_venta_tmp
+				},
+				function (data){
+          console.log(data);
+					// alert(data);
+					if (data.trim()=="Eliminado") {
+						console.log(data.trim());
+					}
+				}
+			);
+		}
+
+		function redirigir(){
+			$(location).attr('href', 'registro_ventas.php');
+		}
 
     function guardarVentaTemporal(){
       var codigo_venta_tmp = $("#codigo_venta_tmp").val();
@@ -971,8 +1162,9 @@
     $('#articulo').change(function(){
       var idArticulo = $(this).val();
       if (idArticulo=="Seleccione") {
-        $('#articulo').val("");
-        $('#rtn_cliente').html("");
+        $('#precio').val(0);
+        // $('#articulo').val("");
+        $('#existencias').html("(Max)");
       } else {
         $.ajax({
           //Direccion destino
@@ -1007,23 +1199,159 @@
           type: "danger"
         });
       } else {
+        $("#articulo").val("Seleccione");
+        $("#precio").val("0");
+        $("#cantidad").val("1");
+        $('#articulo').focus();
         $('#modal-default').modal('show');
       }
     });
+
+    $("#tablaArticulos").on('click', '.editarfila', function () {
+      var num_detalle=$(this).parents("tr").find("td").eq(0).html();
+			var id_articulo=$(this).parents("tr").find("td").eq(1).html();
+			var descripcion=$(this).parents("tr").find("td").eq(2).html();
+			var cantidad=parseFloat($(this).parents("tr").find("td").eq(3).html());
+			var precio=parseFloat($(this).parents("tr").find("td").eq(4).html());			
+
+			$("#num_detalle").val(num_detalle).value;
+			$("#id_articulo").val(id_articulo).value;
+			$("#descripcion_articulo").val(descripcion).value;
+			$("#precio_articulo").val(precio).value;
+			$("#cantidad_anterior").val(cantidad).value;
+      $("#existencias_cantidad").html("")
+			$("#cantidad_nueva").val("").value;
+
+			$("#modal-cantidad").modal("show");
+			document.getElementById("cantidad_nueva").focus();
+    });
+
+    $("#tablaArticulos").on('click', '.eliminarfila', function () {
+      var codigoVentaTmp = $('#codigo_venta_tmp').val();
+      var num_detalle=$(this).parents("tr").find("td").eq(0).html();
+      var id_articulo=$(this).parents("tr").find("td").eq(1).html();
+      var descripcion=$(this).parents("tr").find("td").eq(2).html();
+      var cantidad=parseFloat($(this).parents("tr").find("td").eq(3).html());
+      var precio=parseFloat($(this).parents("tr").find("td").eq(4).html());			
+      swal({
+        title: "¿Esta seguro?",
+        text: "Esta accion descartará el elemento seleccionado",
+        type: "warning",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+    }, function () {
+        // alert(" num_detalle = " + num_detalle + " id_articulo = " + id_articulo  + " descripcion = " + descripcion  + " precio = " + precio  + " cantidad = " + cantidad);
+        var totalArticulo=precio*cantidad;
+        var subtotal=parseFloat(document.getElementById("sub_total").value);
+        var isv=parseFloat(document.getElementById("isv").value);
+        var total=parseFloat(document.getElementById("total").value);
+
+        subtotal -= totalArticulo;
+        isv -= (totalArticulo * 0.15);
+        total = (subtotal + isv);
+
+        $.ajax({
+          //Direccion destino
+          url: "registro_ventas_eliminar_detalle_tmp.php",
+          // Variable con los datos necesarios
+          data: {
+            tmp_codigo: codigoVentaTmp,
+            tmp_subtotal: subtotal,
+            tmp_isv: isv,
+            tmp_total: total,
+            tmp_num_detalle: num_detalle,
+            tmp_id_articulo: id_articulo,
+            tmp_cantidad_nueva: cantidad,
+            tmp_precio: precio,
+            tmp_total_articulo: totalArticulo
+          },
+          type: "POST",     
+          dataType: "html",
+          //cache: false,  
+          //success
+          success: function (data) {
+             //alert(data);
+             console.log(data);
+            // setTimeout(function () {
+              if (data.trim()=="Venta No Existe") {
+                $.notify({
+                  title: "Error : ",
+                  message: "La Venta a actualizar no existe",
+                  icon: 'fa fa-times' 
+                },{
+                  type: "danger"
+                });
+              }
+
+              if (data.trim()=="Detalle No Existe") {
+                $.notify({
+                  title: "Error : ",
+                  message: "El detalle a eliminar no existe.",
+                  icon: 'fa fa-times' 
+                },{
+                  type: "danger"
+                });
+              }
+
+              if (data.trim()=="Actualizada"){
+                  swal({
+                    title: "¡Realizado!",
+                    text: "La acción se ha completado con éxito.",
+                    type: "success",
+                    showCancelButton: false,
+                    confirmButtonText: "Aceptar",
+                    closeOnConfirm: true
+                  }, function(isConfirm) {
+                    if (isConfirm) {
+                      // $("#result").html(data);
+                      // alert(codigoVentaTmp);
+                      contarDetalles(codigoVentaTmp);
+                      // $('#filaDetalles').append(fila);
+                      $('#sub_total').val(subtotal.toFixed(2));
+                      $('#isv').val(isv.toFixed(2));
+                      $('#total').val(total.toFixed(2));
+                    }
+                  });
+              }
+              if (!data) {
+                swal({
+                  title: "¡Error!",
+                  text: "Ha ocurrido un problema, inténtelo más tarde.",
+                  type: "error",
+                  showCancelButton: false,
+                  confirmButtonText: "Aceptar",
+                  closeOnConfirm: true
+                });
+              }
+            // }, 2000);
+          },
+          error : function(xhr, status) {
+            console.log(xhr);
+            console.log(status);
+            alert('Disculpe, existió un problema');
+          },
+          complete : function(xhr, status) {
+          }   
+        });
+      });
+		});
 
     $('#btnAgregar').click(function(){
       var codigoVentaTmp = $('#codigo_venta_tmp').val();
       var idArticuloSeleccionado = $('#articulo').val();
       var cantidadVenta = parseInt($('#cantidad').val());
       var existenciasMax = parseInt($('#cantidad').attr('max'));
-      if (idArticuloSeleccionado=='Seleccione') {
-        $('#modal-default').modal('hide');
+      if (idArticuloSeleccionado=='Seleccione'||cantidadVenta==0) {
+        // $('#modal-default').modal('hide');
         $('#articulo').attr('required','required');
         document.getElementById("articulo").focus();
+        return false;
       } else if (cantidadVenta<1||cantidadVenta>existenciasMax) {
         $('#articulo').attr('required',false);
         $('#cantidad').attr('required','required');
         document.getElementById("cantidad").focus();
+        return false;
       } else {
         $('#cantidad').attr('required',false);
         var subtotal=parseFloat($("#sub_total").val());
@@ -1058,7 +1386,13 @@
             if (data.trim()=="Existe") {
               $('#articulo').attr('required','required');
               document.getElementById("articulo").focus();
-              redirigir();
+              $.notify({
+                title: "Error : ",
+                message: "El articulo ya se ha agregado",
+                icon: 'fa fa-times' 
+              },{
+                type: "danger"
+              });
             } else if (data.trim()=="Guardada") {
               $("#articulo").val("Seleccione");
               $("#precio").val("0");
@@ -1076,6 +1410,105 @@
         );
       }
     });
+
+    $('#btnCambiar').click(function(){
+      var num_detalle = $('#num_detalle').val();
+      var id_articulo = $('#id_articulo').val();
+      var descripcion_articulo = $('#descripcion_articulo').val();
+      var precio_articulo = parseFloat($('#precio_articulo').val());
+      var cantidad_anterior = parseFloat($('#cantidad_anterior').val());
+      var cantidad_nueva = parseFloat($('#cantidad_nueva').val());
+
+      // alert(" num_detalle = " + num_detalle + " id_articulo = " + id_articulo  + " descripcion_articulo = " + descripcion_articulo  + " precio_articulo = " + precio_articulo  + " cantidad_anterior = " + cantidad_anterior  + " cantidad_nueva = " + cantidad_nueva);
+
+      if ($('#cantidad_nueva').val()==""||cantidad_nueva<=0) {
+        $('#cantidad_nueva').attr('required', 'required');
+        document.getElementById("cantidad_nueva").focus();
+      } else {
+        var codigo_venta_tmp = $('#codigo_venta_tmp').val();
+        // alert(codigo_venta_tmp);
+        var totalArticulo_previo = precio_articulo*cantidad_anterior;
+        var totalArticulo = precio_articulo*cantidad_nueva;
+        // alert("totalArticulo_previo = " + totalArticulo_previo);
+        // alert("totalArticulo = " + totalArticulo);
+        var subtotal=parseFloat(document.getElementById("sub_total").value);
+				var isv=parseFloat(document.getElementById("isv").value);
+				var total=parseFloat(document.getElementById("total").value);
+
+        // alert("subtotal = " + subtotal + " isv = " + isv + " total = " + total);
+				subtotal -= totalArticulo_previo;
+				subtotal += totalArticulo;
+				isv -= (totalArticulo_previo * 0.15);
+				isv += (totalArticulo * 0.15);
+				total = (subtotal + isv);
+				if (total<=0) {
+					total=0;
+				}
+        // alert("subtotal = " + subtotal + " isv = " + isv + " total = " + total);
+        var url = "registro_ventas_cambiar_cantidad.php" ;
+        $.post(
+          url,
+          {
+            tmp_codigo: codigo_venta_tmp,
+            tmp_subtotal: subtotal,
+            tmp_isv: isv,
+            tmp_total: total,
+            tmp_num_detalle: num_detalle,
+            tmp_id_articulo: id_articulo,
+            tmp_cantidad_nueva: cantidad_nueva,
+            tmp_precio: precio_articulo,
+            tmp_total_articulo: totalArticulo
+					}, function(data){
+            // alert(data);
+            console.log(data);
+            // return false;
+            if (data.trim()=="No existe") {
+							// alert(data);
+							// redirigir(); 
+              return false;
+            } else if (data.trim()=="Insuficiente") {
+              $('#cantidad_nueva').attr('required','required');
+							document.getElementById("cantidad_nueva").focus();
+							// alert(data);
+              return false;
+            } else if (data.trim()=="Guardada") {
+              $("#num_detalle").val("").value;
+              $("#id_articulo").val("").value;
+              $("#descripcion_articulo").val("").value;
+              $("#precio_articulo").val("").value;
+              $("#cantidad_nueva").val("").value;
+              $("#cantidad_anterior").val("").value;
+              $('#modal-cantidad').modal('hide');
+              // $("#result").html(data);
+              actualizarTabla(codigo_venta_tmp);
+              // $('#filaDetalles').append(fila);
+              $('#sub_total').val(subtotal.toFixed(2));
+              $('#isv').val(isv.toFixed(2));
+              $('#total').val(total.toFixed(2));
+              // alert("La cantidad ha sido modificada");
+            }
+	        }
+	      );
+      }
+    })
+
+    $("#btnRegistrar").click(function(){
+      var detallesTabla = $("#detalles").html();
+			if (detallesTabla.trim()=="") {
+				$.notify({
+          title: "Error : ",
+          message: "No ha seleccionado articulos para la venta.",
+          icon: 'fa fa-times' 
+        },{
+          type: "danger"
+        });
+			} else {
+				// alert("Procesando venta...");
+				var codigo_venta_tmp = document.getElementById("codigo_venta_tmp").value;
+
+				pasarVentaTmpARealizado(codigo_venta_tmp);	
+			}
+		});
 
   });
 </script>

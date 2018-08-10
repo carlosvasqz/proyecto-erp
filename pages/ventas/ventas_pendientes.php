@@ -253,7 +253,6 @@
                     <th>Usuario</th>
                     <th>Fecha</th>
                     <th>Subtotal</th>
-                    <th>Descuento</th>
                     <th>Impuesto</th>
                     <th>Total</th>
                     <th>Acciones</th>                    
@@ -270,7 +269,6 @@
                             <td>'.$rowVentaTmp['Id_Usuario'].'</td>
                             <td>'.fechaFormato(fechaIngAEsp($rowVentaTmp['Fecha'])).'</td>
                             <td>'.$rowVentaTmp['Sub_Total'].'</td>
-                            <td>'.$rowVentaTmp['Descuento'].'</td>
                             <td>'.$rowVentaTmp['Impuesto'].'</td>
                             <td>'.$rowVentaTmp['Total'].'</td>
                             <td>

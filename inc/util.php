@@ -126,9 +126,10 @@
         $rowCodigo=mysqli_fetch_array($sqlcon);
         if(is_null($rowCodigo['Ultima_Venta'])){
             return "VNT.1";
-        }else{
-            return $rowCodigo['Ultima_Venta'];
         }
+        $nuevo = $rowCodigo['Ultima_Venta']+1;
+            return "VNT.".$nuevo;
+        
     }
 
     function obtenerNuevoIdVentaTmp(){

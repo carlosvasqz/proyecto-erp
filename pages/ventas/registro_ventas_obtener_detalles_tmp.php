@@ -32,7 +32,7 @@
 
     header('Content-type: application/json; charset=utf-8');
         
-    echo json_encode($detallesVenta, JSON_FORCE_OBJECT);
+    echo json_encode($detallesVenta);
     // echo json_encode($detallesVenta, JSON_FORCE_OBJECT);
 
     exit();
