@@ -306,10 +306,6 @@
                     <th>Proveedor</th>
                     <th>Fecha de Emision</th>
                     <th>Estado</th>
-                    <th>Sub Total</th>
-                    <th>Impuesto</th>
-                    <th>Total</th>
-                    <th>Imprimir</th>
                     <th>Verificar</th>
                   </tr>
                 </thead>
@@ -321,6 +317,8 @@
                       $tootip = null;
                       $icono = null;
                       $color = null;
+
+
 
                         switch ($rowOrden["Estado"]) {
                         case 1:
@@ -341,23 +339,19 @@
                             <td>'.$rowOrden['Id_Proveedor'].'</td>
                             <td>'.fechaFormato(fechaIngAEsp($rowOrden['Fecha_Emision'])).'</td>
                             <td>'.$etiqueta.'</td>
-                            <td>Lps. '.$rowOrden['Sub_Total'].'</td>
-                            <td>Lps. '.$rowOrden['Impuesto'].'</td>
-                            <td>Lps. '.$rowOrden['Total'].'</td>
+                           
                             
                            
 
-                            <td>
-                              <form action="orden_pdf.php" method="POST">
-                             <input type="hidden" name="codigo_Orden" value="'.$rowOrden['Id_Orden_Compra'].'"/>
-                              <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Ver PDF"><i class="fa fa-file-text"></i></button>
-                              </td>
-                              </form>
+                          
+                             
+                           
                               
                                 <td>
                                 <form action="orden_verificar.php" method="POST">
-                                <input type="hidden" name="codigo_Orden_imprimir" value="'.$rowOrden['Id_Orden_Compra'].'"/>
-                              <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Verificar"><i class="fa fa-check-circle"></i></button>
+
+                                <input type="hidden" name="codigo_orden" value="'.$rowOrden['Id_Orden_Compra'].'"/>
+                              <button type="submit" hidden class="btn btn-primary btn-sm" data-toggle="tooltip" title="Verificar"><i class="fa fa-check-circle"></i></button>
                             </td>
                            </form>
                         </tr>

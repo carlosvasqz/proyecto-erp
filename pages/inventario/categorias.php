@@ -234,20 +234,7 @@
           <div class="info-box">
             <span class="info-box-icon bg-aqua"><i class="fa fa-user-plus"></i></span>
 
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Nuevos</h4></span>
-              <span class="info-box-number">
-               
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
+          
 
             <div class="info-box-content">
               <span class="info-box-text"><h4>Totales</h4></span>
@@ -266,17 +253,7 @@
         </div>
         <!-- /.col -->
         <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-user-times"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Desabilitadas</h4></span>
-              <span class="info-box-number">
-               
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
+          
           <!-- /.info-box -->
         </div>
         <!-- /.col -->

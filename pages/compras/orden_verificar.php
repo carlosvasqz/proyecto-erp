@@ -1,49 +1,29 @@
 <?php
-  $cd = "http://" . $_SERVER['HTTP_HOST'];
   $uri = explode("/", $_SERVER['REQUEST_URI']);
-  if (in_array('proyecto-erp', $uri)) {
-    foreach ($uri as $key => $value) {
-      if ($value == 'proyecto-erp') {
-        $cd .= "/" . $value . '/';
-        break;
-      } else {
-        if(!empty($value) ){
-          $cd .= '/' . $value;
-        }
-      }
-    }
-  } else {
-    $cd .= '/';
-  }
-
   $thisFileName = end($uri);
   $thisFileName = explode(".", $thisFileName);
   $thisFileName = $thisFileName[0];
-  $relative;
-  if ($thisFileName=='index'||$thisFileName=='lockscreen'||$thisFileName=='login'){
-    $relative = '';
+  $cd = null;
+  if ($thisFileName=='index'){
+    $cd = '';
   } else {
-    $relative = '../../';
+    $cd = '../../';
   }
-
-  include($relative.'inc/conexion.php');
-  include($relative.'inc/util.php');
-  include($relative.'inc/constructor.php');
-
-  // echo $relative.'inc/constructor.php';
-  // exit();
   session_start();
-  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
-    header("Location: ".$cd."login.php", true);
+  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {  
+    header("Location: ".$cd."403.php");
     die();
   } else {
+    include ($cd.'inc/constructor.php');
+    include ($cd.'inc/conexion.php');
+    include ($cd.'inc/util.php');
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Empleados</title>
+  <title>MaterialAdminLTE 2 | Cierres Diarios</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -55,6 +35,7 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
+   <link rel="stylesheet" href="<?php echo $cd;?>bower_components/select2/dist/css/select2.min.css">
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/AdminLTE.min.css">
   <!-- Material Design -->
   <link rel="stylesheet" href="<?php echo $cd;?>dist/css/bootstrap-material-design.min.css">
@@ -133,7 +114,7 @@
                 <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
+                  <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
                   <small>Miembro desde <?php $foo = $_SESSION['Fecha_Ingreso']; $foo = fechaBDAEsp($foo); $foo = fechaFormato($foo); echo $foo;;?></small>
                 </p>
               </li>
@@ -187,7 +168,7 @@
           <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-        <p><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></p>
+          <p><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></p>
           <a href="#"><i class="fa fa-user"></i> <?php echo $_SESSION['Codigo_Empleado'];?></a>          
         </div>
       </div>
@@ -204,7 +185,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-        menu($_SESSION['Tipo_Usuario'], $thisFileName, $cd);
+        menu($_SESSION['Tipo_Usuario'], $thisFileName,$cd);
       ?>
     </section>
     <!-- /.sidebar -->
@@ -217,107 +198,109 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Regístro Compras
+        Verificar Orden de Compras
         <small>Compras</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li><a href="#">Compras</a></li>
-        <li class="active">Registro Compras</li>
+        <li class="active">Verificar Orden de Compra</li>
       </ol>
     </section>
 
+     <?php
+
+      $queryOrdenE=mysqli_query($db, "SELECT * FROM ordenes_compra WHERE Id_Orden_Compra = '".$_POST['codigo_orden']."'") or die(mysqli_error());
+      $rowOrdenE=mysqli_fetch_array($queryOrdenE);
+
+      $queryOrden=mysqli_query($db, "SELECT * FROM detalles_orden_compra WHERE Id_Orden_Compra = '".$_POST['codigo_orden']."'") or die(mysqli_error());
+      $rowOrden=mysqli_fetch_array($queryOrden);
+    ?>
+
     <!-- Main content -->
-    <section class="content">
-
-      <div class="row">
-       
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text"><h4>Totales</h4></span>
-              <span class="info-box-number">
-                <?php 
-                  $queryTotalRegistro_Compras=mysqli_query($db, "SELECT COUNT(*) AS Total_Registro_Compras FROM compras") or die(mysqli_error());
-                  $rowRegistro_Compras=mysqli_fetch_array($queryTotalRegistro_Compras);
-                  echo $rowRegistro_Compras['Total_Registro_Compras'];
-                  // mysqli_close($queryTotalEmpleados);
-                ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
+<section class="content">
+    <div class="row">
+      <!-- columna izq -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Encabezado de Orden de Compra</h3>
           </div>
-          <!-- /.info-box -->
-        </div>
-       
-      <!-- /.row -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Lista de Regístro de Compras</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
-              </div>
-              <!-- /. tools -->
-            </div>
-            <!-- /.box-header -->
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form  class="form-horizontal">
             <div class="box-body">
-              <table id="lista-proveedores" class="table table-bordered table-striped table-hover">
+               <div class="form-group" id="form_codigo">
+                <label for="codigo" class="col-sm-2 control-label">Codigo*</label>
+
+                <div class="col-sm-9">
+                <input type="hidden" id="estadoVerificado" value="<?php echo $rowOrdenE['Estado']?>;">
+                  <input type="text" class="form-control" id="codigo" placeholder="Codigo" disabled value="<?php echo $rowOrden['Id_Orden_Compra']?>" >
+                </div>
+              </div>
+
+               <form class="form-horizontal">
+            <div class="box-body">
+
+             <div class="form-group" id="form_proveedor_articulo">
+                <label for="proveedor" class="col-sm-2 control-label">Proveedor*</label>
+
+                <div class="col-sm-9">
+                   <select disabled class="form-control select2" id="proveedor" style="width: 100%;" p>
+                  
+                   <option value=""> <?php echo $rowOrdenE['Id_Proveedor'] ?></option>
+                  
+                  
+                </select>
+                </div>
+              </div>
+              </div>
+              </form>
+
+               <div class="form-group" id="form_descripcion_categoria">
+                <label for="fecha" class="col-sm-2 control-label">Fecha*</label>
+
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="fecha"  value="<?php echo $rowOrdenE['Fecha_Emision'];?>" disabled>
+                  <input type="hidden" id="fechaDB" value="">
+                </div>
+              </div>
+
+              <div class="box-body">
+              <table id="lista-ordenes" class="table table-bordered table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>Código Compra</th>
-                    <th>Código Proveedor</th>
-                    <th>Código Factura</th>
-                    <th>Fecha Compra</th>
-                    <th>Código Usuario</th>
-                    <th>Código Orden</th>
-                    <th>Acciones</th>
-                     <th></th>
+              
+                    <th>Numero</th>
+                    <th>Orden</th>
+                    <th>Articulo</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Actualizar Unidades Recibidas</th>
+                    <th>Actualizar</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
-                  <?php
-                    $queryRegistro_Compras=mysqli_query($db, "SELECT * FROM compras") or die(mysqli_error());
-                   while ($rowRegistro_Compras=mysqli_fetch_array($queryRegistro_Compras)) {
-                      $etiqueta = null;
-                      $tootip = null;
-                      $icono = null;
-                      $color = null;
-                      switch ($rowRegistro_Compras["Id_Usuario"]) {
-                        case 1:
-                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
-                          $tootip = "Deshabilitar";
-                          $icono = "fa fa-times-circle";
-                          $color = "danger";
-                          break;
-                        case 0:
-                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
-                          $tootip = "Habilitar";
-                          $icono = "fa fa-check-circle";
-                          $color = "info";
-                          break;
-                      }
+                 <?php
+                    $queryOrdenL=mysqli_query($db, 'SELECT * FROM detalles_orden_compra WHERE Id_Orden_Compra='.$rowOrden['Id_Orden_Compra']) or die(mysqli_error());
+                   while ($rowOrdenL=mysqli_fetch_array($queryOrdenL)){
+                    
+                      
+                    
                       echo '
                         <tr>
-                            <td>'.$rowRegistro_Compras['Id_Compra'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Proveedor'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Factura'].'</td>
-                            <td>'.$rowRegistro_Compras['Fecha_Compra'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Usuario'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Orden'].'</td>
+                            <td>'.$rowOrdenL['Num_Detalle'].'</td>
+                            <td>'.$rowOrdenL['Id_Orden_Compra'].'</td>
+                            <td>'.$rowOrdenL['Id_Articulo'].'</td>
+                            <td>'.$rowOrdenL['Cantidad'].'</td>
+                            <td>'.$rowOrdenL['Precio_Unitario'].'</td>
+                            <td><input type="number" class="cambiar" id="cambiar'.$rowOrdenL['Num_Detalle'].'"></td>
                             <td>
-                             <form action="compras_editar.php" method="POST">
-                                <input type="hidden" name="codigo_compra" value="'.$rowRegistro_Compras['Id_Compra'].'"/>
-                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+                             <input type="hidden" name="codigo_detalle" value="'.$rowOrdenL['Num_Detalle'].'"/>
+                              <button type="button" id="'.$rowOrdenL['Num_Detalle'].'" class="btn btn-success btn-sm sweetalert" data-toggle="tooltip" title=""><i class="fa fa-check"></i></button></td>
 
-                            </td>
-                          </form>
                         </tr>
                       ';
                     }
@@ -334,18 +317,125 @@
                 </tfoot> -->
               </table>
             </div>
+
+            
+                  <div class="col-sm-12">
+                    <input type="hidden" id="estado" value="1">
+                    <button type="button" id="btnNuevo" class="btn btn-block btn-success">Nuevo</button>
+                  
+               
+            </div>
+             
+            </div>
+
+
+              
+
+              
+              
+
+
+
+            <!-- /.box-body -->
+          
+            <!-- /.box-footer -->
+          </form>
+
+
+          
+        </div>
+         <form  class="form-horizontal">
+            <div class="box-body">
+ 
+               <div hidden class="col-xs-12" id="divNuevo">
+          <div class="box">
+           
+            <!-- /.box-header -->
+            <div class="box-body">
+               <div class="form-group" id="form_rticulos">
+                <label for="articulo" class="col-sm-2 control-label">Informacion de articulo*</label>
+
+                <div class="col-sm-9">
+                   <select class="form-control select2" id="codigo_Articulo" style="width: 100%;">
+                    <?php
+                      $queryArticulo=mysqli_query($db, "SELECT * FROM articulos WHERE Estado=1;") or die(mysqli_error());
+                      while($rowArticulo=mysqli_fetch_array($queryArticulo)){
+                        echo '<option value="'.$rowArticulo['Id_Articulo'].'">'.$rowArticulo['Id_Articulo'].'   '.$rowArticulo['Descripcion'].' </option>';
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
+
+               <div class="form-group" id="form_Cantidad">
+                <label for="cantidad" class="col-sm-2 control-label">Cantidad*</label>
+                  <div class="col-sm-2">
+                  <input type="number" min="0"  class="form-control" id="cantidad" name="cantidad" required  >
+                </div>
+              </div>
+
+              <div class="form-group" id="form_Cantidad">
+                <label for="precio" class="col-sm-2 control-label">Precio*</label>
+                  <div class="col-sm-2">
+                  <input type="number" min="0.00" step="0.01"  class="form-control" id="precio" name="precio" required  >
+                </div>
+              </div>
+
+                  <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+                  <div class="col-sm-12">
+                    <input type="hidden" id="estado" value="1">
+                    <button type="button" id="btnAgregar" class="btn btn-block btn-success">Agregar</button>
+                  
+                </div>
+            </div>
+            <!-- /.box-body -->
+          </div>          
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+          
+          <!-- /.box -->
+       
+          <!-- /.box -->
+        </div>
+          
+          <!-- /.box -->
+        </div>
+
+        </form>
+
+       
+
+         <div class="col-xs-12">
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+                  <div class="col-sm-12">
+                    <input type="hidden" id="estado" value="1">
+                    <button type="button" id="aceptar" class="btn btn-block btn-success">Aceptar</button>
+                  
+                </div>
+            </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
-        </div>
+        </div>  
+
+
+          
+      
         <!-- /.col -->
       </div>
       <!-- /.row -->
 
+      <!-- /.row -->
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->  
+  <!-- /.content-wrapper -->
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -563,112 +653,178 @@
     $.material.init();
 </script>
 <!-- DataTables -->
-<script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- <script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script> -->
+<!-- <script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
+<script src="<?php echo $cd;?>plugins/dataTables/jquery.dataTables.min.js"></script>
+<script src="<?php echo $cd;?>plugins/dataTables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
+<!-- Sweet Alert -->
 <script src="<?php echo $cd;?>plugins/sweet-alert/sweetalert.min.js"></script>
-
 <!-- AdminLTE App -->
 <script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
+
+<script src="<?php echo $cd;?>bower_components/select2/dist/js/select2.full.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo $cd;?>dist/js/demo.js"></script>
-<!-- page script -->
 <script>
   $(function () {
-    $('#lista-proveedores').DataTable({
-      'paging'      : true,
-      'lengthChange': false,
-      'searching'   : true,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
-    });
+      $('.select2').select2();
+    //Date picker
   })
   $(document).ready(function () {
-    $('.sidebar-menu').tree();
-    // $('#lista-empleados').DataTable();
+    $('.sidebar-menu').tree()
 
-    $("#btnRegistrarNuevo").click(function(){
-      $(location).attr('href', 'guardar_compra.php');
-    });
+       var codigoRowAticulo = $('.sweetalert').attr('id');
+     $("#cambiar" + codigoRowAticulo).val();
+    var estado = $("#estadoVerificado").val();
 
-  $('.sweetalert').click(function(){
-    var codigoProveedor = $(this).attr('id');
-    var accion = $(this).attr('class');
-    accion = accion.split(" ");
-    var nuevoEstado;
-    if (accion[4]=='Habilitar') {
-      nuevoEstado = 1;
-    } else {
-      nuevoEstado = 0;
+
+
+    if(estado == 0){
+
     }
-    // alert(accion[4] + " - " + nuevoEstado);
-    swal({
-        title: "¿Esta seguro?",
-        text: "Esta accion " + accion[4] + "á el elemento seleccionado",
-        type: "warning",
-        showCancelButton: true,
-        closeOnConfirm: false,
-        showLoaderOnConfirm: true,
-    }, function () {
-        $.ajax({
-          //Direccion destino
-          url: "proveedor_cambiar_estado.php",
-          // Variable con los datos necesarios
-          data: "codigo_proveedor=" + codigoProveedor + "&estado=" + nuevoEstado,
-          type: "POST",     
-          dataType: "html",
-          //cache: false,
-          //success
-          success: function (data) {
-            // alert(data);
-            setTimeout(function () {
-              if (data) {
-                swal({
-                  title: "¡Realizado!",
-                  text: "La acción se ha completado con éxito.",
-                  type: "success",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: false
-                }, function(isConfirm) {
-                  if (isConfirm) {
-                    window.setTimeout('location.href="proveedores.php"', 3);
-                  }
-                });
-              }
-              if (!data) {
-                swal({
-                  title: "¡Error!",
-                  text: "Ha ocurrido un problema, inténtelo más tarde.",
-                  type: "error",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: true
-                });
-              }
-            }, 2000);
-          },
-          error : function(xhr, status) {
-            //  alert('Disculpe, existió un problema');
-          },
-          complete : function(xhr, status) {
-            // alert('Petición realizada');
-            // $.notify({
-            //    title: "Informacion : ",
-            //    message: "Petición realizada!",
-            //    icon: 'fa fa-check' 
-            //  },{
-            //    type: "info"
-            // });
-          }   
-        });
-    });
-    });
   })
+
+ 
+
+ $("#aceptar").click(function(){
+var codigo = $("#codigo").val();
+var estado = $("#estado").val();
+var datos = 'codigo=' + codigo + '&estado=' + estado;
+//alert(datos);
+$.ajax({
+       
+        url: "orden_actualizar_estado.php",
+        data: datos,
+        type: "POST",     
+        dataType: "html",
+
+        success: function(data){ 
+            if (data) {
+            
+            alert("Orden de compra verificada")
+             window.location.href="ordenes_compra.php";
+          }
+          if (!data) {
+           alert("Error")
+            
+          }
+
+        },
+
+        error : function(xhr, status){
+
+        }, 
+        complete : function(xhr, status){
+
+        }
+});
+
+  });
+
+
+
+ $("#btnAgregar").click(function(){
+var codigo = $("#codigo").val();
+var articulo = $("#codigo_Articulo").val();
+var cantidad = $("#cantidad").val();
+var precio = $("#precio").val();
+
+
+var datos = 'codigo=' + codigo + '&articulo=' + articulo + '&cantidad=' + cantidad + '&precio=' + precio;
+//alert(articulo);
+$.ajax({
+       
+        url: "orden_verificar_agregar_nuevo.php",
+        data: datos,
+        type: "POST",     
+        dataType: "html",
+
+        success: function(data){ 
+            if (data) {
+            
+            alert("nuevo agregado")
+             window.location.reload();
+          }
+          if (!data) {
+           alert("Error")
+            
+          }
+
+        },
+
+        error : function(xhr, status){
+
+        }, 
+        complete : function(xhr, status){
+
+        }
+});
+
+  });
+
+
+$("#btnNuevo").click(function(){
+   $("#divNuevo").attr('hidden',false);
+
+});
+
+
+    
+ $('.sweetalert').click(function(){
+      var codigoRowAticulo = $(this).attr('id');
+      var unidadesRowrecibidas = $("#cambiar" + codigoRowAticulo).val();
+      //alert(unidadesRowrecibidas);
+
+          $.ajax({
+            //Direccion destino
+            url: "orden_cambiar_cantidad.php",
+            // Variable con los datos necesarios
+            data: "codigo_detalle=" + codigoRowAticulo + "&unidades=" + unidadesRowrecibidas,
+            type: "POST",     
+            dataType: "html",
+            //cache: false,
+            //success
+          success: function (data) {
+          // alert(data);
+            
+          if (data) {
+            
+            window.location.reload();
+       
+
+          }
+          if (!data) {
+           alert("Error")
+          
+          }
+               
+          
+        },
+        error : function(xhr, status) {
+          //  alert('Disculpe, existió un problema');
+        },
+        complete : function(xhr, status) {
+          // alert('Petición realizada');
+          // $.notify({
+          //    title: "Informacion : ",
+          //    message: "Petición realizada!",
+          //    icon: 'fa fa-check' 
+          //  },{
+          //    type: "info"
+          // });
+        }   
+      });
+
+    });
+  
+   
+  
+  
+  
 </script>
 </body>
 </html>

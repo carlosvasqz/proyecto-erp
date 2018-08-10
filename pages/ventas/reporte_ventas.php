@@ -1,49 +1,29 @@
 <?php
-  $cd = "http://" . $_SERVER['HTTP_HOST'];
   $uri = explode("/", $_SERVER['REQUEST_URI']);
-  if (in_array('proyecto-erp', $uri)) {
-    foreach ($uri as $key => $value) {
-      if ($value == 'proyecto-erp') {
-        $cd .= "/" . $value . '/';
-        break;
-      } else {
-        if(!empty($value) ){
-          $cd .= '/' . $value;
-        }
-      }
-    }
-  } else {
-    $cd .= '/';
-  }
-
   $thisFileName = end($uri);
   $thisFileName = explode(".", $thisFileName);
   $thisFileName = $thisFileName[0];
-  $relative;
-  if ($thisFileName=='index'||$thisFileName=='lockscreen'||$thisFileName=='login'){
-    $relative = '';
+  $cd = null;
+  if ($thisFileName=='index'){
+    $cd = '';
   } else {
-    $relative = '../../';
+    $cd = '../../';
   }
-
-  include($relative.'inc/conexion.php');
-  include($relative.'inc/util.php');
-  include($relative.'inc/constructor.php');
-
-  // echo $relative.'inc/constructor.php';
-  // exit();
   session_start();
-  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {
-    header("Location: ".$cd."login.php", true);
+  if (!isset($_SESSION['Id_Usuario'])&&!isset($_SESSION['Tipo_Usuario'])&&!isset($_SESSION['Codigo_Empleado'])) {  
+    header("Location: ".$cd."403.php");
     die();
   } else {
+    include ($cd.'inc/constructor.php');
+    include ($cd.'inc/conexion.php');
+    include ($cd.'inc/util.php');
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MaterialAdminLTE 2 | Empleados</title>
+  <title>MaterialAdminLTE 2 | Proveedores</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -133,7 +113,7 @@
                 <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
+                  <?php echo $_SESSION['Id_Usuario']." - ".$_SESSION['Tipo_Usuario'] ;?>
                   <small>Miembro desde <?php $foo = $_SESSION['Fecha_Ingreso']; $foo = fechaBDAEsp($foo); $foo = fechaFormato($foo); echo $foo;;?></small>
                 </p>
               </li>
@@ -187,7 +167,7 @@
           <img src="<?php echo $cd;?>dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-        <p><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></p>
+          <p><?php echo $_SESSION['Nombre']." ".$_SESSION['Apellido'];?></p>
           <a href="#"><i class="fa fa-user"></i> <?php echo $_SESSION['Codigo_Empleado'];?></a>          
         </div>
       </div>
@@ -204,7 +184,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-        menu($_SESSION['Tipo_Usuario'], $thisFileName, $cd);
+        menu($_SESSION['Tipo_Usuario'], $thisFileName,$cd);
       ?>
     </section>
     <!-- /.sidebar -->
@@ -212,38 +192,62 @@
 
   <!-- =============================================== -->
 
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Regístro Compras
-        <small>Compras</small>
+        Reporte de Ventas
+        <small>Ventas</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Compras</a></li>
-        <li class="active">Registro Compras</li>
+        <li><a href="#">Ventas</a></li>
+        <li class="active">Reporte Ventas</li>
       </ol>
     </section>
 
     <!-- Main content -->
+    
     <section class="content">
 
       <div class="row">
-       
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-dollar"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Ventas Hoy</h4></span>
+              <span class="info-box-number">
+                <?php 
+                  $hoy = getdate();
+                  $anio= $hoy["year"];
+                  $mes= $hoy["mon"];
+                  $dia= $hoy["mday"];
+
+                  $fechaInicioAnioDB = $anio."-".$mes."-".$dia;
+                  $queryCotizacionesNuevas=mysqli_query($db, "SELECT COUNT(*) AS Ordenes_Nuevas FROM ventas WHERE Fecha = '$fechaInicioAnioDB';") or die(mysqli_error());
+                  $rowCotizacionesNuevas=mysqli_fetch_array($queryCotizacionesNuevas);
+                  echo $rowCotizacionesNuevas['Ordenes_Nuevas'];
+                  
+                ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
         <!-- /.col -->
         <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
-            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
+            <span class="info-box-icon bg-blue"><i class="fa fa-file-text"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text"><h4>Totales</h4></span>
               <span class="info-box-number">
                 <?php 
-                  $queryTotalRegistro_Compras=mysqli_query($db, "SELECT COUNT(*) AS Total_Registro_Compras FROM compras") or die(mysqli_error());
-                  $rowRegistro_Compras=mysqli_fetch_array($queryTotalRegistro_Compras);
-                  echo $rowRegistro_Compras['Total_Registro_Compras'];
+                  $queryCotizacionesTotales=mysqli_query($db, "SELECT COUNT(*) AS Total_Cotizaciones FROM Ventas") or die(mysqli_error());
+                  $rowCotizacionesTotales=mysqli_fetch_array($queryCotizacionesTotales);
+                  echo $rowCotizacionesTotales['Total_Cotizaciones'];
                   // mysqli_close($queryTotalEmpleados);
                 ?>
               </span>
@@ -252,72 +256,70 @@
           </div>
           <!-- /.info-box -->
         </div>
-       
+
+     
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+        
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
       <!-- /.row -->
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Lista de Regístro de Compras</h3>
+              <h3 class="box-title">Reporte de Ventas</h3>
               <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info" id="btnRegistrarNuevo">
-                  <i class="fa fa-plus"></i> <b>Registrar Nuevo</b></button>
-              </div>
+             
               <!-- /. tools -->
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-              <table id="lista-proveedores" class="table table-bordered table-striped table-hover">
+          <div class="box-body">
+              <table id="lista-ordenes" class="table table-bordered table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>Código Compra</th>
-                    <th>Código Proveedor</th>
-                    <th>Código Factura</th>
-                    <th>Fecha Compra</th>
-                    <th>Código Usuario</th>
-                    <th>Código Orden</th>
-                    <th>Acciones</th>
-                     <th></th>
+              
+                    <th>Codigo</th>
+                    <th>Cliente</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Sub Total</th>
+                    <th>Descuento</th>
+                    <th>Impuesto</th>
+                    <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php
-                    $queryRegistro_Compras=mysqli_query($db, "SELECT * FROM compras") or die(mysqli_error());
-                   while ($rowRegistro_Compras=mysqli_fetch_array($queryRegistro_Compras)) {
+                 <?php
+                    $queryOrdens=mysqli_query($db, "SELECT * FROM ventas") or die(mysqli_error());
+                   while ($rowOrden=mysqli_fetch_array($queryOrdens)){
                       $etiqueta = null;
                       $tootip = null;
                       $icono = null;
                       $color = null;
-                      switch ($rowRegistro_Compras["Id_Usuario"]) {
-                        case 1:
-                          $etiqueta = "<small class='label bg-blue'>Habilitado</small>";
-                          $tootip = "Deshabilitar";
-                          $icono = "fa fa-times-circle";
-                          $color = "danger";
-                          break;
-                        case 0:
-                          $etiqueta = "<small class='label bg-red'>Deshabilitado</small>";
-                          $tootip = "Habilitar";
-                          $icono = "fa fa-check-circle";
-                          $color = "info";
-                          break;
-                      }
+                    
                       echo '
                         <tr>
-                            <td>'.$rowRegistro_Compras['Id_Compra'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Proveedor'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Factura'].'</td>
-                            <td>'.$rowRegistro_Compras['Fecha_Compra'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Usuario'].'</td>
-                            <td>'.$rowRegistro_Compras['Id_Orden'].'</td>
-                            <td>
-                             <form action="compras_editar.php" method="POST">
-                                <input type="hidden" name="codigo_compra" value="'.$rowRegistro_Compras['Id_Compra'].'"/>
-                                <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+                            <td>'.$rowOrden['Id_Venta'].'</td>
+                            <td>'.$rowOrden['Id_Cliente'].'</td>
+                            <td>'.$rowOrden['Id_Usuario'].'</td>
+                            <td>'.fechaFormato(fechaIngAEsp($rowOrden['Fecha'])).'</td>
+                            <td>'.$rowOrden['Sub_Total'].'</td>
+                            <td>'.$rowOrden['Descuento'].'</td>
+                            <td>'.$rowOrden['Impuesto'].'</td>
+                            <td>'.$rowOrden['Total'].'</td>
+                           
+                            
+                           
 
-                            </td>
-                          </form>
+                          
+                             
+                           
+                              
+                               
+                           </form>
                         </tr>
                       ';
                     }
@@ -345,7 +347,7 @@
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->  
+  <!-- /.content-wrapper -->
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -563,22 +565,23 @@
     $.material.init();
 </script>
 <!-- DataTables -->
-<script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- <script src="<?php echo $cd;?>bower_components/datatables.net/js/jquery.dataTables.min.js"></script> -->
+<!-- <script src="<?php echo $cd;?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
+<script src="<?php echo $cd;?>plugins/dataTables/jquery.dataTables.min.js"></script>
+<script src="<?php echo $cd;?>plugins/dataTables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?php echo $cd;?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?php echo $cd;?>bower_components/fastclick/lib/fastclick.js"></script>
+<!-- Sweet Alert -->
 <script src="<?php echo $cd;?>plugins/sweet-alert/sweetalert.min.js"></script>
-
 <!-- AdminLTE App -->
 <script src="<?php echo $cd;?>dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo $cd;?>dist/js/demo.js"></script>
-<!-- page script -->
 <script>
   $(function () {
-    $('#lista-proveedores').DataTable({
+    $('#lista-ordenes').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -586,89 +589,18 @@
       'info'        : true,
       'autoWidth'   : false
     });
-  })
+  })    
+
   $(document).ready(function () {
-    $('.sidebar-menu').tree();
-    // $('#lista-empleados').DataTable();
-
-    $("#btnRegistrarNuevo").click(function(){
-      $(location).attr('href', 'guardar_compra.php');
-    });
-
-  $('.sweetalert').click(function(){
-    var codigoProveedor = $(this).attr('id');
-    var accion = $(this).attr('class');
-    accion = accion.split(" ");
-    var nuevoEstado;
-    if (accion[4]=='Habilitar') {
-      nuevoEstado = 1;
-    } else {
-      nuevoEstado = 0;
-    }
-    // alert(accion[4] + " - " + nuevoEstado);
-    swal({
-        title: "¿Esta seguro?",
-        text: "Esta accion " + accion[4] + "á el elemento seleccionado",
-        type: "warning",
-        showCancelButton: true,
-        closeOnConfirm: false,
-        showLoaderOnConfirm: true,
-    }, function () {
-        $.ajax({
-          //Direccion destino
-          url: "proveedor_cambiar_estado.php",
-          // Variable con los datos necesarios
-          data: "codigo_proveedor=" + codigoProveedor + "&estado=" + nuevoEstado,
-          type: "POST",     
-          dataType: "html",
-          //cache: false,
-          //success
-          success: function (data) {
-            // alert(data);
-            setTimeout(function () {
-              if (data) {
-                swal({
-                  title: "¡Realizado!",
-                  text: "La acción se ha completado con éxito.",
-                  type: "success",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: false
-                }, function(isConfirm) {
-                  if (isConfirm) {
-                    window.setTimeout('location.href="proveedores.php"', 3);
-                  }
-                });
-              }
-              if (!data) {
-                swal({
-                  title: "¡Error!",
-                  text: "Ha ocurrido un problema, inténtelo más tarde.",
-                  type: "error",
-                  showCancelButton: false,
-                  confirmButtonText: "Aceptar",
-                  closeOnConfirm: true
-                });
-              }
-            }, 2000);
-          },
-          error : function(xhr, status) {
-            //  alert('Disculpe, existió un problema');
-          },
-          complete : function(xhr, status) {
-            // alert('Petición realizada');
-            // $.notify({
-            //    title: "Informacion : ",
-            //    message: "Petición realizada!",
-            //    icon: 'fa fa-check' 
-            //  },{
-            //    type: "info"
-            // });
-          }   
-        });
-    });
-    });
+    $('.sidebar-menu').tree()
   })
+
+  $("#btnRegistrarNuevo").click(function(){
+      $(location).attr('href', 'orden_registrar.php');
+    });
+
+
+
 </script>
 </body>
 </html>

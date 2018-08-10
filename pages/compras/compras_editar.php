@@ -227,6 +227,7 @@
         <li class="active">Editar Compras</li>
       </ol>
     </section>
+
  <?php
       $querycompras=mysqli_query($db, "SELECT * FROM compras WHERE Id_Compra = '".$_POST['codigo_compra']."'") or die(mysqli_error());
       $rowcompras=mysqli_fetch_array($querycompras);
@@ -282,16 +283,9 @@
                 <label for="codigo_factura" class="col-sm-2 control-label">Codigo Factura*</label>
 
                 <div class="col-sm-9">
-                   <select class="form-control select2" id="codigo_factura" name="codigo_factura" style="width: 100%;" p>
-                   <option value="">Seleccione Codigo Factura</option>
-                   <?php 
-                          $queryListaProv=mysqli_query($db, "SELECT * FROM facturas_compra") or die(mysqli_error());
-                          while ($rowProv=mysqli_fetch_array($queryListaProv)) {
-                            echo '<option value="'.$rowProv['Id_Factura'].'">'.$rowProv['Id_Factura'].'</option>';  
-                          }
-                        ?>
-                  
-                </select>
+                    <div class="col-sm-9">
+                  <input type="text" class="form-control" id="codigo_factura" name="codigo_factura" placeholder="Codigo" value="<?php echo $rowcompras['Id_Factura'];?>">
+                </div>
                 </div>
               </div>
 

@@ -37,7 +37,7 @@
     function cargarCont(){
       $cont = array(
         'cierres_diarios' => '',
-        'reportes' => ''
+        'reporte_cierres' => ''
       );
       return $cont;
     }
@@ -60,7 +60,8 @@
         'clientes_editar' => '',
         'ventas_pendientes' => '',
         'registrar_cliente' => '',
-        'registro_ventas' => ''
+        'registro_ventas' => '',
+         'reporte_ventas' => ''
       );
       return $ventas;
     }
@@ -108,7 +109,7 @@
         'perfil' => '',
         // contabilidad
         'cierres_diarios' => '',
-        'reportes' => '',
+        'reporte_cierres' => '',
         // inventario
         'articulos' => '',
         'categorias' => '',
@@ -122,7 +123,8 @@
         'clientes_editar' => '',
         'ventas_pendientes' => '',
         'registrar_cliente' => '',
-        'registro_ventas' => ''
+        'registro_ventas' => '',
+         'reporte_ventas' => ''
       );
       return $li;
     }
@@ -243,6 +245,8 @@
             <li'.$li['registro_ventas'].'><a href="'.$cd.'pages/ventas/registro_ventas.php"><i class="fa fa-cart-plus"></i> Registro de Ventas</a></li> 
             <li'.$li['clientes'].'><a href="'.$cd.'pages/ventas/clientes.php"><i class="fa fa-users"></i> Clientes</a></li>
             <li'.$li['ventas_pendientes'].'><a href="'.$cd.'pages/ventas/ventas_pendientes.php"><i class="fa fa-file-powerpoint-o"></i> Ventas Pendientes</a></li>
+            <li'.$li['reporte_ventas'].'><a href="'.$cd.'pages/ventas/reporte_ventas.php"><i class="fa fa-file-text"></i> Reporte de Ventas</a></li> 
+
             <!-- <li class="treeview">
               <a href="#"><i class="fa fa-circle-o"></i> Nivel Uno
                 <span class="pull-right-container">
@@ -309,6 +313,7 @@
           </a>
           <ul class="treeview-menu">
             <li'.$li['cierres_diarios'].'><a href="'.$cd.'pages/contabilidad/cierres_diarios.php"><i class="fa fa-calendar-times-o"></i> Cierres Diarios</a></li> 
+            <li'.$li['reporte_cierres'].'><a href="'.$cd.'pages/contabilidad/reporte_cierres.php"><i class="fa fa-file-text"></i> Reporte Cierres</a></li>
             
             <!-- <li class="treeview">
               <a href="#"><i class="fa fa-circle-o"></i> Nivel Uno
